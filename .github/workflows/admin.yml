@@ -11,5 +11,5 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
-          build: cd highstreet-admin && npm run build
-          start: cd highstreet-admin && npm run dev
+          build: npm run --prefix highstreet-admin build
+          start: npm run --prefix highstreet-admin dev
