@@ -12,4 +12,4 @@ jobs:
         uses: cypress-io/github-action@v5.1.0
         with:
           build: npm run --prefix highstreet-admin build
-          start: npm run --prefix highstreet-admin dev
+          start: npm run --prefix highstreet-admin start
