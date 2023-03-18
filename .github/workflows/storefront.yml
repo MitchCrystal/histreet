@@ -11,5 +11,5 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
-          build: cd storefront && npm run build
-          start: cd storefront && npm run dev
+          build: npm run --prefix storefront build
+          start: npm run --prefix storefront dev
