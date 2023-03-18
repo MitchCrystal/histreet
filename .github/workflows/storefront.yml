@@ -9,7 +9,10 @@ jobs:
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
       - name: Cypress run
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v5.1.0
         with:
           build: npm run --prefix storefront build
           start: npm run --prefix storefront dev
+
+      - name: Clear cache
+        run: npm cache clean --force
