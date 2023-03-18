@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import { PropsWithChildren } from 'react';
+import { Toaster } from 'react-hot-toast';
 
 export default function MainLayout({
   children,
@@ -13,6 +14,7 @@ export default function MainLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Toaster/>
       {children}
     </>
   );
