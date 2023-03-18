@@ -13,6 +13,3 @@ jobs:
         with:
           build: npm run --prefix highstreet-admin build
           start: npm run --prefix highstreet-admin dev
-
-      - name: Clear cache
-        run: npm cache clean --force
