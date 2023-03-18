@@ -7,7 +7,6 @@ function Cart() {
     </>
   );
 }
-
 export default function () {
   return (
     <MainLayout title="name">
