@@ -15,6 +15,7 @@
   "devDependencies": {
     "commitizen": "^4.3.0",
     "cypress": "^12.8.1",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint-config-custom": "*",
     "prettier": "latest",
     "turbo": "latest"
@@ -25,5 +26,10 @@
   "dependencies": {
     "dotenv-cli": "^7.1.0"
   },
-  "packageManager": "npm@9.5.0"
+  "packageManager": "npm@9.5.0",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
 }
