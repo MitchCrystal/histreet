@@ -1,4 +1,8 @@
-import * as React from "react";
+import * as React from 'react';
 export const Button = () => {
-  return <button>Boop</button>;
+  return (
+    <button className="bg-red-500 px-4 rounded-md">
+      Shared component button
+    </button>
+  );
 };
