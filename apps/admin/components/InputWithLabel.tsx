@@ -1,5 +1,5 @@
-import { Input } from './Input';
-import { Label } from './Label';
+import * as React from 'react';
+import * as LabelPrimitive from '@radix-ui/react-label';
 
 export function InputWithLabel({
   label,
@@ -16,14 +16,14 @@ export function InputWithLabel({
   type: string;
   showLabel: boolean;
   state: Record<string, string>;
-  setState: React.Dispatch<React.SetStateAction<Record<string, string>>>;
+  setState: React.Dispatch<React.SetStateAction<any>>;
   direction: 'row' | 'column';
   [x: string]: any;
 }) {
   return (
     <div className="grid w-full max-w-sm items-center gap-1.5">
       <div
-        className={`flex ${
+        className={`flex w-full ${
           direction === 'row'
             ? 'flex-row'
             : direction === 'column'
@@ -31,10 +31,13 @@ export function InputWithLabel({
             : ''
         }`}
       >
-        {showLabel && <Label htmlFor={id}>{label}</Label>}
-        <Input
-          type={type}
-          id={id}
+        <div>
+          <Label className={`${showLabel ? '' : 'sr-only'}`} htmlFor={id}>
+            {label}
+          </Label>
+        </div>
+        <input
+          className="m-1 flex h-10 w-full rounded-md border border-slate-300 bg-transparent py-2 px-3 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50"
           value={state[id]}
           onChange={(e) => setState({ ...state, [id]: e.target.value })}
           {...delegated}
@@ -43,3 +46,16 @@ export function InputWithLabel({
     </div>
   );
 }
+
+const Label = React.forwardRef<
+  React.ElementRef<typeof LabelPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
+>(({ className, ...props }, ref) => (
+  <LabelPrimitive.Root
+    ref={ref}
+    className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 m-1
+      ${className}`}
+    {...props}
+  />
+));
+Label.displayName = LabelPrimitive.Root.displayName;
