@@ -20,8 +20,8 @@ export default function DropdownSelector({
         <SelectValue placeholder={options[0].name} />
       </SelectTrigger>
       <SelectContent>
-        {options.map((item, index) => {
-          return <SelectItem key={index} value={item.id}>{item.name}</SelectItem>;
+        {options.map((item) => {
+          return <SelectItem key={item.id} value={item.id}>{item.name}</SelectItem>;
         })}
       </SelectContent>
     </Select>
