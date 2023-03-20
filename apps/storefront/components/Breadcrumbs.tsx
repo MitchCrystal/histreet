@@ -1,17 +1,23 @@
 import { ChevronRightIcon, HomeIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 export default function Breadcrumbs({
   pages,
 }: {
   pages: { name: string; href: string; current?: boolean }[];
 }) {
+  const router = useRouter();
+
   return (
     <nav className="mb-4 flex overflow-x-auto" aria-label="Breadcrumb">
       <ol role="list" className="flex items-center space-x-4">
         <li>
           <div>
-            <Link href="#" className="text-gray-400 hover:text-gray-500">
+            <Link
+              href={`/${router.query.storeUrl}`}
+              className="text-gray-400 hover:text-gray-500"
+            >
               <HomeIcon className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
               <span className="sr-only">Home</span>
             </Link>

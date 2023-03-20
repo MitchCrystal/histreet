@@ -42,7 +42,7 @@ export default function Button({
     | 'ghost'
     | 'link';
   type?: 'button' | 'submit' | 'reset';
-  additionalClasses: string;
+  additionalClasses?: string;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   [x: string]: any;
 }>) {
