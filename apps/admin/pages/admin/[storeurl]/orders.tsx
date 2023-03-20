@@ -10,7 +10,7 @@ function Orders() {
 
 export default function () {
   return (
-    <AdminLayout title="Dashboard">
+    <AdminLayout title="orders">
       <Orders />
     </AdminLayout>
   );

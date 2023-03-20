@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { PropsWithChildren } from 'react';
 import { Toaster } from 'react-hot-toast';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 // import Image from 'next/image';
 
@@ -9,25 +10,26 @@ export default function AdminLayout({
   children,
   title,
 }: PropsWithChildren<{ title: string }>) {
+  const router = useRouter()
   const initialNavigation = [
     {
       name: 'Dashboard',
-      href: '/admin/a/dashboard',
+      href: `/admin/${router.query.storeUrl}/dashboard`,
       current: true,
     },
     {
       name: 'Orders',
-      href: '/admin/a/orders',
+      href: `/admin/${router.query.storeUrl}/orders`,
       current: false,
     },
     {
       name: 'Products',
-      href: '/admin/a/products',
+      href: `/admin/${router.query.storeUrl}/products`,
       current: false,
     },
     {
       name: 'Store Editor',
-      href: '/admin/a/editor',
+      href: `/admin/${router.query.storeUrl}/editor`,
       current: false,
     },
   ];
@@ -42,7 +44,7 @@ export default function AdminLayout({
       </Head>
       <Toaster />
       <div className="mx-auto flex flex-row h-12 justify-between items-center w-full border-slate-200 border-b ">
-        <Link href='/admin/a/dashboard'><div className="flex ml-4 text-2xl">Logo</div></Link>
+        <Link href={`/admin/${router.query.storeUrl}/dashboard`}><div className="flex ml-4 text-2xl">Logo</div></Link>
         <div className="flex mr-4 text-2xl">Store name</div>
       </div>
       <div className="flex h-[calc(100vh-48px)]">
