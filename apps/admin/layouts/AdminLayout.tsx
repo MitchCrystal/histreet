@@ -1,6 +1,8 @@
 import Head from 'next/head';
 import { PropsWithChildren } from 'react';
 import { Toaster } from 'react-hot-toast';
+import Link from 'next/link';
+
 // import Image from 'next/image';
 
 export default function AdminLayout({
@@ -10,22 +12,22 @@ export default function AdminLayout({
   const initialNavigation = [
     {
       name: 'Dashboard',
-      href: '/admin/dashboard',
+      href: '/admin/a/dashboard',
       current: true,
     },
     {
       name: 'Orders',
-      href: '/admin/orders',
+      href: '/admin/a/orders',
       current: false,
     },
     {
       name: 'Products',
-      href: '/admin/products',
+      href: '/admin/a/products',
       current: false,
     },
     {
       name: 'Store Editor',
-      href: '/admin/Editor',
+      href: '/admin/a/editor',
       current: false,
     },
   ];
@@ -40,17 +42,17 @@ export default function AdminLayout({
       </Head>
       <Toaster />
       <div className="mx-auto flex flex-row h-12 justify-between items-center w-full border-slate-200 border-b ">
-        <div className="flex ml-4">Logo</div>
-        <div className="flex mr-4">Store name</div>
+        <Link href='/admin/a/dashboard'><div className="flex ml-4 text-2xl">Logo</div></Link>
+        <div className="flex mr-4 text-2xl">Store name</div>
       </div>
       <div className="flex h-[calc(100vh-48px)]">
         <nav className="flex flex-col justify-between border-slate-200 border-r w-40 text-xs ">
           <div className="flex flex-col justify-between px-3 pt-3">
-            {initialNavigation.map((page) => {
-              return <div className='px-3 pt-3'>{page.name}</div>;
+            {initialNavigation.map((page, index) => {
+              return <Link href={page.href}  key={index}><div className='px-3 pt-3 text-base'>{page.name}</div></Link>;
             })}
           </div>
-          <div className="flex flex-col items-center border-t w-full px-3 py-3 ">
+          <div className="flex flex-col items-center border-t w-full px-3 py-3 text-base">
             Log Out
           </div>
         </nav>
