@@ -70,6 +70,7 @@ function SignUp() {
             state={formInputs}
             setState={setFormInputs}
             direction="column"
+            placeholder="e.g. 'top-toys'"
             required
           />
           <br></br>
