@@ -7,6 +7,10 @@ const buttonVariants = {
   default:
     'bg-slate-900 text-white hover:bg-slate-700 dark:bg-slate-50 dark:text-slate-900',
   primary: 'bg-blue-700 text-white hover:bg-blue-800 dark:hover:bg-blue-600',
+  homepage:
+    'bg-yellow-500 text-black hover:bg-yellow-400 hover:text-black dark:hover:text-black dark:hover:bg-yellow-400',
+  homepageSubtle:
+    'bg-black text-white hover:bg-blue-800 dark:hover:bg-blue-600',
   destructive: 'bg-red-500 text-white hover:bg-red-600 dark:hover:bg-red-600',
   outline:
     'bg-transparent border border-slate-200 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-100',
@@ -36,6 +40,8 @@ export default function Button({
   appearance:
     | 'default'
     | 'primary'
+    | 'homepage'
+    | 'homepageSubtle'
     | 'destructive'
     | 'outline'
     | 'subtle'

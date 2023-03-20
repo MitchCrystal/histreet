@@ -49,14 +49,23 @@ export default function Home() {
         <div className="flex gap-4 absolute top-0 h-full w-full z-20 justify-center items-center">
           {menuItems.map((item) => (
             <Link key={item.id} href={`/auth${item.href}`}>
-              <Button
+              {item.name === 'Sign Up' && <Button
                 key={item.id}
                 href={`/auth${item.href}`}
                 size="xl"
-                appearance="primary"
+                appearance="homepage"
                 type="button"
                 children={item.name}
-              ></Button>
+              ></Button>}
+              {item.name === 'Sign In' &&
+                <Button
+                  key={item.id}
+                  href={`/auth${item.href}`}
+                  size="xl"
+                  appearance="homepageSubtle"
+                  type="button"
+                  children={item.name}
+                ></Button>}
             </Link>
           ))}
         </div>
