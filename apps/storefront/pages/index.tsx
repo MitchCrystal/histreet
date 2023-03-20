@@ -1,9 +1,11 @@
 import Head from 'next/head';
 import { Inter } from 'next/font/google';
+import DropdownSelector from '../components/DropdownSelector';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export default function Home() {
+
   return (
     <>
       <Head>
@@ -13,6 +15,10 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>No store selected home</div>
+      <DropdownSelector options={[{id:'1', name:'name'},{id:'2', name:'name111'}]} />
+    
+
     </>
   );
 }
+
