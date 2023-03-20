@@ -5,6 +5,8 @@ import Card from '../../../../components/Card';
 import Table from '../../../../components/Table';
 import Address from '../../../../components/Address';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useQuery } from '@tanstack/react-query';
 
 const tableColumnNames = [
   { id: 'Product_name', name: 'Product name' },
@@ -57,19 +59,39 @@ const tableRows = [
   },
 ];
 
+// fetch an 'order' data with order_id
+// order.order-id -> go to first heading title
+// order.order_details.length -> go to second heading title
+// order.order.details -> JSON.parse -> go to  tableRows -> pass order.order_details.price, order.order_details.quantity, order.total_order_cost
+// also, after JSON.parse, fetch a 'product' data with order.order_details.productId -> pass product.SKU, product.product_name to tableRows
+// fetch a 'customer' data with order.customer_id -> render customer.customer_email
+// -> fetch 'addresses' data with order.customer_id -> customer.addresses -> get the whole address data and pass it to Address components
 function OrderDetail() {
+  const router = useRouter();
+  const orderId = router.query.orderId;
+  function getOrder() {
+    const { isLoading, error, data } = useQuery({
+      queryKey: ['order'],
+      queryFn: () => fetch('/api/hello').then((res) => res.json()),
+    });
+    return data;
+  }
+  console.log(getOrder());
+
   return (
     <>
-      <Heading title="Order #738272" type="h1" />
-      <div className="flex justify-end">
-        <Link href="/admin/storeurl/order/">
-          <Button size="default" appearance="primary">
-            Back
-          </Button>
-        </Link>
+      <div className="w-1/2 md:w-5/6 lg:w-full">
+        <Heading title="Order #738272" type="h1" />
+        <div className="flex justify-end">
+          <Link href="/admin/storeurl/order/">
+            <Button size="default" appearance="primary">
+              Back
+            </Button>
+          </Link>
+        </div>
       </div>
-      <div className="flex">
-        <div className="w-full">
+      <div className="xl:flex">
+        <div className="w-1/2 md:w-5/6 lg:w-full">
           <Card>
             <Heading title="Items Ordered(3)" type="h2" />
             <Table
@@ -86,7 +108,7 @@ function OrderDetail() {
             </div>
           </Card>
         </div>
-        <div className="ml-20">
+        <div className="mt-10 w-1/2 md:w-5/6 lg:w-full xl:ml-20 xl:mt-0">
           <Card>
             <Heading title="Customer" type="h4" />
             <p className="mb-4">examle@example.com</p>
