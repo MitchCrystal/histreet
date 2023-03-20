@@ -1,8 +1,22 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import { Inter } from 'next/font/google';
-import Navbar from '../components/HomePageNavbar';
+import Button from '../components/Button';
 
 const inter = Inter({ subsets: ['latin'] });
+
+const menuItems = [
+  {
+    id: 'Sign Up',
+    name: 'Sign Up',
+    href: '/sign-up',
+  },
+  {
+    id: 'Sign In',
+    name: 'Sign In',
+    href: '/sign-in',
+  },
+];
 
 export default function Home() {
   return (
@@ -13,12 +27,18 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Navbar />
-      <div className="h-[calc(100vh-208px)] sm:h-[calc(100vh-258px)] relative overflow-hidden">
-        <h1 className="px-5 sm:px-10 absolute z-20 top-[25%] font-bold sm:font-normal text-white text-3xl sm:text-6xl md:text-7xl lg:text-8xl">
-          Welcome to Hi Street
-        </h1>
-        <h2 className="px-5 sm:px-10 absolute z-20 top-[40%] sm:text-2xl md:text-3xl lg:text-4xl text-white">
+
+      <div className="h-[calc(100vh-0px)] relative overflow-hidden">
+        <div className=" flex px-5 sm:px-10 absolute z-20 top-[20%]  sm:font-normal text-white text-3xl sm:text-6xl md:text-7xl lg:text-8xl">
+          Welcome to
+          <img
+            src={'/histreet-yellow-square.png'}
+            alt="Hi Street"
+            className="w-9 sm:w-[120px] sm:pr-2 ml-3 mr-1 sm:ml-9 sm:mr-0"
+          />
+          Hi Street
+        </div>
+        <h2 className="px-5 sm:px-10 absolute z-20 top-[30%] sm:top-[35%] sm:text-2xl md:text-3xl lg:text-4xl text-white">
           Probably the UK's finest customisable storefront for your business
         </h2>
         <img
@@ -26,12 +46,26 @@ export default function Home() {
           alt={'Hi Street'}
           className="sm:w-[100vw] object-cover h-full"
         />
+        <div className="flex gap-4 absolute top-0 h-full w-full z-20 justify-center items-center">
+          {menuItems.map((item) => (
+            <Link key={item.id} href={`/auth${item.href}`}>
+              <Button
+                key={item.id}
+                href={`/auth${item.href}`}
+                size="xl"
+                appearance="primary"
+                type="button"
+                children={item.name}
+              ></Button>
+            </Link>
+          ))}
+        </div>
         <div className="absolute top-0 bg-black bg-opacity-30 h-full w-full z-10"></div>
         <p className="absolute bottom-0 text-white text-xs sm:text-base">
           Photo by Luca Vavassori on Unsplash
         </p>
       </div>
-      <div className="h-[208px] bg-gray-800"></div>
+      {/* <div className="h-[208px] bg-gray-800"></div> */}
     </>
   );
 }

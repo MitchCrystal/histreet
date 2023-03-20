@@ -21,6 +21,7 @@ const buttonSizes = {
   default: 'h-10 py-2 px-4',
   sm: 'h-9 px-2 rounded-md',
   lg: 'h-11 px-8 rounded-md',
+  xl: 'h-11 sm:h-14 md:h-20 px-8 sm:px-14 md:px-20 rounded-md md:text-2xl',
 };
 
 export default function Button({
@@ -31,7 +32,7 @@ export default function Button({
   children,
   ...delegated
 }: PropsWithChildren<{
-  size: 'default' | 'sm' | 'lg';
+  size: 'default' | 'sm' | 'lg' | 'xl';
   appearance:
     | 'default'
     | 'primary'
