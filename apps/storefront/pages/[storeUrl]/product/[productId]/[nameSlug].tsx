@@ -146,7 +146,7 @@ function ProductPage() {
               (item: Product) => item.id === router.query.productId
             )?.quantity && (
               <p>
-                Quantity already in cart:{' '}
+                Quantity in cart:{' '}
                 {
                   cartItems.find(
                     (item: Product) => item.id === router.query.productId

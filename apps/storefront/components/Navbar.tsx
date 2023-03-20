@@ -79,8 +79,17 @@ export default function Navbar() {
                       <div>
                         {cartItems.reduce((acc: any, curr: any) => {
                           return (acc += curr.quantity);
-                        }, 0) > 0 && <p>({cartItems.length})</p>}
+                        }, 0) > 0 && (
+                          <p>
+                            (
+                            {cartItems.reduce((acc: any, curr: any) => {
+                              return (acc += curr.quantity);
+                            }, 0)}
+                            )
+                          </p>
+                        )}
                       </div>
+                      // arr.reduce((acc, curr) => {return acc += curr.quantity}, 0)
                     )}
                   </div>
                 </div>
