@@ -33,20 +33,27 @@ export default function Navbar() {
             {/* @TODO change to dynamic value */}
             <Logo logoSrc={''} storeName="Demo Store" />
           </Link>
-          <div className="sm:hidden">
+          <div className="sm:hidden flex gap-4">
             <DropdownMenu>
-              <DropdownMenuTrigger>Pages</DropdownMenuTrigger>
+              <DropdownMenuTrigger>Browse</DropdownMenuTrigger>
               <DropdownMenuContent>
-                {menuItems.map((item) => (
-                  <Link
-                    key={item.id}
-                    href={`/${router.query.storeUrl}${item.href}`}
-                  >
-                    <DropdownMenuItem>{item.name}</DropdownMenuItem>
-                  </Link>
-                ))}
+                {menuItems.map((item) => {
+                  if (item.id !== 'cart') {
+                    return (
+                      <Link
+                        key={item.id}
+                        href={`/${router.query.storeUrl}${item.href}`}
+                      >
+                        <DropdownMenuItem>{item.name}</DropdownMenuItem>
+                      </Link>
+                    );
+                  }
+                })}
               </DropdownMenuContent>
             </DropdownMenu>
+            <Link href={`/${router.query.storeUrl}/cart`}>
+              <ShoppingCartIcon className="h-6" />
+            </Link>
           </div>
           <div className="hidden sm:flex sm:gap-4">
             {menuItems.map((item) => (
