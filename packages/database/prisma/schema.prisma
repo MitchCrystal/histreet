@@ -9,3 +9,127 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+model User {
+    user_id            String    @id @default(cuid())
+    user_first_name    String
+    user_last_name     String
+    user_email         String
+    password_hash      String
+    store              Store[]
+    created_at   DateTime @default(now())
+}
+
+model Store {
+  store_id        String   @id @default(cuid())
+  user   User?   @relation(fields: [store_owner_id], references: [user_id])
+  store_owner_id   String
+  store_owner      String
+  store_name   String
+  store_url   String   @unique
+  orders   Order[]
+  products   Product[]
+  customers   Customer[]
+  storefront   Storefront?
+  created_at   DateTime @default(now())
+}
+
+
+model Order {
+  order_id        String   @id @default(cuid()) @unique
+  order   Store   @relation(fields: [store_id], references: [store_id])
+  store_id   String
+  customer_id      String
+  friendly_order_number   Int @default(autoincrement())
+  bill_address Address @relation(fields: [bill_address_id], references: [address_id], name: "bill_address_id")
+  ship_address Address @relation(fields: [ship_address_id], references: [address_id], name: "ship_address_id")
+  bill_address_id   String @unique
+  ship_address_id   String @unique
+  products   Product[]
+  order_details   String[]
+  created_at   DateTime @default(now())
+  total_order_cost      Int
+  customer      Customer @relation(fields: [customer_id], references: [customer_id])
+}
+
+model Product {
+  product_id        String   @id @default(cuid())
+  store   Store   @relation(fields: [store_id], references: [store_id])
+  store_id   String
+  SKU      String
+  product_name       String
+  barcode      Int?
+  inventory_qty      Int
+  description        String
+  tags        String?
+  product_images   Images[]
+  orders   Order[]
+  product_price      Int
+  Categories      String?
+  deparmtent      String?
+  is_active      Boolean @default(true)
+  product_name_slug   String
+  created_at   DateTime @default(now())
+}
+
+model Customer {
+    customer_id            String    @id @default(cuid()) @unique
+    customer_first_name    String
+    customer_last_name     String
+    customer_email         String
+    phone_number           String
+    customer_account       Customer_account?
+    addresses              Address[]
+    store   Store   @relation(fields: [store_id], references: [store_id])
+    store_id   String
+    orders      Order[]
+    created_at   DateTime @default(now())
+}
+
+model Customer_account {
+    customer_account_id                String    @id @default(cuid()) @unique
+    customer_account_password_hash     String
+    customer_id     String @unique
+    customer   Customer   @relation(fields: [customer_id], references: [customer_id])
+}
+
+
+model Address {
+  address_id    	    String   @id @default(cuid()) @unique
+  address_first_name	String
+  address_last_name	  String
+  address_line_1	    String
+  address_line_2	    String
+  county	            String
+  city	              String
+  country	            String
+  postcode	          String
+  customer            Customer? @relation(fields: [customer_id], references: [customer_id])
+  customer_id      String?
+  order_bill_address   Order? @relation("bill_address_id")
+  order_ship_address   Order? @relation("ship_address_id")
+}
+
+model Images {	
+  image_id	           String     @id @default(cuid()) @unique
+  image_url	           String    
+  image_alt	           String
+  image_store_logo   Storefront?   @relation("store_logo")
+  image_store_hero   Storefront?   @relation("store_hero_image")
+  product              Product   @relation(fields:[product_id], references: [product_id])
+  product_id             String
+  
+}
+
+model Storefront	{
+  storefront_id         String  @id @default(cuid()) @unique
+  global_styles	        String
+  blocks	              String
+  store_id	            String   @unique
+  support_email	        String
+  store_logo            Images @relation(fields:[store_logo_id],  references: [image_id], name:"store_logo")
+  store_logo_id    String @unique
+  store_hero_image      Images @relation(fields:[store_hero_image_id],  references: [image_id], name:"store_hero_image")
+  store_hero_image_id    String @unique
+  store_description	    String
+  store   Store   @relation(fields: [store_id], references: [store_id])
+}
