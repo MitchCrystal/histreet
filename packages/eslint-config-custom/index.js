@@ -4,5 +4,6 @@ module.exports = {
     '@next/next/no-html-link-for-pages': 'off',
     'react/display-name': 'off',
     'import/no-anonymous-default-export': 'off',
+    '@next/next/no-img-element': 'off',
   },
 };

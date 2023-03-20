@@ -6,17 +6,19 @@ import Button from '../../components/Button';
 import Link from 'next/link';
 
 function SignIn() {
-  const [formInputs, setFormInputs] = useState({ email: "", password: "" })
+  const [formInputs, setFormInputs] = useState({ email: '', password: '' });
   function handleSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
-    console.log('sign-in button clicked')
+    console.log('sign-in button clicked');
   }
 
   return (
     <>
       <Heading title={'Sign-In'} type={'h2'} />
       <p>
-        <Link href="/auth/sign-up" className='font-bold text-indigo-600'>Don't have an account? Create one now! &#62;</Link>
+        <Link href="/auth/sign-up" className="font-bold text-indigo-600">
+          Don&apos;t have an account? Create one.
+        </Link>
       </p>
       <br></br>
       <br></br>
@@ -47,8 +49,9 @@ function SignIn() {
         appearance="primary"
         type="button"
         onClick={handleSubmit}
-        children="Sign-In"
-      />
+      >
+        Sign In
+      </Button>
     </>
   );
 }

@@ -13,7 +13,7 @@ function SignUp() {
     firstName: '',
     lastName: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
   });
   const [signupPage, setSignupPage] = useState(false);
 
@@ -32,7 +32,7 @@ function SignUp() {
       <Heading title={'Sign-Up'} type={'h2'} />
       <p>
         <Link href="/auth/sign-in" className="font-bold text-indigo-600">
-          Already signed up? Click here to sign in! &#62;
+          Already signed up? Click here to sign in.
         </Link>
       </p>
       <br></br>
@@ -79,8 +79,9 @@ function SignUp() {
             appearance="primary"
             type="button"
             onClick={handlePrevNext}
-            children="Next"
-          />
+          >
+            Next
+          </Button>
         </>
       )}
       {signupPage && (
@@ -134,10 +135,16 @@ function SignUp() {
             appearance="primary"
             type="button"
             onClick={handleSubmit}
-            children="Create Account"
-          />
+          >
+            Sign Up
+          </Button>
           <br></br>
-          <p className="font-bold text-indigo-600 cursor-pointer" onClick={handlePrevNext}>Back</p>
+          <p
+            className="font-bold text-indigo-600 cursor-pointer"
+            onClick={handlePrevNext}
+          >
+            Back
+          </p>
         </>
       )}
     </>
