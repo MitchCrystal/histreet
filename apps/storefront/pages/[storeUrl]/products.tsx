@@ -19,9 +19,7 @@ function Products() {
       <HeadingText size="h3">Products</HeadingText>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
         {products.map((product) => (
-          <div>
-            <ProductGridItem key={product.id} product={product} />
-          </div>
+          <ProductGridItem key={product.id} product={product} />
         ))}
       </div>
     </>
