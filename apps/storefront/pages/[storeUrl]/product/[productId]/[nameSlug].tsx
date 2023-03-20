@@ -1,11 +1,24 @@
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Breadcrumbs from '../../../../components/Breadcrumbs';
 import Button from '../../../../components/Button';
 import HeadingText from '../../../../components/HeadingText';
 import ImageRow from '../../../../components/ImageRow';
 import { InputWithLabel } from '../../../../components/InputWithLabel';
 import MainLayout from '../../../../layouts/MainLayout';
+import { CartContext } from '../../../_app';
+
+type Product = {
+  id: string;
+  images: {
+    id: string;
+    image: string;
+  }[];
+  name: string;
+  price: number;
+  description: string;
+  inventory: number;
+};
 
 const product = {
   id: '1',
@@ -39,6 +52,11 @@ function ProductPage() {
   const router = useRouter();
   const [formValues, setFormValues] = useState({ quantity: 1 });
   const [currentImage, setCurrentImage] = useState(product.images[0]);
+
+  const { cartItems, setCartItems }: { cartItems: any; setCartItems: any } =
+    useContext(CartContext);
+
+  console.log(cartItems);
 
   return (
     <div>
@@ -75,26 +93,67 @@ function ProductPage() {
           <p>{product.description}</p>
           <div className="flex flex-col gap-3">
             {product.inventory > 0 && (
-              <InputWithLabel
-                id="quantity"
-                label="Quantity"
-                state={formValues}
-                setState={setFormValues}
-                showLabel={true}
-                type="number"
-                direction="column"
-                additionalClasses="w-16"
-                min={1}
-              />
+              <div className="w-16">
+                <InputWithLabel
+                  id="quantity"
+                  label="Quantity"
+                  state={formValues}
+                  setState={setFormValues}
+                  showLabel={true}
+                  type="number"
+                  direction="column"
+                  min={1}
+                />
+              </div>
             )}
             <Button
               size="default"
               appearance="primary"
               additionalClasses="min-w-fit w-36"
-              disabled={product.inventory === 0}
+              disabled={product.inventory <= 0}
+              onClick={() => {
+                setCartItems(
+                  (
+                    currentCart: Product & { id: string; quantity: number }[]
+                  ) => {
+                    const filteredCart = currentCart.filter(
+                      (item) => item.id !== product.id && item.quantity > 0
+                    );
+                    const itemInCart = currentCart.find(
+                      (item) => item.id === product.id
+                    );
+                    return [
+                      ...filteredCart,
+                      {
+                        id: product.id,
+                        quantity:
+                          Number(itemInCart?.quantity ?? 0) +
+                            Number(formValues.quantity) <=
+                          0
+                            ? 0
+                            : Number(itemInCart?.quantity ?? 0) +
+                              Number(formValues.quantity),
+                      },
+                    ];
+                  }
+                );
+                setFormValues({ quantity: 1 });
+              }}
             >
               {product.inventory === 0 ? 'Sold out' : 'Add to Cart'}
             </Button>
+            {!!cartItems.find(
+              (item: Product) => item.id === router.query.productId
+            )?.quantity && (
+              <p>
+                Quantity already in cart:{' '}
+                {
+                  cartItems.find(
+                    (item: Product) => item.id === router.query.productId
+                  ).quantity
+                }
+              </p>
+            )}
           </div>
         </div>
       </div>

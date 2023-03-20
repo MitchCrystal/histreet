@@ -8,6 +8,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from './dropdown-menu';
+import { useContext } from 'react';
+import { CartContext } from '../pages/_app';
 
 const menuItems = [
   {
@@ -24,6 +26,11 @@ const menuItems = [
 
 export default function Navbar() {
   const router = useRouter();
+
+  const { cartItems }: { cartItems: any; setCartItems: any } =
+    useContext(CartContext);
+
+  console.log({ cartItems });
 
   return (
     <>
@@ -68,7 +75,13 @@ export default function Navbar() {
                     }`}
                   >
                     <p>{item.name}</p>
-                    {item.id === 'cart' && <ShoppingCartIcon className="h-6" />}
+                    {item.id === 'cart' && (
+                      <div>
+                        {cartItems.reduce((acc: any, curr: any) => {
+                          return (acc += curr.quantity);
+                        }, 0) > 0 && <p>({cartItems.length})</p>}
+                      </div>
+                    )}
                   </div>
                 </div>
               </Link>
