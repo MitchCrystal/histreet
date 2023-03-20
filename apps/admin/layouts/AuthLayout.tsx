@@ -15,7 +15,9 @@ export default function AuthLayout({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Toaster />
-      {children}
+      <div className="text-center box-border lg:border border-black p-20 mx-auto h-4/5 flex flex-col justify-between items-center max-w-lg lg:mt-40">
+        {children}
+      </div>
     </>
   );
 }
