@@ -18,11 +18,14 @@ function SignIn() {
     toast.promise(
       signIn('credentials', {
         ...formInputs,
-        callbackUrl: `/admin//dashboard`,
+        // redirect: false,
+        callbackUrl: `${process.env.NEXT_PUBLIC_APP_URL}/admin/TOCHANGE/dashboard`,
       }),
       {
         loading: 'Logging in...',
-        success: 'Logged in!',
+        success: () => {
+          return 'Logged in!';
+        },
         error: 'Error logging in.',
       },
       {

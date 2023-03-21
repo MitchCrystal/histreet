@@ -40,7 +40,7 @@ model User {
     user_id            String    @id @default(cuid())
     user_first_name    String
     user_last_name     String
-    user_email         String
+    user_email         String    
     password_hash      String
     store              Store[]
     created_at   DateTime @default(now())

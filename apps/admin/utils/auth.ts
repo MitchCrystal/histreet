@@ -1,28 +1,28 @@
-import { type GetServerSidePropsContext } from "next";
-import CredentialsProvider from "next-auth/providers/credentials";
+import { type GetServerSidePropsContext } from 'next';
+import CredentialsProvider from 'next-auth/providers/credentials';
 import {
   getServerSession,
   type NextAuthOptions,
   type DefaultSession,
-} from "next-auth";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import  prisma from "./prisma";
-import bcrypt from 'bcrypt'
+} from 'next-auth';
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import prisma from './prisma';
+import bcrypt from 'bcrypt';
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
  * object and keep type safety.
  *
  * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
  */
-declare module "next-auth" {
+declare module 'next-auth' {
   interface Session extends DefaultSession {
     user: {
       id: any;
       firstName: any;
       lastName: any;
       email?: string | null;
-      password:string
-    } & DefaultSession["user"];
+      password: string;
+    } & DefaultSession['user'];
   }
 
   interface User {
@@ -60,17 +60,17 @@ export const authOptions: NextAuthOptions = {
   },
   adapter: PrismaAdapter(prisma),
   session: {
-    strategy: "jwt",
+    strategy: 'jwt',
     maxAge: 60 * 60 * 24 * 30,
   },
   pages: {
-    signIn: "/auth/sign-in",
+    signIn: '/auth/sign-in',
     // error: "/auth/error",  Error code passed in query string as ?error=
     // verifyRequest: "/auth/verify-request",  (used for check email message)
   },
   providers: [
     CredentialsProvider({
-      name: "password",
+      name: 'password',
       credentials: {
         user_email: {},
         password_hash: {},
@@ -82,7 +82,7 @@ export const authOptions: NextAuthOptions = {
           where: {
             user_email: {
               equals: credentials?.user_email,
-              mode: "insensitive",
+              mode: 'insensitive',
             },
           },
         });
@@ -99,7 +99,6 @@ export const authOptions: NextAuthOptions = {
         return null;
       },
     }),
-  
 
     /**
      * ...add more providers here.
@@ -119,8 +118,8 @@ export const authOptions: NextAuthOptions = {
  * @see https://next-auth.js.org/configuration/nextjs
  */
 export const getServerAuthSession = (ctx: {
-  req: GetServerSidePropsContext["req"];
-  res: GetServerSidePropsContext["res"];
+  req: GetServerSidePropsContext['req'];
+  res: GetServerSidePropsContext['res'];
 }) => {
   return getServerSession(ctx.req, ctx.res, authOptions);
 };
