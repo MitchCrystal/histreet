@@ -1,3 +1,5 @@
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { Fragment, useEffect, useState } from 'react';
 import { CartProduct } from '../pages/[storeUrl]/cart';
 import { InputWithLabel } from './InputWithLabel';
@@ -23,6 +25,7 @@ export default function CartLineItemTable({
   };
   setOrderTotal: React.Dispatch<React.SetStateAction<number>>;
 }) {
+  const router = useRouter();
   const [quantityValues, setQuantityValues] = useState<Record<string, number>>(
     {}
   );
@@ -84,7 +87,11 @@ export default function CartLineItemTable({
               alt={lineItem.product_images[0].image_alt}
               className="w-20 h-20 object-fit rounded-md"
             />
-            <p>{lineItem.product_name}</p>
+            <Link
+              href={`/${router.query.storeUrl}/product/${lineItem.product_id}/${lineItem.product_name_slug}`}
+            >
+              <p>{lineItem.product_name}</p>
+            </Link>
             <p>£{lineItem.product_price}</p>
             <div className="w-16">
               <InputWithLabel
@@ -100,7 +107,12 @@ export default function CartLineItemTable({
               />
             </div>
             <p>
-              £{lineItem.product_price * quantityValues[lineItem.product_id]}
+              {new Intl.NumberFormat('en-GB', {
+                style: 'currency',
+                currency: 'GBP',
+              }).format(
+                lineItem.product_price * quantityValues[lineItem.product_id]
+              )}
             </p>
           </Fragment>
         );

@@ -48,7 +48,6 @@ function Cart() {
           ?.product_price || 0) * curr.quantity);
     }, 0);
 
-    console.log({ total });
     setOrderTotal(total);
   }, [cart.cartItems, products]);
 
@@ -85,9 +84,19 @@ function Cart() {
           <div className="m-2 mb-4">
             <div className="flex justify-between items-center mb-2">
               <HeadingText size="h4">Order Total</HeadingText>
-              <HeadingText size="h4">£{orderTotal}</HeadingText>
+              <HeadingText size="h4">
+                {new Intl.NumberFormat('en-GB', {
+                  style: 'currency',
+                  currency: 'GBP',
+                }).format(orderTotal)}
+              </HeadingText>
             </div>
-            <p>Total items: 2</p>
+            <p>
+              Total items:{' '}
+              {cart.cartItems.reduce((acc, curr) => {
+                return (acc += curr.quantity);
+              }, 0)}
+            </p>
           </div>
           <Button size="default" appearance="primary" additionalClasses="mb-2">
             Checkout

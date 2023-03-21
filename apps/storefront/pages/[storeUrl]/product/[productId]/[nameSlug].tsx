@@ -1,6 +1,7 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
+import { toast } from 'react-hot-toast';
 import Breadcrumbs from '../../../../components/Breadcrumbs';
 import Button from '../../../../components/Button';
 import Error from '../../../../components/Error';
@@ -83,7 +84,12 @@ function ProductPage() {
         </div>
         <div className="col-span-5 flex gap-4 flex-col p-4 sm:p-0">
           <HeadingText size="h3">{product.product_name}</HeadingText>
-          <HeadingText size="h4">£{product.product_price}</HeadingText>
+          <HeadingText size="h4">
+            {new Intl.NumberFormat('en-GB', {
+              style: 'currency',
+              currency: 'GBP',
+            }).format(product.product_price)}
+          </HeadingText>
           <p>{product.description}</p>
           <div className="flex flex-col gap-3">
             {product.inventory_qty > 0 && (
@@ -133,6 +139,12 @@ function ProductPage() {
                   }
                 );
                 setFormValues({ quantity: 1 });
+                if (product.inventory_qty > formValues.quantity) {
+                  formValues.quantity;
+                }
+                toast.success('Item added to cart', {
+                  position: 'bottom-center',
+                });
               }}
             >
               {product.inventory_qty === 0 ? 'Sold out' : 'Add to Cart'}
