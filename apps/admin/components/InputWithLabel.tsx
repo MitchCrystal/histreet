@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Label } from './Label';
 
-export function InputWithLabel({
+export default function InputWithLabel({
   label,
   id,
   type,
@@ -28,7 +28,7 @@ export function InputWithLabel({
             ? 'flex-row items-center justify-center'
             : direction === 'column'
             ? 'flex-col'
-            : ''
+            : '' 
         }`}
       >
         <Label className={`${showLabel ? 'w-48' : 'sr-only'}`} htmlFor={id}>

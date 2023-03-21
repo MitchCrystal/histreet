@@ -23,7 +23,7 @@ model Store {
   store_id        String   @id @default(cuid())
   user   User?   @relation(fields: [store_owner_id], references: [user_id])
   store_owner_id   String
-  store_owner      String
+  
   store_name   String
   store_url   String   @unique
   orders   Order[]
