@@ -45,7 +45,7 @@ model Order {
   bill_address_id   String @unique
   ship_address_id   String @unique
   products   Product[]
-  order_details   String[]
+  order_details   Json[]
   created_at   DateTime @default(now())
   total_order_cost      Int
   customer      Customer @relation(fields: [customer_id], references: [customer_id])
@@ -115,8 +115,8 @@ model Images {
   image_alt	           String
   image_store_logo   Storefront?   @relation("store_logo")
   image_store_hero   Storefront?   @relation("store_hero_image")
-  product              Product   @relation(fields:[product_id], references: [product_id])
-  product_id             String
+  product              Product?   @relation(fields:[product_id], references: [product_id])
+  product_id            String?
   
 }
 

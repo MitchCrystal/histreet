@@ -5,83 +5,44 @@ import Card from '../../../../components/Card';
 import Table from '../../../../components/Table';
 import Address from '../../../../components/Address';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useQuery } from '@tanstack/react-query';
+import { getOrder } from '../../../api/order';
+import { GetServerSideProps } from 'next';
 
-const tableColumnNames = [
-  { id: 'Product_name', name: 'Product name' },
-  { id: 'SKU', name: 'SKU' },
-  { id: 'Price', name: 'Price' },
-  { id: 'Quantity', name: 'Quantity' },
-  { id: 'Total', name: 'Total' },
-];
+function OrderDetail({ data }: any) {
+  // get order data (from server side props)
+  const order = JSON.parse(data);
+  console.log(order);
+  const order_id = order.friendly_order_number;
+  const { total_order_cost } = order;
+  const { order_details } = order;
+  const items_ordered = order_details.reduce((acc: any, item: any) => {
+    return (acc = acc + item.quantity);
+  }, 0);
 
-const tableRows = [
-  {
-    id: '1',
-    Product_name: 'Black T-shirt',
-    SKU: '12345',
-    Price: '30',
-    Quantity: '3',
-    Total: '90',
-  },
-  {
-    id: '2',
-    Product_name: 'White Dress',
-    SKU: '6789',
-    Price: '75',
-    Quantity: '1',
-    Total: '75',
-  },
-  {
-    id: '3',
-    Product_name: 'Vans old school',
-    SKU: '42490',
-    Price: '85',
-    Quantity: '2',
-    Total: '170',
-  },
-  {
-    id: '5',
-    Product_name: 'white shirt',
-    SKU: '124155521',
-    Price: '40',
-    Quantity: '1',
-    Total: '40',
-  },
-  {
-    id: '4',
-    Product_name: 'cross bag',
-    SKU: '90152',
-    Price: '30',
-    Quantity: '1',
-    Total: '30',
-  },
-];
+  //@TODO : set tableColumn with order data
+  const tableColumnNames = [
+    { id: 'Product_name', name: 'Product name' },
+    { id: 'SKU', name: 'SKU' },
+    { id: 'Price', name: 'Price' },
+    { id: 'Quantity', name: 'Quantity' },
+    { id: 'Total', name: 'Total' },
+  ];
+  const tableRows = [
+    {
+      id: '1',
+      Product_name: 'Black T-shirt',
+      SKU: '12345',
+      Price: '30',
+      Quantity: '3',
+      Total: '90',
+    },
+  ];
 
-// fetch an 'order' data with order_id
-// order.order-id -> go to first heading title
-// order.order_details.length -> go to second heading title
-// order.order.details -> JSON.parse -> go to  tableRows -> pass order.order_details.price, order.order_details.quantity, order.total_order_cost
-// also, after JSON.parse, fetch a 'product' data with order.order_details.productId -> pass product.SKU, product.product_name to tableRows
-// fetch a 'customer' data with order.customer_id -> render customer.customer_email
-// -> fetch 'addresses' data with order.customer_id -> customer.addresses -> get the whole address data and pass it to Address components
-function OrderDetail() {
-  const router = useRouter();
-  const orderId = router.query.orderId;
-  function GetOrder() {
-    const { isLoading, error, data } = useQuery({
-      queryKey: ['order'],
-      queryFn: () => fetch('/api/hello').then((res) => res.json()),
-    });
-    return data;
-  }
-  console.log(GetOrder());
-
+  // render page
   return (
     <>
       <div className="w-1/2 md:w-5/6 lg:w-full">
-        <Heading title="Order #738272" type="h1" />
+        <Heading title={`Order #${order_id}`} type="h1" />
         <div className="flex justify-end">
           <Link href="/admin/storeurl/order/">
             <Button size="default" appearance="primary">
@@ -93,7 +54,7 @@ function OrderDetail() {
       <div className="xl:flex">
         <div className="w-1/2 md:w-5/6 lg:w-full">
           <Card>
-            <Heading title="Items Ordered(3)" type="h2" />
+            <Heading title={`Items Ordered (${items_ordered})`} type="h2" />
             <Table
               tableColumnNames={tableColumnNames}
               tableRows={tableRows}
@@ -103,7 +64,7 @@ function OrderDetail() {
             <div className="flex justify-between">
               <Heading title="Total Order" type="h3" />
               <div className="mr-28">
-                <Heading title="£405" type="h3" />
+                <Heading title={`£${total_order_cost}`} type="h3" />
               </div>
             </div>
           </Card>
@@ -126,7 +87,7 @@ function OrderDetail() {
             <br />
             <Heading title="Bill to" type="h4" />
             <Address
-              firstName="John"
+              firstName="john"
               lastName="Smitn"
               firstLine="123 Smith Street"
               secondLine="Flat 89"
@@ -138,15 +99,46 @@ function OrderDetail() {
           </Card>
         </div>
       </div>
-      <p></p>
     </>
   );
 }
 
-export default function () {
+export default function ({ data }: { data: any }) {
   return (
     <AdminLayout title="Order Details">
-      <OrderDetail />
+      <OrderDetail data={data} />
     </AdminLayout>
   );
 }
+
+// get server side props
+
+export const getServerSideProps: GetServerSideProps<{ data: any }> = async (
+  context
+) => {
+  try {
+    const { orderId } = context.query;
+    const results = await getOrder(orderId);
+    const data = await JSON.stringify(results);
+    const bill_address_id = JSON.parse(data).bill_address_id;
+    const ship_address_id = JSON.parse(data).ship_address_id;
+    // const bill_address = await (
+    //   await fetch(`/api/address?id=${bill_address_id}`)
+    // ).json();
+    // const ship_address = await (
+    //   await fetch(`/api/address?id=${ship_address_id}`)
+    // ).json();
+    return {
+      props: {
+        data,
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      props: {
+        data: null,
+      },
+    };
+  }
+};
