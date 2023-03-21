@@ -37,7 +37,7 @@ function ProductPage() {
       fetch(`/api/product/${router.query.productId}`).then((res) => res.json()),
     enabled: !!router.isReady,
   });
-
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [formValues, setFormValues] = useState({ quantity: 1 });
   const [currentImage, setCurrentImage] = useState<any>('');
 
@@ -110,8 +110,49 @@ function ProductPage() {
               size="default"
               appearance="primary"
               additionalClasses="min-w-fit w-36"
-              disabled={product.inventory_qty <= 0}
+              disabled={
+                product.inventory_qty <= 0 ||
+                product.inventory_qty <=
+                  cartItems.find(
+                    (item: { id: string; quantity: number }) =>
+                      item.id === router.query.productId
+                  )?.quantity
+              }
               onClick={() => {
+                setIsButtonDisabled(true);
+                if (
+                  product.inventory_qty <
+                  formValues.quantity +
+                    (cartItems.find(
+                      (item: { id: string; quantity: number }) =>
+                        item.id === router.query.productId
+                    )?.quantity || 0)
+                ) {
+                  toast.error(
+                    `Error: Only ${
+                      product.inventory_qty -
+                      (cartItems.find(
+                        (item: { id: string; quantity: number }) =>
+                          item.id === router.query.productId
+                      )?.quantity || 0)
+                    } left in stock`,
+                    {
+                      position: 'bottom-center',
+                    }
+                  );
+                  setFormValues({
+                    quantity:
+                      product.inventory_qty -
+                      (cartItems.find(
+                        (item: { id: string; quantity: number }) =>
+                          item.id === router.query.productId
+                      )?.quantity || 0),
+                  });
+                  setTimeout(() => {
+                    setIsButtonDisabled(false);
+                  }, 1000);
+                  return;
+                }
                 setCartItems(
                   (
                     currentCart: Product & { id: string; quantity: number }[]
@@ -139,15 +180,22 @@ function ProductPage() {
                   }
                 );
                 setFormValues({ quantity: 1 });
-                if (product.inventory_qty > formValues.quantity) {
-                  formValues.quantity;
-                }
                 toast.success('Item added to cart', {
                   position: 'bottom-center',
                 });
+                setTimeout(() => {
+                  setIsButtonDisabled(false);
+                }, 500);
               }}
             >
-              {product.inventory_qty === 0 ? 'Sold out' : 'Add to Cart'}
+              {product.inventory_qty === 0 ||
+              product.inventory_qty <=
+                cartItems.find(
+                  (item: { id: string; quantity: number }) =>
+                    item.id === router.query.productId
+                )?.quantity
+                ? 'Sold out'
+                : 'Add to Cart'}
             </Button>
             {!!cartItems.find(
               (item: { id: string; quantity: number }) =>
