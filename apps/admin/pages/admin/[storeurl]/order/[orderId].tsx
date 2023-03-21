@@ -69,14 +69,14 @@ const tableRows = [
 function OrderDetail() {
   const router = useRouter();
   const orderId = router.query.orderId;
-  function getOrder() {
+  function GetOrder() {
     const { isLoading, error, data } = useQuery({
       queryKey: ['order'],
       queryFn: () => fetch('/api/hello').then((res) => res.json()),
     });
     return data;
   }
-  console.log(getOrder());
+  console.log(GetOrder());
 
   return (
     <>
@@ -108,7 +108,7 @@ function OrderDetail() {
             </div>
           </Card>
         </div>
-        <div className="mt-10 w-1/2 md:w-5/6 lg:w-full xl:ml-20 xl:mt-0">
+        <div className="mt-10 mb-10 w-1/2 md:w-5/6 lg:w-full xl:ml-20 xl:mt-0">
           <Card>
             <Heading title="Customer" type="h4" />
             <p className="mb-4">examle@example.com</p>
@@ -123,6 +123,7 @@ function OrderDetail() {
               country="UK"
               postcode="sw84xs"
             />
+            <br />
             <Heading title="Bill to" type="h4" />
             <Address
               firstName="John"
