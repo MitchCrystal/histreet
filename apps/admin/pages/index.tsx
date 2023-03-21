@@ -29,7 +29,7 @@ export default function Home() {
       </Head>
 
       <div className="h-[calc(100vh-0px)] relative overflow-hidden">
-        <div className=" flex px-5 sm:px-10 absolute z-20 top-[20%]  sm:font-normal text-white text-3xl sm:text-6xl md:text-7xl lg:text-8xl">
+        <div className=" flex px-5 sm:px-10 absolute z-20 top-[10%]  sm:font-normal text-white text-3xl sm:text-6xl md:text-7xl lg:text-8xl">
           Welcome to
           <img
             src={'/histreet-yellow-square.png'}
