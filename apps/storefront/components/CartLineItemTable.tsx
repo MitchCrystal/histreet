@@ -1,4 +1,5 @@
 import { Fragment, useState } from 'react';
+import { CartProduct } from '../pages/[storeUrl]/cart';
 import { InputWithLabel } from './InputWithLabel';
 
 const columns = [
@@ -17,19 +18,13 @@ const lineItems = [
     quantity: 1,
     image: 'https://picsum.photos/500/600',
   },
-  {
-    id: 2,
-    name: 'Product 2',
-    nameSlug: 'product-2',
-    price: 29,
-    quantity: 4,
-    image: 'https://picsum.photos/500/700',
-  },
 ];
 
-export default function CartLineItemTable() {
-  // @TODO Change this state to use global context
-  // @TODO Update item's total price when quantity input changes
+export default function CartLineItemTable({
+  products,
+}: {
+  products: CartProduct;
+}) {
   const [quantityValues, setQuantityValues] = useState<Record<string, number>>({
     1: 1,
     2: 1,
@@ -42,28 +37,30 @@ export default function CartLineItemTable() {
           {column.name}
         </p>
       ))}
-      {lineItems.map((lineItem) => (
-        <Fragment key={lineItem.id}>
+      {products.map((lineItem) => (
+        <Fragment key={lineItem.product_id}>
           <img
-            src={lineItem.image}
-            alt={lineItem.name}
+            src={lineItem.product_images[0].image_url}
+            alt={lineItem.product_images[0].image_alt}
             className="w-20 h-20 object-fit rounded-md"
           />
-          <p>{lineItem.name}</p>
-          <p>£{lineItem.price}</p>
+          <p>{lineItem.product_name}</p>
+          <p>£{lineItem.product_price}</p>
           {/* <p>{lineItem.quantity}</p> */}
-          <InputWithLabel
-            label="Quantity"
-            name="quantity"
-            id={String(lineItem.id)}
-            type="number"
-            state={quantityValues}
-            showLabel={false}
-            direction="row"
-            setState={setQuantityValues}
-            additionalClasses="w-16"
-          />
-          <p>£{lineItem.price * lineItem.quantity}</p>
+          <div className="w-16">
+            <InputWithLabel
+              label="Quantity"
+              name="quantity"
+              id={String(lineItem.product_id)}
+              type="number"
+              state={quantityValues}
+              showLabel={false}
+              direction="column"
+              setState={setQuantityValues}
+            />
+          </div>
+          {/* change to dynamic with state instead of 1. Same as in above ibput */}
+          <p>£{lineItem.product_price * 1}</p>
         </Fragment>
       ))}
     </div>
