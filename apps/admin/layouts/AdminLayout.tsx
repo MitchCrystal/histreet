@@ -54,9 +54,11 @@ export default function AdminLayout({
               return <Link href={page.href}  key={index}><div className='px-3 pt-3 text-base'>{page.name}</div></Link>;
             })}
           </div>
+          <Link href='/auth/sign-in'>
           <div className="flex flex-col items-center border-t w-full px-3 py-3 text-base">
             Log Out
           </div>
+          </Link>
         </nav>
         <div className="m-4">{children}</div>
       </div>
