@@ -30,8 +30,6 @@ export default function Navbar() {
   const { cartItems }: { cartItems: any; setCartItems: any } =
     useContext(CartContext);
 
-  console.log({ cartItems });
-
   return (
     <>
       <nav className="py-8 px-4 border-b border-gray-300">
@@ -89,7 +87,6 @@ export default function Navbar() {
                           </p>
                         )}
                       </div>
-                      // arr.reduce((acc, curr) => {return acc += curr.quantity}, 0)
                     )}
                   </div>
                 </div>

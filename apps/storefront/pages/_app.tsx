@@ -10,7 +10,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   const [cartItems, setCartItems] = useState([]);
   const cartObj: {
-    cartItems: any[];
+    cartItems: { id: string; quantity: number }[];
     setCartItems: React.Dispatch<React.SetStateAction<any>>;
   } = { cartItems, setCartItems };
 
