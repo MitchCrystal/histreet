@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import InputWithLabel  from '../../components/InputWithLabel';
+import InputWithLabel from '../../components/InputWithLabel';
 import AuthLayout from '../../layouts/AuthLayout';
 import Heading from '../../components/Heading';
 import Button from '../../components/Button';
 import Link from 'next/link';
 import { toast } from 'react-hot-toast';
 import { signIn, useSession } from 'next-auth/react';
-import { Router, useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 
 function SignIn() {
   const router = useRouter();
@@ -16,41 +16,38 @@ function SignIn() {
   });
 
   const session = useSession();
-  console.log(session);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function handleSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
-    await signIn('credentials', {
-      ...formInputs,
-      redirect: false,
-      // callbackUrl: `${process.env.NEXT_PUBLIC_APP_URL}/admin/TOCHANGE/dashboard`,
-    }).then((res: any) => {
-      if (res.ok) {
-        return fetch('/api/auth/user/' + session.data?.user.id)
-          .then((res) => res.json())
-          .then((res) =>
-            router.push(`/admin/${res.store[0].store_url}/dashboard`)
-          );
+    setIsLoading(true);
+    await toast.promise(
+      signIn('credentials', {
+        ...formInputs,
+        redirect: false,
+      }).then((res: any) => {
+        if (res.ok) {
+          fetch('/api/auth/user/' + session.data?.user.id)
+            .then((res: any) => res.json())
+            .then((res) => {
+              router.push(`/admin/${res}/dashboard`);
+            });
+        } else {
+          throw new Error('Error signing in');
+        }
+      }),
+      {
+        loading: 'Logging in...',
+        success: 'Logged in!',
+        error: () => {
+          setIsLoading(false);
+          return 'Error logging in.';
+        },
+      },
+      {
+        position: 'bottom-center',
       }
-    });
-
-    // toast.promise(
-    //   signIn('credentials', {
-    //     ...formInputs,
-    //     // redirect: false,
-    //     callbackUrl: `${process.env.NEXT_PUBLIC_APP_URL}/admin/TOCHANGE/dashboard`,
-    //   }),
-    //   {
-    //     loading: 'Logging in...',
-    //     success: () => {
-    //       return 'Logged in!';
-    //     },
-    //     error: 'Error logging in.',
-    //   },
-    //   {
-    //     position: 'bottom-center',
-    //   }
-    // );
+    );
   }
 
   return (
@@ -87,8 +84,13 @@ function SignIn() {
             autoComplete="current-password"
           />
 
-          <Button size="default" appearance="primary" type="submit">
-            Sign In
+          <Button
+            size="default"
+            appearance="primary"
+            type="submit"
+            disabled={isLoading}
+          >
+            {isLoading ? 'Loading...' : 'Sign In'}
           </Button>
         </form>
       </div>
