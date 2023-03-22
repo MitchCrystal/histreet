@@ -4,41 +4,46 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 type Product = {
-  id: string;
-  firstImage: string;
-  secondImage: string;
-  name: string;
-  price: number;
-  nameSlug: string;
+  product_id: string;
+  product_images: {
+    image_url: string;
+    image_alt: string;
+  }[];
+  product_name: string;
+  product_price: number;
+  product_name_slug: string;
 };
 
 export default function ProductGridItem({ product }: { product: Product }) {
   const router = useRouter();
 
-  const [currentImage, setCurrentImage] = useState(product.firstImage);
+  const [currentImage, setCurrentImage] = useState(product.product_images[0]);
 
   return (
     <div className="flex flex-col gap-2">
       <Link
-        href={`/${router.query.storeUrl}/product/${product.id}/${product.nameSlug}`}
+        href={`/${router.query.storeUrl}/product/${product.product_id}/${product.product_name_slug}`}
       >
         <div className="overflow-hidden max-h-[300px]">
           <img
-            src={currentImage}
-            alt={product.name}
+            src={currentImage.image_url}
+            alt={currentImage.image_alt}
             className="object-cover"
-            onMouseEnter={() => setCurrentImage(product.secondImage)}
-            onMouseLeave={() => setCurrentImage(product.firstImage)}
+            onMouseEnter={() => {
+              if (!product.product_images[1]) return;
+              setCurrentImage(product.product_images[1]);
+            }}
+            onMouseLeave={() => setCurrentImage(product.product_images[0])}
           />
         </div>
       </Link>
       <div>
         <Link
-          href={`/${router.query.storeUrl}/product/${product.id}/${product.nameSlug}`}
+          href={`/${router.query.storeUrl}/product/${product.product_id}/${product.product_name_slug}`}
         >
-          <p className="text-lg">{product.name}</p>
+          <p className="text-lg">{product.product_name}</p>
         </Link>
-        <p>£{product.price}</p>
+        <p>£{product.product_price}</p>
       </div>
     </div>
   );
