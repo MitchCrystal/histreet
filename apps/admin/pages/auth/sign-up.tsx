@@ -4,8 +4,36 @@ import AuthLayout from '../../layouts/AuthLayout';
 import Heading from '../../components/Heading';
 import Button from '../../components/Button';
 import Link from 'next/link';
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/router'
+
+type formValues = {
+  email: string;
+  storeName: string;
+  storeURL: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+  confirmPassword: string;
+}
 
 function SignUp() {
+  const router = useRouter()
+  const createAcc = useMutation({
+    mutationFn: (values:formValues)=>{
+      return fetch('/api/auth/sign-up', {
+        method: 'POST',
+        headers:{
+          "Content-Type": "application/json",
+        }, 
+        body: JSON.stringify(values)
+      })
+    },
+    onSuccess: () => {
+      console.log('sign up done')
+      },
+    })
+
   const [formInputs, setFormInputs] = useState({
     email: '',
     storeName: '',
@@ -13,7 +41,7 @@ function SignUp() {
     firstName: '',
     lastName: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
   });
   const [signupPage, setSignupPage] = useState(false);
 
@@ -24,7 +52,8 @@ function SignUp() {
 
   function handleSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
-    console.log('sign-up button clicked');
+    createAcc.mutate(formInputs)
+    router.push('/auth/sign-in');
   }
 
   return (
@@ -32,7 +61,7 @@ function SignUp() {
       <Heading title={'Sign-Up'} type={'h2'} />
       <p>
         <Link href="/auth/sign-in" className="font-bold text-indigo-600">
-          Already signed up? Click here to sign in! &#62;
+          Already signed up? Click here to sign in.
         </Link>
       </p>
       <br></br>
@@ -79,8 +108,9 @@ function SignUp() {
             appearance="primary"
             type="button"
             onClick={handlePrevNext}
-            children="Next"
-          />
+          >
+            Next
+          </Button>
         </>
       )}
       {signupPage && (
@@ -134,10 +164,16 @@ function SignUp() {
             appearance="primary"
             type="button"
             onClick={handleSubmit}
-            children="Create Account"
-          />
+          >
+            Sign Up
+          </Button>
           <br></br>
-          <p className="font-bold text-indigo-600 cursor-pointer" onClick={handlePrevNext}>Back</p>
+          <p
+            className="font-bold text-indigo-600 cursor-pointer"
+            onClick={handlePrevNext}
+          >
+            Back
+          </p>
         </>
       )}
     </>

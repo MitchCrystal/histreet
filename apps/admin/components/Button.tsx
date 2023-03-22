@@ -7,6 +7,10 @@ const buttonVariants = {
   default:
     'bg-slate-900 text-white hover:bg-slate-700 dark:bg-slate-50 dark:text-slate-900',
   primary: 'bg-blue-700 text-white hover:bg-blue-800 dark:hover:bg-blue-600',
+  homepage:
+    'bg-yellow-500 text-black hover:bg-yellow-400 hover:text-black dark:hover:text-black dark:hover:bg-yellow-400',
+  homepageSubtle:
+    'bg-black text-white hover:bg-blue-800 dark:hover:bg-blue-600',
   destructive: 'bg-red-500 text-white hover:bg-red-600 dark:hover:bg-red-600',
   outline:
     'bg-transparent border border-slate-200 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-100',
@@ -21,6 +25,8 @@ const buttonSizes = {
   default: 'h-10 py-2 px-4',
   sm: 'h-9 px-2 rounded-md',
   lg: 'h-11 px-8 rounded-md',
+  xl: 'h-8 sm:h-10 md:h-16 px-4 sm:px-10 md:px-14 rounded-md md:text-2xl',
+  xxl: 'h-11 sm:h-14 md:h-20 px-8 sm:px-14 md:px-20 rounded-md md:text-2xl',
 };
 
 export default function Button({
@@ -31,10 +37,12 @@ export default function Button({
   children,
   ...delegated
 }: PropsWithChildren<{
-  size: 'default' | 'sm' | 'lg';
+  size: 'default' | 'sm' | 'lg' | 'xl' | 'xxl';
   appearance:
     | 'default'
     | 'primary'
+    | 'homepage'
+    | 'homepageSubtle'
     | 'destructive'
     | 'outline'
     | 'subtle'
