@@ -1,4 +1,4 @@
-import { InputWithLabel } from "../../components/InputWithLabel";
+import InputWithLabel  from "../../components/InputWithLabel";
 import Logo from "../../components/Logo";
 import { useState } from "react";
 
