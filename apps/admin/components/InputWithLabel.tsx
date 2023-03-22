@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Label } from './Label';
 
-export function InputWithLabel({
+export default function InputWithLabel({
   label,
   id,
   type,
@@ -21,7 +21,7 @@ export function InputWithLabel({
   [x: string]: any;
 }) {
   return (
-    <div className="grid w-full max-w-sm items-center gap-1.5 ">
+    <div className={`grid w-full max-w-sm items-center gap-1.5 `}>
       <div
         className={`flex w-full ${
           direction === 'row'
