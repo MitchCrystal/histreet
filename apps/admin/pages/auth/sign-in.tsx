@@ -5,7 +5,7 @@ import Heading from '../../components/Heading';
 import Button from '../../components/Button';
 import Link from 'next/link';
 import { toast } from 'react-hot-toast';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 
 function SignIn() {
   const [formInputs, setFormInputs] = useState({
@@ -13,25 +13,41 @@ function SignIn() {
     password_hash: '',
   });
 
+  const session = useSession();
+  console.log(session);
+
   function handleSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
-    toast.promise(
-      signIn('credentials', {
-        ...formInputs,
-        // redirect: false,
-        callbackUrl: `${process.env.NEXT_PUBLIC_APP_URL}/admin/TOCHANGE/dashboard`,
-      }),
-      {
-        loading: 'Logging in...',
-        success: () => {
-          return 'Logged in!';
-        },
-        error: 'Error logging in.',
-      },
-      {
-        position: 'bottom-center',
+    signIn('credentials', {
+      ...formInputs,
+      redirect: false,
+      // callbackUrl: `${process.env.NEXT_PUBLIC_APP_URL}/admin/TOCHANGE/dashboard`,
+    }).then((res: any) => {
+      if (res.ok) {
+        return fetch('/api/auth/user/' + session.data?.user.id).then((res) => {
+          console.log(res);
+        });
       }
-    );
+      console.log(res);
+    });
+
+    // toast.promise(
+    //   signIn('credentials', {
+    //     ...formInputs,
+    //     // redirect: false,
+    //     callbackUrl: `${process.env.NEXT_PUBLIC_APP_URL}/admin/TOCHANGE/dashboard`,
+    //   }),
+    //   {
+    //     loading: 'Logging in...',
+    //     success: () => {
+    //       return 'Logged in!';
+    //     },
+    //     error: 'Error logging in.',
+    //   },
+    //   {
+    //     position: 'bottom-center',
+    //   }
+    // );
   }
 
   return (

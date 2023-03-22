@@ -20,7 +20,7 @@ declare module 'next-auth' {
       id: any;
       firstName: any;
       lastName: any;
-      email?: string | null;
+      email: string | null;
       password: string;
     } & DefaultSession['user'];
   }
@@ -45,15 +45,15 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.firstName = user.user_first_name;
         token.lastName = user.user_last_name;
-        token.email = user.email;
-        token.id = user.id;
+        token.email = user.user_email;
+        token.id = user.user_id;
       }
       return Promise.resolve(token);
     },
-    async session({ session, token }) {
+    async session({ session, token }: { session: any; token: any }) {
       session.user.firstName = token.firstName;
       session.user.lastName = token.lastName;
-      session.user.email = token.email;
+      // session.user.email = token.email as string;
       session.user.id = token.id;
       return session;
     },

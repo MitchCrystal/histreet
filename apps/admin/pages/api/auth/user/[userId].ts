@@ -9,10 +9,10 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   try {
-    const { email } = req.query;
+    const { userId } = req.query;
     const storeUrl = await prisma.user.findFirst({
       where: {
-        user_email: String(email),
+        user_email: String(userId),
       },
       select: {
         store: true,
@@ -21,10 +21,9 @@ export default async function handler(
     if (storeUrl) {
       res.status(200).json(storeUrl);
     } else {
-      throw new Error('error')
-      
+      throw new Error('error');
     }
   } catch (error) {
-    res.status(500).json({error: true})
+    res.status(500).json({ error: true });
   }
 }
