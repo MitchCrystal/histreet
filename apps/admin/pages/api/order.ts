@@ -6,6 +6,6 @@ export async function getOrder(orderId: any) {
       order_id: orderId,
     },
   });
-  if (!order) throw new Error('id is required');
+  // if (!order) throw new Error('id is required');
   return order;
 }

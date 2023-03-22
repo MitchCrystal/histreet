@@ -94,11 +94,12 @@ export default function AdminLayout({
             })}
           </div>
           <div className="flex flex-col items-center border-t w-full px-3 py-3 text-base">
-          <div
-            className="flex flex-col items-center border-y w-full px-3 py-3 text-base text-red-600"
-            onClick={() => setIsNavOpen((prev) => !prev)}
-          >
-            Log Out
+            <div
+              className="flex flex-col items-center border-y w-full px-3 py-3 text-base text-red-600"
+              onClick={() => setIsNavOpen((prev) => !prev)}
+            >
+              Log Out
+            </div>
           </div>
         </nav>
         <div className="m-4">{children}</div>
