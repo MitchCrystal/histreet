@@ -27,11 +27,14 @@ export default function InputWithLabel({
           direction === 'row'
             ? 'flex-row items-center justify-center'
             : direction === 'column'
-            ? 'flex-col'
+            ? 'flex-col items-start'
             : ''
         }`}
       >
-        <Label className={`${showLabel ? 'w-48' : 'sr-only'}`} htmlFor={id}>
+        <Label
+          className={`${showLabel ? direction === 'row' && 'w-48' : 'sr-only'}`}
+          htmlFor={id}
+        >
           {label}
         </Label>
         <input
