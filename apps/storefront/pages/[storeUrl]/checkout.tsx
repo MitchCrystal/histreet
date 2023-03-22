@@ -12,7 +12,7 @@ export default function Checkout() {
    city: '',
    county: '',
    postcode: '',
-   country: '',
+   country: 'United Kingdom',
  });
 
    function handleSubmit(event: React.SyntheticEvent) {
@@ -29,11 +29,11 @@ export default function Checkout() {
           </div>
         </div>
         <div className="w-full h-[92vh] flex">
-          <div className="border border-black sm:w-[65vw] p-5 sm:p-20 flex flex-col">
-            <p className="text-xl sm:text-5xl mb-2 sm:mb-6 border border-black">
+          <div className="border border-black w-[100vw] sm:w-[65vw] p-5 sm:p-20 flex flex-col">
+            <p className="text-xl sm:text-5xl font-bold mb-2 sm:mb-6 border border-black">
               Checkout
             </p>
-            <p className="text-base sm:text-2xl mb-2 sm:mb-6 border border-black">
+            <p className="text-base sm:text-2xl font-bold mb-2 sm:mb-6 border border-black">
               Details
             </p>
             <form>
@@ -49,7 +49,7 @@ export default function Checkout() {
                   required
                 />
               </div>
-              <div className="flex justify-between border border-black">
+              <div className="flex flex-col sm:flex-row sm:gap-20 mb-2 sm:mb-6 justify-between border border-black">
                 <InputWithLabel
                   label="First Name"
                   id="firstName"
@@ -71,30 +71,34 @@ export default function Checkout() {
                   required
                 />
               </div>
-              <p className="text-base sm:text-2xl mb-2 sm:mb-6 border border-black">
+              <p className="text-base sm:text-2xl font-bold mb-2 sm:mb-6 border border-black">
                 Shipping Address
               </p>
-              <InputWithLabel
-                label="Address Line 1"
-                id="firstLine"
-                type="text"
-                showLabel={true}
-                state={formInputs}
-                setState={setFormInputs}
-                direction="column"
-                required
-              />
-              <InputWithLabel
-                label="Address Line 2"
-                id="secondLine"
-                type="text"
-                showLabel={true}
-                state={formInputs}
-                setState={setFormInputs}
-                direction="column"
-                required
-              />
-              <div className="flex justify-between border border-black">
+              <div className="border border-black mb-2 sm:mb-6">
+                <InputWithLabel
+                  label="Address Line 1"
+                  id="firstLine"
+                  type="text"
+                  showLabel={true}
+                  state={formInputs}
+                  setState={setFormInputs}
+                  direction="column"
+                  required
+                />
+              </div>
+              <div className="border border-black mb-2 sm:mb-6">
+                <InputWithLabel
+                  label="Address Line 2"
+                  id="secondLine"
+                  type="text"
+                  showLabel={true}
+                  state={formInputs}
+                  setState={setFormInputs}
+                  direction="column"
+                  required
+                />
+              </div>
+              <div className="flex flex-col sm:flex-row sm:gap-20 mb-2 sm:mb-6 justify-between border border-black">
                 <InputWithLabel
                   label="City"
                   id="city"
@@ -108,6 +112,28 @@ export default function Checkout() {
                 <InputWithLabel
                   label="County"
                   id="county"
+                  type="text"
+                  showLabel={true}
+                  state={formInputs}
+                  setState={setFormInputs}
+                  direction="column"
+                  required
+                />
+              </div>
+              <div className="flex flex-col sm:flex-row sm:gap-20 mb-2 sm:mb-6 justify-between border border-black">
+                <InputWithLabel
+                  label="Postcode"
+                  id="postcode"
+                  type="text"
+                  showLabel={true}
+                  state={formInputs}
+                  setState={setFormInputs}
+                  direction="column"
+                  required
+                />
+                <InputWithLabel
+                  label="Country"
+                  id="country"
                   type="text"
                   showLabel={true}
                   state={formInputs}
