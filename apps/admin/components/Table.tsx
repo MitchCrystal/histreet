@@ -38,7 +38,7 @@ export default function Table({
             ))}
           </tr>
           {tableRows.map((row: Record<string, string>, rowIndex) => (
-            <tr key={row.id} className="mb-6">
+            <tr key={rowIndex} className="mb-6">
               {tableColumnNames.map((column) => (
                 <td
                   className={`min-w-[150px] py-2 ${rowIndex > 0 && 'border-t'}`}

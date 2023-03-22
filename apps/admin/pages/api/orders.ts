@@ -14,14 +14,22 @@ export default async function handler(
 
 const findOrders = async (storeId: string) => {
   const response = await prisma.order.findMany({
-    where: { store_id: storeId },
+    // where: { store_id: storeId },
+
     select: {
       order_id: true,
       friendly_order_number: true,
       created_at: true,
       total_order_cost: true,
+      order_details: true,
+      customer: true,
     },
   });
-  console.log('Orders: ' + JSON.stringify(response));
+
+  // sanitize data
+  //delete order.customer.email;
+
+  //console.log('Orders: ' + JSON.stringify(response));
+
   return response;
 };
