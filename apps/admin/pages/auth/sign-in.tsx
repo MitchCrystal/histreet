@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import InputWithLabel from '../../components/InputWithLabel';
 import AuthLayout from '../../layouts/AuthLayout';
 import Heading from '../../components/Heading';
@@ -9,14 +9,24 @@ import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 
 function SignIn() {
+  const session = useSession();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const [formInputs, setFormInputs] = useState({
     user_email: '',
     password_hash: '',
   });
 
-  const session = useSession();
-  const [isLoading, setIsLoading] = useState(false);
+  const redirectUser = useCallback(() => {
+    if (session.status === 'authenticated') {
+      fetch('/api/auth/user/' + session.data?.user.id)
+        .then((res: any) => res.json())
+        .then((res) => {
+          router.push(`/admin/${res}/dashboard`);
+          toast.success('Logged In!', { position: 'bottom-center' });
+        });
+    }
+  }, [session,router]);
 
   async function handleSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
@@ -26,19 +36,13 @@ function SignIn() {
         ...formInputs,
         redirect: false,
       }).then((res: any) => {
-        if (res.ok) {
-          fetch('/api/auth/user/' + session.data?.user.id)
-            .then((res: any) => res.json())
-            .then((res) => {
-              router.push(`/admin/${res}/dashboard`);
-            });
-        } else {
+        if (!res.ok) {
           throw new Error('Error signing in');
         }
       }),
       {
         loading: 'Logging in...',
-        success: 'Logged in!',
+        success: 'Almost there!',
         error: () => {
           setIsLoading(false);
           return 'Error logging in.';
@@ -49,6 +53,9 @@ function SignIn() {
       }
     );
   }
+  useEffect(() => {
+    redirectUser();
+  }, [redirectUser]);
 
   return (
     <>
