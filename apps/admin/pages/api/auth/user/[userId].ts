@@ -12,7 +12,7 @@ export default async function handler(
     const { userId } = req.query;
     const storeUrl = await prisma.user.findFirst({
       where: {
-        user_email: String(userId),
+        user_id: String(userId),
       },
       select: {
         store: true,
