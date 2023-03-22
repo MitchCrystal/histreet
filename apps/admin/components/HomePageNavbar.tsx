@@ -30,7 +30,11 @@ export default function Navbar() {
       <nav className="py-8 px-4 bg-gray-800">
         <div className="max-w-full mx-5 flex items-center justify-between">
           <div className="flex text-3xl md:text-6xl font-bold text-white">
-            <img src={'/histreet-yellow-square.png'} alt="Hi Street" className='w-9 sm:w-[75px] sm:pr-2' />
+            <img
+              src={'/histreet-yellow-square.png'}
+              alt="Hi Street"
+              className="w-9 sm:w-[75px] sm:pr-2"
+            />
             Hi Street
           </div>
           <div className="sm:hidden flex gap-4">
@@ -58,8 +62,9 @@ export default function Navbar() {
                   size="default"
                   appearance="primary"
                   type="button"
-                  children={item.name}
-                ></Button>
+                >
+                  {item.name}
+                </Button>
               </Link>
             ))}
           </div>

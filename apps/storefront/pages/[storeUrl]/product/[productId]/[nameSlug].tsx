@@ -1,6 +1,7 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
+import { toast } from 'react-hot-toast';
 import Breadcrumbs from '../../../../components/Breadcrumbs';
 import Button from '../../../../components/Button';
 import Error from '../../../../components/Error';
@@ -36,7 +37,7 @@ function ProductPage() {
       fetch(`/api/product/${router.query.productId}`).then((res) => res.json()),
     enabled: !!router.isReady,
   });
-
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [formValues, setFormValues] = useState({ quantity: 1 });
   const [currentImage, setCurrentImage] = useState<any>('');
 
@@ -83,7 +84,12 @@ function ProductPage() {
         </div>
         <div className="col-span-5 flex gap-4 flex-col p-4 sm:p-0">
           <HeadingText size="h3">{product.product_name}</HeadingText>
-          <HeadingText size="h4">£{product.product_price}</HeadingText>
+          <HeadingText size="h4">
+            {new Intl.NumberFormat('en-GB', {
+              style: 'currency',
+              currency: 'GBP',
+            }).format(product.product_price)}
+          </HeadingText>
           <p>{product.description}</p>
           <div className="flex flex-col gap-3">
             {product.inventory_qty > 0 && (
@@ -104,8 +110,49 @@ function ProductPage() {
               size="default"
               appearance="primary"
               additionalClasses="min-w-fit w-36"
-              disabled={product.inventory_qty <= 0}
+              disabled={
+                product.inventory_qty <= 0 ||
+                product.inventory_qty <=
+                  cartItems.find(
+                    (item: { id: string; quantity: number }) =>
+                      item.id === router.query.productId
+                  )?.quantity
+              }
               onClick={() => {
+                setIsButtonDisabled(true);
+                if (
+                  product.inventory_qty <
+                  formValues.quantity +
+                    (cartItems.find(
+                      (item: { id: string; quantity: number }) =>
+                        item.id === router.query.productId
+                    )?.quantity || 0)
+                ) {
+                  toast.error(
+                    `Error: Only ${
+                      product.inventory_qty -
+                      (cartItems.find(
+                        (item: { id: string; quantity: number }) =>
+                          item.id === router.query.productId
+                      )?.quantity || 0)
+                    } left in stock`,
+                    {
+                      position: 'bottom-center',
+                    }
+                  );
+                  setFormValues({
+                    quantity:
+                      product.inventory_qty -
+                      (cartItems.find(
+                        (item: { id: string; quantity: number }) =>
+                          item.id === router.query.productId
+                      )?.quantity || 0),
+                  });
+                  setTimeout(() => {
+                    setIsButtonDisabled(false);
+                  }, 1000);
+                  return;
+                }
                 setCartItems(
                   (
                     currentCart: Product & { id: string; quantity: number }[]
@@ -133,9 +180,22 @@ function ProductPage() {
                   }
                 );
                 setFormValues({ quantity: 1 });
+                toast.success('Item added to cart', {
+                  position: 'bottom-center',
+                });
+                setTimeout(() => {
+                  setIsButtonDisabled(false);
+                }, 500);
               }}
             >
-              {product.inventory_qty === 0 ? 'Sold out' : 'Add to Cart'}
+              {product.inventory_qty === 0 ||
+              product.inventory_qty <=
+                cartItems.find(
+                  (item: { id: string; quantity: number }) =>
+                    item.id === router.query.productId
+                )?.quantity
+                ? 'Sold out'
+                : 'Add to Cart'}
             </Button>
             {!!cartItems.find(
               (item: { id: string; quantity: number }) =>
