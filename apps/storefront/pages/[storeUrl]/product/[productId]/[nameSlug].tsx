@@ -7,7 +7,7 @@ import Button from '../../../../components/Button';
 import Error from '../../../../components/Error';
 import HeadingText from '../../../../components/HeadingText';
 import ImageRow from '../../../../components/ImageRow';
-import { InputWithLabel } from '../../../../components/InputWithLabel';
+import InputWithLabel from '../../../../components/InputWithLabel';
 import Loading from '../../../../components/Loading';
 import MainLayout from '../../../../layouts/MainLayout';
 import { CartContext } from '../../../_app';

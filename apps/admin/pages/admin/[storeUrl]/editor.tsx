@@ -1,7 +1,7 @@
 import AdminLayout from '../../../layouts/AdminLayout';
 import Button from '../../../components/Button';
 import Heading from '../../../components/Heading';
-import { InputWithLabel } from '../../../components/InputWithLabel';
+import InputWithLabel  from '../../../components/InputWithLabel';
 import Textarea from '../../../components/Textarea';
 import { useEffect, useState } from 'react';
 
