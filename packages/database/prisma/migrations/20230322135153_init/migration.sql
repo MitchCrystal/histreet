@@ -1,4 +1,32 @@
 -- CreateTable
+CREATE TABLE "Account" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "type" TEXT NOT NULL,
+    "provider" TEXT NOT NULL,
+    "providerAccountId" TEXT NOT NULL,
+    "refresh_token" TEXT,
+    "access_token" TEXT,
+    "expires_at" INTEGER,
+    "token_type" TEXT,
+    "scope" TEXT,
+    "id_token" TEXT,
+    "session_state" TEXT,
+
+    CONSTRAINT "Account_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Session" (
+    "id" TEXT NOT NULL,
+    "sessionToken" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "expires" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Session_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "User" (
     "user_id" TEXT NOT NULL,
     "user_first_name" TEXT NOT NULL,
@@ -6,15 +34,23 @@ CREATE TABLE "User" (
     "user_email" TEXT NOT NULL,
     "password_hash" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "emailVerified" TIMESTAMP(3),
+    "image" TEXT,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("user_id")
+);
+
+-- CreateTable
+CREATE TABLE "VerificationToken" (
+    "identifier" TEXT NOT NULL,
+    "token" TEXT NOT NULL,
+    "expires" TIMESTAMP(3) NOT NULL
 );
 
 -- CreateTable
 CREATE TABLE "Store" (
     "store_id" TEXT NOT NULL,
     "store_owner_id" TEXT NOT NULL,
-    "store_owner" TEXT NOT NULL,
     "store_name" TEXT NOT NULL,
     "store_url" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -30,7 +66,7 @@ CREATE TABLE "Order" (
     "friendly_order_number" SERIAL NOT NULL,
     "bill_address_id" TEXT NOT NULL,
     "ship_address_id" TEXT NOT NULL,
-    "order_details" TEXT[],
+    "order_details" JSONB[],
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "total_order_cost" INTEGER NOT NULL,
 
@@ -44,12 +80,13 @@ CREATE TABLE "Product" (
     "SKU" TEXT NOT NULL,
     "product_name" TEXT NOT NULL,
     "barcode" INTEGER,
-    "inventory_qty" INTEGER NOT NULL,
-    "description" TEXT NOT NULL,
+    "inventory_qty" INTEGER NOT NULL DEFAULT 0,
+    "description" TEXT NOT NULL DEFAULT '',
     "tags" TEXT,
+    "product_images" JSONB,
     "product_price" INTEGER NOT NULL,
-    "Categories" TEXT,
-    "deparmtent" TEXT,
+    "categories" TEXT,
+    "department" TEXT,
     "is_active" BOOLEAN NOT NULL DEFAULT true,
     "product_name_slug" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -63,7 +100,7 @@ CREATE TABLE "Customer" (
     "customer_first_name" TEXT NOT NULL,
     "customer_last_name" TEXT NOT NULL,
     "customer_email" TEXT NOT NULL,
-    "phone_number" TEXT NOT NULL,
+    "phone_number" INTEGER,
     "store_id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -85,8 +122,8 @@ CREATE TABLE "Address" (
     "address_first_name" TEXT NOT NULL,
     "address_last_name" TEXT NOT NULL,
     "address_line_1" TEXT NOT NULL,
-    "address_line_2" TEXT NOT NULL,
-    "county" TEXT NOT NULL,
+    "address_line_2" TEXT,
+    "county" TEXT,
     "city" TEXT NOT NULL,
     "country" TEXT NOT NULL,
     "postcode" TEXT NOT NULL,
@@ -96,25 +133,15 @@ CREATE TABLE "Address" (
 );
 
 -- CreateTable
-CREATE TABLE "Images" (
-    "image_id" TEXT NOT NULL,
-    "image_url" TEXT NOT NULL,
-    "image_alt" TEXT NOT NULL,
-    "product_id" TEXT NOT NULL,
-
-    CONSTRAINT "Images_pkey" PRIMARY KEY ("image_id")
-);
-
--- CreateTable
 CREATE TABLE "Storefront" (
     "storefront_id" TEXT NOT NULL,
-    "global_styles" TEXT NOT NULL,
-    "blocks" TEXT NOT NULL,
+    "global_styles" TEXT,
+    "blocks" TEXT,
     "store_id" TEXT NOT NULL,
-    "support_email" TEXT NOT NULL,
-    "store_logo_id" TEXT NOT NULL,
-    "store_hero_image_id" TEXT NOT NULL,
-    "store_description" TEXT NOT NULL,
+    "support_email" TEXT,
+    "store_logo" JSONB,
+    "store_hero_image" JSONB,
+    "store_description" TEXT,
 
     CONSTRAINT "Storefront_pkey" PRIMARY KEY ("storefront_id")
 );
@@ -124,6 +151,21 @@ CREATE TABLE "_OrderToProduct" (
     "A" TEXT NOT NULL,
     "B" TEXT NOT NULL
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Account_provider_providerAccountId_key" ON "Account"("provider", "providerAccountId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Session_sessionToken_key" ON "Session"("sessionToken");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_user_email_key" ON "User"("user_email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "VerificationToken_identifier_token_key" ON "VerificationToken"("identifier", "token");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Store_store_url_key" ON "Store"("store_url");
@@ -150,25 +192,22 @@ CREATE UNIQUE INDEX "Customer_account_customer_id_key" ON "Customer_account"("cu
 CREATE UNIQUE INDEX "Address_address_id_key" ON "Address"("address_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Images_image_id_key" ON "Images"("image_id");
-
--- CreateIndex
 CREATE UNIQUE INDEX "Storefront_storefront_id_key" ON "Storefront"("storefront_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Storefront_store_id_key" ON "Storefront"("store_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Storefront_store_logo_id_key" ON "Storefront"("store_logo_id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Storefront_store_hero_image_id_key" ON "Storefront"("store_hero_image_id");
-
--- CreateIndex
 CREATE UNIQUE INDEX "_OrderToProduct_AB_unique" ON "_OrderToProduct"("A", "B");
 
 -- CreateIndex
 CREATE INDEX "_OrderToProduct_B_index" ON "_OrderToProduct"("B");
+
+-- AddForeignKey
+ALTER TABLE "Account" ADD CONSTRAINT "Account_id_fkey" FOREIGN KEY ("id") REFERENCES "User"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Store" ADD CONSTRAINT "Store_store_owner_id_fkey" FOREIGN KEY ("store_owner_id") REFERENCES "User"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -196,15 +235,6 @@ ALTER TABLE "Customer_account" ADD CONSTRAINT "Customer_account_customer_id_fkey
 
 -- AddForeignKey
 ALTER TABLE "Address" ADD CONSTRAINT "Address_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "Customer"("customer_id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Images" ADD CONSTRAINT "Images_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "Product"("product_id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Storefront" ADD CONSTRAINT "Storefront_store_logo_id_fkey" FOREIGN KEY ("store_logo_id") REFERENCES "Images"("image_id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Storefront" ADD CONSTRAINT "Storefront_store_hero_image_id_fkey" FOREIGN KEY ("store_hero_image_id") REFERENCES "Images"("image_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Storefront" ADD CONSTRAINT "Storefront_store_id_fkey" FOREIGN KEY ("store_id") REFERENCES "Store"("store_id") ON DELETE RESTRICT ON UPDATE CASCADE;
