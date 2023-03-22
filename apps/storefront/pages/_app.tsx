@@ -15,30 +15,13 @@ type ProductType = {
     src: string;
     alt: string;
   }[];
-  quantity_in_cart?: number;
+  quantityInCart?: number;
 };
 
 export default function App({ Component, pageProps }: AppProps) {
   const queryClient = new QueryClient();
 
   const [cartItems, setCartItems] = useState<any>([]); //ProductType
-
-  // const getProductQuantityInCart = useMemo(
-  //   () => (product: ProductType) => {
-  //     console.log({ product });
-  //     console.log({ cartItems });
-  //     const itemAlreadyInCart = cartItems.map(
-  //       (item: ProductType) =>
-  //         'clfjs89gk0004onrh6p3bfi6y' === product.product_id
-  //     );
-  //     console.log({ itemAlreadyInCart });
-  //     if (itemAlreadyInCart) {
-  //       return itemAlreadyInCart.quantityInCart as number;
-  //     }
-  //     return 0;
-  //   },
-  //   [cartItems]
-  // );
 
   const handleAddToCart = useMemo(
     () => (product: ProductType, updateByQuantity: number) => {
@@ -53,7 +36,8 @@ export default function App({ Component, pageProps }: AppProps) {
           {
             ...itemAlreadyInCart,
             quantityInCart:
-              itemAlreadyInCart.quantityInCart + Number(updateByQuantity),
+              Number(itemAlreadyInCart.quantityInCart) +
+              Number(updateByQuantity),
           },
         ]);
       } else {
@@ -68,17 +52,6 @@ export default function App({ Component, pageProps }: AppProps) {
     },
     [cartItems]
   );
-
-  // const getCartTotal = useMemo(
-  //   () => () => {
-  //     return cartItems.reduce(
-  //       (acc: any, curr: any) =>
-  //         (acc += (curr.quantityInCart || 0) * (curr.product_price || 0)),
-  //       0
-  //     );
-  //   },
-  //   [cartItems]
-  // );
 
   console.log({ cartItems });
 

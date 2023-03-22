@@ -66,6 +66,10 @@ function ProductPage() {
 
   //@TODO Fix for if no product found, redirect to 404
 
+  const quantityInCart = cartItems.find(
+    (item: any) => item.product_id === product.product_id
+  )?.quantityInCart;
+
   return (
     <div>
       <Breadcrumbs
@@ -125,45 +129,59 @@ function ProductPage() {
               additionalClasses="min-w-fit w-36"
               disabled={
                 product.inventory_qty <= 0 ||
-                product.inventory_qty <=
-                  cartItems.find(
-                    (item: { id: string; quantity: number }) =>
-                      item.id === router.query.productId
-                  )?.quantity
+                product.inventory_qty <= quantityInCart
               }
               onClick={() => {
-                setIsButtonDisabled(true);
-                handleAddToCart(product, formValues.quantity);
-                toast.success('Added to cart', {
-                  position: 'bottom-center',
-                });
-                // @TODO: Add logic for inventory checking against current inventory
+                const productInCart = cartItems.find(
+                  (item: any) => item.product_id === product.product_id
+                );
+                if (!productInCart) {
+                  if (formValues.quantity <= product.inventory_qty) {
+                    handleAddToCart(product, formValues.quantity);
+                    toast.success(
+                      `Added ${formValues.quantity} item${
+                        formValues.quantity > 1 ? 's' : ''
+                      } to cart`,
+                      {
+                        position: 'bottom-center',
+                      }
+                    );
+                  } else {
+                    toast.error('Not enough items in stock', {
+                      position: 'bottom-center',
+                    });
+                  }
+                } else {
+                  if (
+                    Number(productInCart.quantityInCart) +
+                      Number(formValues.quantity) <=
+                    product.inventory_qty
+                  ) {
+                    handleAddToCart(product, formValues.quantity);
+                    toast.success(
+                      `Added ${formValues.quantity} item${
+                        formValues.quantity > 1 ? 's' : ''
+                      } to cart`,
+                      {
+                        position: 'bottom-center',
+                      }
+                    );
+                  } else {
+                    toast.error('Not enough items in stock', {
+                      position: 'bottom-center',
+                    });
+                  }
+                }
+                setFormValues({ quantity: 1 });
               }}
             >
               {product.inventory_qty === 0
                 ? 'Sold out'
-                : product.inventory_qty <=
-                  cartItems.find(
-                    (item: { id: string; quantity: number }) =>
-                      item.id === router.query.productId
-                  )?.quantity
+                : product.inventory_qty <= quantityInCart
                 ? 'All available items in cart'
                 : 'Add to Cart'}
             </Button>
-            {!!cartItems.find(
-              (item: { id: string; quantity: number }) =>
-                item.id === router.query.productId
-            )?.quantity && (
-              <p>
-                Quantity in cart:{' '}
-                {
-                  cartItems.find(
-                    (item: { id: string; quantity: number }) =>
-                      item.id === router.query.productId
-                  ).quantity
-                }
-              </p>
-            )}
+            {!!quantityInCart && <p>Quantity in cart: {quantityInCart}</p>}
           </div>
         </div>
       </div>

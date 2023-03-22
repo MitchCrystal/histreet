@@ -13,6 +13,19 @@ const columns = [
   { id: 'total', name: 'Total' },
 ];
 
+type ProductType = {
+  product_name: string;
+  product_price: number;
+  product_id: string;
+  product_name_slug: string;
+  product_images: {
+    id: string;
+    src: string;
+    alt: string;
+  }[];
+  quantityInCart?: number;
+};
+
 export default function CartLineItemTable({
   products,
   cartContext,
@@ -20,8 +33,9 @@ export default function CartLineItemTable({
 }: {
   products: CartProduct;
   cartContext: {
-    cartItems: { id: string; quantity: number }[];
-    setCartItems: React.Dispatch<React.SetStateAction<any>>;
+    cartItems: ProductType[];
+    setCartItems: React.Dispatch<React.SetStateAction<ProductType>>;
+    handleAddToCart: (product: ProductType, quantity: number) => number;
   };
   setOrderTotal: React.Dispatch<React.SetStateAction<number>>;
 }) {
@@ -30,16 +44,14 @@ export default function CartLineItemTable({
     {}
   );
 
-  console.log({ quantityValues });
-
   useEffect(() => {
     if (Object.entries(quantityValues).length !== 0) return;
     const obj: Record<string, number> = {};
     products.forEach((item) => {
       obj[item.product_id] =
         cartContext.cartItems.find(
-          (cartItem) => cartItem.id === item.product_id
-        )?.quantity || 0;
+          (cartItem) => cartItem.product_id === item.product_id
+        )?.quantityInCart || 0;
     });
     setQuantityValues({ ...obj });
   }, [products, cartContext.cartItems, quantityValues]);
@@ -55,18 +67,6 @@ export default function CartLineItemTable({
         .reduce((acc, curr) => acc + curr, 0)
     );
   }, [quantityValues, products, setOrderTotal]);
-
-  useEffect(() => {
-    cartContext.setCartItems((prev: { id: string; quantity: number }[]) => {
-      const newCartItems = prev.map((item) => {
-        return {
-          ...item,
-          quantity: Number(quantityValues[item.id]),
-        };
-      });
-      return newCartItems;
-    });
-  }, [quantityValues]);
 
   if (Object.entries(quantityValues).length === 0) return <Loading />;
 
@@ -115,16 +115,9 @@ export default function CartLineItemTable({
                 setState={setQuantityValues}
                 min={0}
                 additionalOnChangeFunction={() => {
-                  cartContext.setCartItems(
-                    (prev: { id: string; quantity: number }[]) => {
-                      const newCartItems = prev.map((item) => {
-                        return {
-                          ...item,
-                          quantity: Number(quantityValues[item.id]),
-                        };
-                      });
-                      return newCartItems;
-                    }
+                  cartContext.handleAddToCart(
+                    lineItem,
+                    Number(quantityValues[lineItem.product_id])
                   );
                 }}
               />

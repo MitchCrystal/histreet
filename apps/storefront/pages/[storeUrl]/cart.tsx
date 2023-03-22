@@ -18,11 +18,25 @@ export type CartProduct = {
   product_images: { id: string; src: string; alt: string }[];
 }[];
 
+type ProductType = {
+  product_name: string;
+  product_price: number;
+  product_id: string;
+  product_name_slug: string;
+  product_images: {
+    id: string;
+    src: string;
+    alt: string;
+  }[];
+  quantityInCart?: number;
+};
+
 function Cart() {
   const router = useRouter();
   const cart: {
-    cartItems: { id: string; quantity: number }[];
-    setCartItems: React.Dispatch<React.SetStateAction<any>>;
+    cartItems: ProductType[];
+    setCartItems: React.Dispatch<React.SetStateAction<ProductType>>;
+    handleAddToCart: (product: ProductType, quantity: number) => number;
   } = useContext(CartContext);
 
   const {
@@ -34,22 +48,22 @@ function Cart() {
     queryFn: () =>
       fetch(
         `/api/products/cart/${JSON.stringify(
-          cart.cartItems.map((item) => item.id)
+          cart.cartItems.map((item) => item.product_id)
         )}`
       ).then((res) => res.json()),
     enabled: !!router.isReady,
   });
   const [orderTotal, setOrderTotal] = useState(0);
 
-  useEffect(() => {
-    const total = cart.cartItems.reduce((acc, curr) => {
-      return (acc +=
-        (products?.find((product) => product.product_id === curr.id)
-          ?.product_price || 0) * curr.quantity);
-    }, 0);
+  // useEffect(() => {
+  //   const total = cart.cartItems.reduce((acc, curr) => {
+  //     return (acc +=
+  //       (products?.find((product) => product.product_id === curr.id)
+  //         ?.product_price || 0) * curr.quantity);
+  //   }, 0);
 
-    setOrderTotal(total);
-  }, [cart.cartItems, products]);
+  //   setOrderTotal(total);
+  // }, [cart.cartItems, products]);
 
   if (isLoading) return <Loading />;
   if (isError) return <Error />;
@@ -94,7 +108,7 @@ function Cart() {
             <p>
               Total items:{' '}
               {cart.cartItems.reduce((acc, curr) => {
-                return (acc += curr.quantity);
+                return (acc += curr.quantityInCart || 0);
               }, 0)}
             </p>
           </div>
