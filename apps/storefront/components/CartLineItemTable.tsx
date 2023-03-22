@@ -1,5 +1,5 @@
 import { Fragment, useState } from 'react';
-import { InputWithLabel } from './InputWithLabel';
+import InputWithLabel from './InputWithLabel';
 
 const columns = [
   { id: 'item', name: 'Item' },

@@ -4,7 +4,7 @@ import Breadcrumbs from '../../../../components/Breadcrumbs';
 import Button from '../../../../components/Button';
 import HeadingText from '../../../../components/HeadingText';
 import ImageRow from '../../../../components/ImageRow';
-import { InputWithLabel } from '../../../../components/InputWithLabel';
+import InputWithLabel from '../../../../components/InputWithLabel';
 import MainLayout from '../../../../layouts/MainLayout';
 
 const product = {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as LabelPrimitive from '@radix-ui/react-label';
 
-export function InputWithLabel({
+export default function InputWithLabel({
   label,
   id,
   type,

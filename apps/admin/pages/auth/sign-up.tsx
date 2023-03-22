@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { InputWithLabel } from '../../components/InputWithLabel';
+import InputWithLabel from '../../components/InputWithLabel';
 import AuthLayout from '../../layouts/AuthLayout';
 import Heading from '../../components/Heading';
 import Button from '../../components/Button';

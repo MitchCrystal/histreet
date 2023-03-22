@@ -21,14 +21,14 @@ export default function InputWithLabel({
   [x: string]: any;
 }) {
   return (
-    <div className="grid w-full max-w-sm items-center gap-1.5 ">
+    <div className={`grid w-full max-w-sm items-center gap-1.5 `}>
       <div
         className={`flex w-full ${
           direction === 'row'
             ? 'flex-row items-center justify-center'
             : direction === 'column'
             ? 'flex-col'
-            : '' 
+            : ''
         }`}
       >
         <Label className={`${showLabel ? 'w-48' : 'sr-only'}`} htmlFor={id}>
