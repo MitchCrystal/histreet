@@ -13,6 +13,7 @@ type Product = {
   product_name: string;
   product_price: number;
   product_name_slug: string;
+  inventory_qty: number;
 };
 
 export default function ProductGridItem({ product }: { product: Product }) {
@@ -25,7 +26,7 @@ export default function ProductGridItem({ product }: { product: Product }) {
       <Link
         href={`/${router.query.storeUrl}/product/${product.product_id}/${product.product_name_slug}`}
       >
-        <div className="overflow-hidden max-h-[300px]">
+        <div className="relative overflow-hidden min-h-[300px] max-h-[300px] flex flex-col items-center justify-center">
           <img
             src={currentImage.src}
             alt={currentImage.alt}
@@ -37,6 +38,11 @@ export default function ProductGridItem({ product }: { product: Product }) {
             onMouseLeave={() => setCurrentImage(product.product_images[0])}
           />
         </div>
+        {product.inventory_qty <= 0 && (
+          <div className="bg-gray-100 p-1 w-fit text-xs uppercase relative top-[-290px]">
+            Sold out
+          </div>
+        )}
       </Link>
       <div>
         <Link

@@ -86,7 +86,7 @@ function ProductPage() {
           },
         ]}
       />
-      <div className="md:grid sm:grid-cols-8 sm:gap-8 flex flex-col gap-4">
+      <div className="mt-6 md:grid sm:grid-cols-8 sm:gap-8 flex flex-col gap-4">
         <div className="col-span-3 flex flex-col gap-2">
           <img
             src={currentImage.src}

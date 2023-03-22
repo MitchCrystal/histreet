@@ -1,3 +1,4 @@
+import { XCircleIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Fragment } from 'react';
@@ -8,6 +9,7 @@ const columns = [
   { id: 'price', name: 'Price' },
   { id: 'quantity', name: 'Quantity' },
   { id: 'total', name: 'Total' },
+  { id: 'remove', name: 'Remove' },
 ];
 
 type ProductType = {
@@ -30,7 +32,7 @@ export default function CartLineItemTable({
   products: ProductType[];
   cartContext: {
     cartItems: ProductType[];
-    setCartItems: React.Dispatch<React.SetStateAction<ProductType>>;
+    setCartItems: React.Dispatch<React.SetStateAction<ProductType[]>>;
     handleAddToCart: (product: ProductType, quantity: number) => number;
     handleUpdateCart: (product: ProductType, quantity: number) => number;
   };
@@ -38,9 +40,12 @@ export default function CartLineItemTable({
   const router = useRouter();
 
   return (
-    <div className="grid grid-cols-5 gap-6 items-center rounded-md bg-gray-50 p-8">
+    <div className="grid grid-cols-7 gap-6 items-center rounded-md bg-gray-50 p-8">
       {columns.map((column) => (
-        <p key={column.id} className="font-medium">
+        <p
+          key={column.id}
+          className={`${column.id === 'name' ? 'col-span-2' : ''} font-medium`}
+        >
           {column.name}
         </p>
       ))}
@@ -50,9 +55,10 @@ export default function CartLineItemTable({
             <img
               src={lineItem.product_images[0].src}
               alt={lineItem.product_images[0].alt}
-              className="w-20 h-20 object-fit rounded-md"
+              className="min-w-20 max-w-20 min-h-20 max-h-20 object-fit rounded-md"
             />
             <Link
+              className="col-span-2"
               href={`/${router.query.storeUrl}/product/${lineItem.product_id}/${lineItem.product_name_slug}`}
             >
               <p className="w-30 truncate">{lineItem.product_name}</p>
@@ -104,6 +110,16 @@ export default function CartLineItemTable({
                   ) ?? 1
               )}
             </p>
+            <button
+              className="flex items-center ml-4"
+              onClick={() => {
+                cartContext.setCartItems((prev: ProductType[]) =>
+                  prev.filter((item) => item.product_id !== lineItem.product_id)
+                );
+              }}
+            >
+              <XCircleIcon className="w-6 text-red-500" />
+            </button>
           </Fragment>
         );
       })}

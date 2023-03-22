@@ -2,6 +2,7 @@ import '../styles/globals.css';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { AppProps } from 'next/app';
+import cart from './[storeUrl]/cart';
 
 export const CartContext: any = createContext([]);
 
@@ -23,6 +24,16 @@ export default function App({ Component, pageProps }: AppProps) {
 
   const [cartItems, setCartItems] = useState<any>([]); //ProductType
 
+  useEffect(() => {
+    const localCart = localStorage.getItem('cartItems');
+    setCartItems(localCart ? JSON.parse(localCart as string) : []);
+  }, []);
+
+  useEffect(() => {
+    if (cartItems.length === 0) return;
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  }, [cartItems]);
+
   const handleUpdateCart = useMemo(
     () => (product: ProductType, updateByQuantity: number) => {
       setCartItems((prev: any) => [
@@ -37,8 +48,6 @@ export default function App({ Component, pageProps }: AppProps) {
     },
     [cartItems]
   );
-
-  // need to set product value to X whatever is in the input
 
   const handleAddToCart = useMemo(
     () => (product: ProductType, quantityToAdd: number) => {
@@ -70,8 +79,6 @@ export default function App({ Component, pageProps }: AppProps) {
     },
     [cartItems]
   );
-
-  console.log({ cartItems });
 
   const totalItemsInCart = useMemo(
     () => () => {

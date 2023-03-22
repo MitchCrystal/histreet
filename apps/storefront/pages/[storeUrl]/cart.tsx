@@ -27,7 +27,7 @@ function Cart() {
   const router = useRouter();
   const cart: {
     cartItems: ProductType[];
-    setCartItems: React.Dispatch<React.SetStateAction<ProductType>>;
+    setCartItems: React.Dispatch<React.SetStateAction<ProductType[]>>;
     handleAddToCart: (product: ProductType, quantity: number) => number;
     handleUpdateCart: (product: ProductType, quantity: number) => number;
   } = useContext(CartContext);
@@ -36,6 +36,7 @@ function Cart() {
     data: products,
     isLoading,
     isError,
+    isFetching,
   }: UseQueryResult<ProductType, unknown> = useQuery({
     queryKey: ['cart-products'],
     queryFn: () =>
@@ -44,19 +45,21 @@ function Cart() {
           cart.cartItems.map((item) => item.product_id)
         )}`
       ).then((res) => res.json()),
-    enabled: !!router.isReady,
+    enabled: !!router.isReady && cart.cartItems.length > 0,
   });
 
+  if (cart.cartItems.length === 0) return <p>Cart is empty</p>;
   if (isLoading) return <Loading />;
   if (isError) return <Error />;
   if (!Array.isArray(products)) return <p>Cart is empty</p>;
+
   return (
     <>
       <HeadingText size="h3">Cart</HeadingText>
-      <div className="md:grid sm:grid-cols-9 mt-8 flex flex-col gap-8 w-full">
+      <div className="lg:grid lg:grid-cols-9 mt-8 flex flex-col gap-8 w-full">
         <div className="col-span-6">
-          <div className="overflow-auto">
-            <div className="min-w-[500px] ">
+          <div className="overflow-y-scroll">
+            <div className="min-w-[600px] ">
               <CartLineItemTable products={products} cartContext={cart} />
             </div>
           </div>
@@ -89,15 +92,22 @@ function Cart() {
                 )}
               </HeadingText>
             </div>
-            <p>
-              Total items:{' '}
-              {cart.cartItems.reduce((acc, curr) => {
-                return (acc += curr.quantityInCart || 0);
-              }, 0)}
-            </p>
           </div>
-          <Button size="default" appearance="primary" additionalClasses="mb-2">
-            Checkout
+          <Button
+            size="default"
+            appearance="primary"
+            additionalClasses="mb-2 scale-100 mx-2"
+          >
+            Checkout •{' '}
+            {cart.cartItems.reduce((acc, curr) => {
+              return (acc += curr.quantityInCart || 0);
+            }, 0)}{' '}
+            item
+            {cart.cartItems.reduce((acc, curr) => {
+              return (acc += curr.quantityInCart || 0);
+            }, 0) > 1
+              ? 's'
+              : ''}
           </Button>
         </div>
       </div>
