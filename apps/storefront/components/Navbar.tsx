@@ -27,8 +27,12 @@ const menuItems = [
 export default function Navbar() {
   const router = useRouter();
 
-  const { cartItems }: { cartItems: any; setCartItems: any } =
-    useContext(CartContext);
+  const {
+    cartItems,
+    totalItemsInCart,
+  }: { cartItems: any; totalItemsInCart: any } = useContext(CartContext);
+
+  console.log({ cartItems });
 
   return (
     <>
@@ -75,16 +79,8 @@ export default function Navbar() {
                     <p>{item.name}</p>
                     {item.id === 'cart' && (
                       <div>
-                        {cartItems.reduce((acc: any, curr: any) => {
-                          return (acc += curr.quantity);
-                        }, 0) > 0 && (
-                          <p>
-                            (
-                            {cartItems.reduce((acc: any, curr: any) => {
-                              return (acc += curr.quantity);
-                            }, 0)}
-                            )
-                          </p>
+                        {totalItemsInCart() > 0 && (
+                          <p>({totalItemsInCart()})</p>
                         )}
                       </div>
                     )}

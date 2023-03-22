@@ -15,7 +15,7 @@ export type CartProduct = {
   product_price: number;
   product_id: string;
   product_name_slug: string;
-  product_images: Record<string, string>[];
+  product_images: { id: string; src: string; alt: string }[];
 }[];
 
 function Cart() {

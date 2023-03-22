@@ -1,7 +1,7 @@
 import InputWithLabel from './InputWithLabel';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { CartProduct } from '../pages/[storeUrl]/cart';
 import Loading from './Loading';
 
@@ -33,6 +33,7 @@ export default function CartLineItemTable({
   console.log({ quantityValues });
 
   useEffect(() => {
+    if (Object.entries(quantityValues).length !== 0) return;
     const obj: Record<string, number> = {};
     products.forEach((item) => {
       obj[item.product_id] =
@@ -41,7 +42,7 @@ export default function CartLineItemTable({
         )?.quantity || 0;
     });
     setQuantityValues({ ...obj });
-  }, [products]);
+  }, [products, cartContext.cartItems, quantityValues]);
 
   console.log(cartContext.cartItems);
 
@@ -53,6 +54,9 @@ export default function CartLineItemTable({
         })
         .reduce((acc, curr) => acc + curr, 0)
     );
+  }, [quantityValues, products, setOrderTotal]);
+
+  useEffect(() => {
     cartContext.setCartItems((prev: { id: string; quantity: number }[]) => {
       const newCartItems = prev.map((item) => {
         return {
@@ -83,8 +87,8 @@ export default function CartLineItemTable({
         return (
           <Fragment key={lineItem.product_id}>
             <img
-              src={lineItem.product_images[0].image_url}
-              alt={lineItem.product_images[0].image_alt}
+              src={lineItem.product_images[0].src}
+              alt={lineItem.product_images[0].alt}
               className="w-20 h-20 object-fit rounded-md"
             />
             <Link
@@ -110,6 +114,19 @@ export default function CartLineItemTable({
                 direction="column"
                 setState={setQuantityValues}
                 min={0}
+                additionalOnChangeFunction={() => {
+                  cartContext.setCartItems(
+                    (prev: { id: string; quantity: number }[]) => {
+                      const newCartItems = prev.map((item) => {
+                        return {
+                          ...item,
+                          quantity: Number(quantityValues[item.id]),
+                        };
+                      });
+                      return newCartItems;
+                    }
+                  );
+                }}
               />
             </div>
             <p>

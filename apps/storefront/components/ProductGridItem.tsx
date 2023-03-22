@@ -6,8 +6,9 @@ import { useState } from 'react';
 type Product = {
   product_id: string;
   product_images: {
-    image_url: string;
-    image_alt: string;
+    id: string;
+    src: string;
+    alt: string;
   }[];
   product_name: string;
   product_price: number;
@@ -26,8 +27,8 @@ export default function ProductGridItem({ product }: { product: Product }) {
       >
         <div className="overflow-hidden max-h-[300px]">
           <img
-            src={currentImage.image_url}
-            alt={currentImage.image_alt}
+            src={currentImage.src}
+            alt={currentImage.alt}
             className="object-cover"
             onMouseEnter={() => {
               if (!product.product_images[1]) return;

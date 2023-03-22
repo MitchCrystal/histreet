@@ -18,11 +18,12 @@ type Product = {
   product_price: number;
   product_id: string;
   product_images: {
-    image_id: string;
-    image_url: string;
-    image_alt: string;
+    src: string;
+    alt: string;
+    id: string;
   }[];
   inventory_qty: number;
+  error?: string;
 };
 
 function ProductPage() {
@@ -41,17 +42,29 @@ function ProductPage() {
   const [formValues, setFormValues] = useState({ quantity: 1 });
   const [currentImage, setCurrentImage] = useState<any>('');
 
-  const { cartItems, setCartItems }: { cartItems: any; setCartItems: any } =
-    useContext(CartContext);
+  const {
+    cartItems,
+    handleAddToCart,
+    getCartTotal,
+    getProductQuantityInCart,
+  }: {
+    cartItems: any;
+    handleAddToCart: (product: any, quantity: number) => void;
+    getCartTotal: any;
+    getProductQuantityInCart: any;
+  } = useContext(CartContext);
 
   useEffect(() => {
     if (!currentImage && product) {
-      setCurrentImage(product.product_images[0]);
+      product.product_images && setCurrentImage(product.product_images[0]);
     }
-  }, [product]);
+  }, [product, currentImage]);
 
   if (isLoading) return <Loading />;
   if (isError) return <Error />;
+  if (product.error) return <p>Product not found</p>;
+
+  //@TODO Fix for if no product found, redirect to 404
 
   return (
     <div>
@@ -72,8 +85,8 @@ function ProductPage() {
       <div className="md:grid sm:grid-cols-8 sm:gap-8 flex flex-col gap-4">
         <div className="col-span-3 flex flex-col gap-2">
           <img
-            src={currentImage.image_url}
-            alt={currentImage.image_alt}
+            src={currentImage.src}
+            alt={currentImage.alt}
             className="object-cover h-[500px]"
           />
           <ImageRow
@@ -120,81 +133,21 @@ function ProductPage() {
               }
               onClick={() => {
                 setIsButtonDisabled(true);
-                if (
-                  product.inventory_qty <
-                  formValues.quantity +
-                    (cartItems.find(
-                      (item: { id: string; quantity: number }) =>
-                        item.id === router.query.productId
-                    )?.quantity || 0)
-                ) {
-                  toast.error(
-                    `Error: Only ${
-                      product.inventory_qty -
-                      (cartItems.find(
-                        (item: { id: string; quantity: number }) =>
-                          item.id === router.query.productId
-                      )?.quantity || 0)
-                    } left in stock`,
-                    {
-                      position: 'bottom-center',
-                    }
-                  );
-                  setFormValues({
-                    quantity:
-                      product.inventory_qty -
-                      (cartItems.find(
-                        (item: { id: string; quantity: number }) =>
-                          item.id === router.query.productId
-                      )?.quantity || 0),
-                  });
-                  setTimeout(() => {
-                    setIsButtonDisabled(false);
-                  }, 1000);
-                  return;
-                }
-                setCartItems(
-                  (
-                    currentCart: Product & { id: string; quantity: number }[]
-                  ) => {
-                    const filteredCart = currentCart.filter(
-                      (item) =>
-                        item.id !== product.product_id && item.quantity > 0
-                    );
-                    const itemInCart = currentCart.find(
-                      (item) => item.id === product.product_id
-                    );
-                    return [
-                      ...filteredCart,
-                      {
-                        id: product.product_id,
-                        quantity:
-                          Number(itemInCart?.quantity ?? 0) +
-                            Number(formValues.quantity) <=
-                          0
-                            ? 0
-                            : Number(itemInCart?.quantity ?? 0) +
-                              Number(formValues.quantity),
-                      },
-                    ];
-                  }
-                );
-                setFormValues({ quantity: 1 });
-                toast.success('Item added to cart', {
+                handleAddToCart(product, formValues.quantity);
+                toast.success('Added to cart', {
                   position: 'bottom-center',
                 });
-                setTimeout(() => {
-                  setIsButtonDisabled(false);
-                }, 500);
+                // @TODO: Add logic for inventory checking against current inventory
               }}
             >
-              {product.inventory_qty === 0 ||
-              product.inventory_qty <=
-                cartItems.find(
-                  (item: { id: string; quantity: number }) =>
-                    item.id === router.query.productId
-                )?.quantity
+              {product.inventory_qty === 0
                 ? 'Sold out'
+                : product.inventory_qty <=
+                  cartItems.find(
+                    (item: { id: string; quantity: number }) =>
+                      item.id === router.query.productId
+                  )?.quantity
+                ? 'All available items in cart'
                 : 'Add to Cart'}
             </Button>
             {!!cartItems.find(

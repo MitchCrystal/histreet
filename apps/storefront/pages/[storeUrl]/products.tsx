@@ -12,8 +12,9 @@ type ProductType = {
   product_id: string;
   product_name_slug: string;
   product_images: {
-    image_url: string;
-    image_alt: string;
+    id: string;
+    src: string;
+    alt: string;
   }[];
 };
 
@@ -27,17 +28,23 @@ function Products() {
     fetch('/api/products/' + router.query.storeUrl).then((res) => res.json())
   );
 
+  console.log(products);
+
   if (isLoading) return <Loading />;
   if (isError) return <Error />;
 
   return (
     <>
       <HeadingText size="h3">Products</HeadingText>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
-        {products.map((product: ProductType) => (
-          <ProductGridItem key={product.product_id} product={product} />
-        ))}
-      </div>
+      {products.length === 0 ? (
+        <p className="mt-6">No products listed</p>
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
+          {products.map((product: ProductType) => (
+            <ProductGridItem key={product.product_id} product={product} />
+          ))}
+        </div>
+      )}
     </>
   );
 }
