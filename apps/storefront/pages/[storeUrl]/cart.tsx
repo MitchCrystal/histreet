@@ -5,18 +5,10 @@ import MainLayout from '../../layouts/MainLayout';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { CartContext } from '../_app';
 import Loading from '../../components/Loading';
 import Error from '../../components/Error';
-
-export type CartProduct = {
-  product_name: string;
-  product_price: number;
-  product_id: string;
-  product_name_slug: string;
-  product_images: { id: string; src: string; alt: string }[];
-}[];
 
 type ProductType = {
   product_name: string;
@@ -37,13 +29,14 @@ function Cart() {
     cartItems: ProductType[];
     setCartItems: React.Dispatch<React.SetStateAction<ProductType>>;
     handleAddToCart: (product: ProductType, quantity: number) => number;
+    handleUpdateCart: (product: ProductType, quantity: number) => number;
   } = useContext(CartContext);
 
   const {
     data: products,
     isLoading,
     isError,
-  }: UseQueryResult<CartProduct, unknown> = useQuery({
+  }: UseQueryResult<ProductType, unknown> = useQuery({
     queryKey: ['cart-products'],
     queryFn: () =>
       fetch(
@@ -53,17 +46,6 @@ function Cart() {
       ).then((res) => res.json()),
     enabled: !!router.isReady,
   });
-  const [orderTotal, setOrderTotal] = useState(0);
-
-  // useEffect(() => {
-  //   const total = cart.cartItems.reduce((acc, curr) => {
-  //     return (acc +=
-  //       (products?.find((product) => product.product_id === curr.id)
-  //         ?.product_price || 0) * curr.quantity);
-  //   }, 0);
-
-  //   setOrderTotal(total);
-  // }, [cart.cartItems, products]);
 
   if (isLoading) return <Loading />;
   if (isError) return <Error />;
@@ -75,11 +57,7 @@ function Cart() {
         <div className="col-span-6">
           <div className="overflow-auto">
             <div className="min-w-[500px] ">
-              <CartLineItemTable
-                products={products}
-                cartContext={cart}
-                setOrderTotal={setOrderTotal}
-              />
+              <CartLineItemTable products={products} cartContext={cart} />
             </div>
           </div>
           <div className="flex items-center justify-end">
@@ -102,7 +80,13 @@ function Cart() {
                 {new Intl.NumberFormat('en-GB', {
                   style: 'currency',
                   currency: 'GBP',
-                }).format(orderTotal)}
+                }).format(
+                  cart.cartItems.reduce(
+                    (acc, curr) =>
+                      (acc += curr.product_price * (curr.quantityInCart ?? 0)),
+                    0
+                  )
+                )}
               </HeadingText>
             </div>
             <p>

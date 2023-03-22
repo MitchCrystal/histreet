@@ -23,11 +23,29 @@ export default function App({ Component, pageProps }: AppProps) {
 
   const [cartItems, setCartItems] = useState<any>([]); //ProductType
 
-  const handleAddToCart = useMemo(
+  const handleUpdateCart = useMemo(
     () => (product: ProductType, updateByQuantity: number) => {
+      setCartItems((prev: any) => [
+        ...prev.filter(
+          (item: ProductType) => item.product_id !== product.product_id
+        ),
+        {
+          ...product,
+          quantityInCart: Number(updateByQuantity),
+        },
+      ]);
+    },
+    [cartItems]
+  );
+
+  // need to set product value to X whatever is in the input
+
+  const handleAddToCart = useMemo(
+    () => (product: ProductType, quantityToAdd: number) => {
       const itemAlreadyInCart = cartItems.find(
         (item: ProductType) => item.product_id === product.product_id
       );
+      console.log({ itemAlreadyInCart });
       if (itemAlreadyInCart) {
         setCartItems((prev: any) => [
           ...prev.filter(
@@ -36,16 +54,16 @@ export default function App({ Component, pageProps }: AppProps) {
           {
             ...itemAlreadyInCart,
             quantityInCart:
-              Number(itemAlreadyInCart.quantityInCart) +
-              Number(updateByQuantity),
+              Number(itemAlreadyInCart.quantityInCart) + Number(quantityToAdd),
           },
         ]);
       } else {
+        console.log('NOT IN CART');
         setCartItems((prev: any) => [
           ...prev,
           {
             ...product,
-            quantityInCart: Number(updateByQuantity),
+            quantityInCart: Number(quantityToAdd),
           },
         ]);
       }
@@ -68,13 +86,15 @@ export default function App({ Component, pageProps }: AppProps) {
   const cartObj: {
     cartItems: { id: string; quantity: number }[];
     setCartItems: React.Dispatch<React.SetStateAction<any>>;
-    handleAddToCart: (product: ProductType, updateByQuantity: number) => void;
-    totalItemsInCart: () => number;
+    handleAddToCart: (product: ProductType, quantityToAdd: number) => void;
+    totalItemsInCart: () => void;
+    handleUpdateCart: (product: ProductType, updateByQuantity: number) => void;
   } = {
     cartItems,
     setCartItems,
     handleAddToCart,
     totalItemsInCart,
+    handleUpdateCart,
   };
 
   return (

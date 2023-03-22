@@ -127,10 +127,7 @@ function ProductPage() {
               size="default"
               appearance="primary"
               additionalClasses="min-w-fit w-36"
-              disabled={
-                product.inventory_qty <= 0 ||
-                product.inventory_qty <= quantityInCart
-              }
+              disabled={product.inventory_qty <= 0}
               onClick={() => {
                 const productInCart = cartItems.find(
                   (item: any) => item.product_id === product.product_id
@@ -175,11 +172,7 @@ function ProductPage() {
                 setFormValues({ quantity: 1 });
               }}
             >
-              {product.inventory_qty === 0
-                ? 'Sold out'
-                : product.inventory_qty <= quantityInCart
-                ? 'All available items in cart'
-                : 'Add to Cart'}
+              {product.inventory_qty === 0 ? 'Sold out' : 'Add to Cart'}
             </Button>
             {!!quantityInCart && <p>Quantity in cart: {quantityInCart}</p>}
           </div>

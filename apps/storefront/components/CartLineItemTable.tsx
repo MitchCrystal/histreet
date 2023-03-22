@@ -1,9 +1,6 @@
-import InputWithLabel from './InputWithLabel';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
-import { CartProduct } from '../pages/[storeUrl]/cart';
-import Loading from './Loading';
+import { Fragment } from 'react';
 
 const columns = [
   { id: 'item', name: 'Item' },
@@ -29,46 +26,16 @@ type ProductType = {
 export default function CartLineItemTable({
   products,
   cartContext,
-  setOrderTotal,
 }: {
-  products: CartProduct;
+  products: ProductType[];
   cartContext: {
     cartItems: ProductType[];
     setCartItems: React.Dispatch<React.SetStateAction<ProductType>>;
     handleAddToCart: (product: ProductType, quantity: number) => number;
+    handleUpdateCart: (product: ProductType, quantity: number) => number;
   };
-  setOrderTotal: React.Dispatch<React.SetStateAction<number>>;
 }) {
   const router = useRouter();
-  const [quantityValues, setQuantityValues] = useState<Record<string, number>>(
-    {}
-  );
-
-  useEffect(() => {
-    if (Object.entries(quantityValues).length !== 0) return;
-    const obj: Record<string, number> = {};
-    products.forEach((item) => {
-      obj[item.product_id] =
-        cartContext.cartItems.find(
-          (cartItem) => cartItem.product_id === item.product_id
-        )?.quantityInCart || 0;
-    });
-    setQuantityValues({ ...obj });
-  }, [products, cartContext.cartItems, quantityValues]);
-
-  console.log(cartContext.cartItems);
-
-  useEffect(() => {
-    setOrderTotal(
-      products
-        .map((item) => {
-          return item.product_price * quantityValues[item.product_id];
-        })
-        .reduce((acc, curr) => acc + curr, 0)
-    );
-  }, [quantityValues, products, setOrderTotal]);
-
-  if (Object.entries(quantityValues).length === 0) return <Loading />;
 
   return (
     <div className="grid grid-cols-5 gap-6 items-center rounded-md bg-gray-50 p-8">
@@ -78,12 +45,6 @@ export default function CartLineItemTable({
         </p>
       ))}
       {products.map((lineItem) => {
-        if (
-          quantityValues[lineItem.product_id] <= 0 &&
-          String(quantityValues[lineItem.product_id]) !== ''
-        ) {
-          return null;
-        }
         return (
           <Fragment key={lineItem.product_id}>
             <img
@@ -104,20 +65,28 @@ export default function CartLineItemTable({
               }).format(lineItem.product_price)}
             </p>
             <div className="w-16">
-              <InputWithLabel
-                label="Quantity"
-                name="quantity"
-                id={String(lineItem.product_id)}
-                type="number"
-                state={quantityValues}
-                showLabel={false}
-                direction="column"
-                setState={setQuantityValues}
+              <label
+                className="sr-only"
+                htmlFor={`quantity-${lineItem.product_id}`}
+              >
+                Quantity for {lineItem.product_name}
+              </label>
+              <input
                 min={0}
-                additionalOnChangeFunction={() => {
-                  cartContext.handleAddToCart(
+                id={`${lineItem.product_id}`}
+                className="w-16 rounded-md"
+                type="number"
+                name="quantity"
+                value={
+                  cartContext.cartItems.find(
+                    (item) => item.product_id === lineItem.product_id
+                  )?.quantityInCart || 0
+                }
+                onChange={(e) => {
+                  if (e.target.value === '') return;
+                  cartContext.handleUpdateCart(
                     lineItem,
-                    Number(quantityValues[lineItem.product_id])
+                    Number(e.target.value)
                   );
                 }}
               />
@@ -127,7 +96,12 @@ export default function CartLineItemTable({
                 style: 'currency',
                 currency: 'GBP',
               }).format(
-                lineItem.product_price * quantityValues[lineItem.product_id]
+                lineItem.product_price *
+                  Number(
+                    cartContext.cartItems.find(
+                      (item) => item.product_id === lineItem.product_id
+                    )?.quantityInCart
+                  ) ?? 1
               )}
             </p>
           </Fragment>
