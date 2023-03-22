@@ -53,7 +53,6 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }: { session: any; token: any }) {
       session.user.firstName = token.firstName;
       session.user.lastName = token.lastName;
-      // session.user.email = token.email as string;
       session.user.id = token.id;
       return session;
     },
@@ -65,8 +64,6 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: '/auth/sign-in',
-    // error: "/auth/error",  Error code passed in query string as ?error=
-    // verifyRequest: "/auth/verify-request",  (used for check email message)
   },
   providers: [
     CredentialsProvider({
