@@ -1,17 +1,17 @@
 import AdminLayout from '../../../layouts/AdminLayout';
 
-function Dashboard() {
+function Orders() {
   return (
     <>
-      <p>Dashboard</p>
+      <p>Orders</p>
     </>
   );
 }
 
 export default function () {
   return (
-    <AdminLayout title="Dashboard">
-      <Dashboard />
+    <AdminLayout title="orders">
+      <Orders />
     </AdminLayout>
   );
 }
