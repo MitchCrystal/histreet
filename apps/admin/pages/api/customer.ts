@@ -1,6 +1,4 @@
-import { PrismaClient } from 'database';
-
-const prisma = new PrismaClient();
+import prisma from '../../utils/prisma';
 
 export async function getCustomer(customerId: any) {
   const customer = await prisma.customer.findFirst({

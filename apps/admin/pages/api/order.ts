@@ -1,6 +1,4 @@
-import { PrismaClient } from 'database';
-
-const prisma = new PrismaClient();
+import prisma from '../../utils/prisma';
 
 export async function getOrder(orderId: any) {
   const order = await prisma.order.findUnique({

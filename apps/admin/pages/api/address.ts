@@ -1,6 +1,4 @@
-import { PrismaClient } from 'database';
-
-const prisma = new PrismaClient();
+import prisma from '../../utils/prisma';
 
 export async function getAddress(addressId: any) {
   const address = await prisma.address.findFirst({
