@@ -1,19 +1,51 @@
 import AdminLayout from '../../../layouts/AdminLayout';
 import Table from '../../../components/Table';
 import Button from '../../../components/Button';
+import Heading from '../../../components/Heading';
+import InputWithLabel from '../../../components/InputWithLabel';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useQuery, UseQueryResult } from '@tanstack/react-query';
-import Heading from '../../../components/Heading';
+import { useQuery, UseQueryResult, useMutation } from '@tanstack/react-query';
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+} from '../../../components/Modal';
 
 function Products() {
   const router = useRouter();
-  //const storeUrl = router.query.storeUrl;
-  const {
-    data: products,
-    isLoading,
-    isError,
-  }: UseQueryResult<Record<string, any>[]> = useQuery({
+  // const storeUrl = router.query.storeUrl;
+  const [open, setOpen] = useState(false);
+  const [formInputs, setFormInputs] = useState({
+    SKU: '',
+    product_name: '',
+    product_price: '',
+  });
+
+  const createProduct = useMutation({
+    mutationFn: (values) => {
+      return fetch('/api/product/add-product', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      });
+    },
+  });
+
+  const handleSave = () => {
+    // fetch createProduct - save to DB
+    createProduct.mutate(/*pass correct data*/);
+    // render to product detail page
+    // router.push(`${storeUrl}/products/${product_name_slug}`);
+  };
+
+  const { data: products }: UseQueryResult<Record<string, any>[]> = useQuery({
     queryKey: ['products'],
     queryFn: () =>
       //store_id need to be dynamic todo
@@ -35,10 +67,11 @@ function Products() {
           <Button
             size="default"
             appearance="primary"
-            //onClick={() =>()}
+            onClick={() => setOpen(true)}
           >
+            {' '}
             Add Product
-          </Button>
+          </Button>{' '}
         </div>
         <Heading title={'Products'} type="h2" />
       </div>
@@ -54,6 +87,60 @@ function Products() {
         ]}
         tableRows={formProducts}
       />
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger></DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add Product</DialogTitle>
+            <DialogDescription>
+              Please add your product information.
+            </DialogDescription>
+          </DialogHeader>
+          <InputWithLabel
+            label="Product name"
+            id="product_name"
+            type="text"
+            showLabel={true}
+            state={formInputs}
+            setState={setFormInputs}
+            direction="column"
+            required
+          />
+          <InputWithLabel
+            label="SKU"
+            id="SKU"
+            type="text"
+            showLabel={true}
+            state={formInputs}
+            setState={setFormInputs}
+            direction="column"
+            required
+          />
+          <InputWithLabel
+            label="Product price"
+            id="product_price"
+            type="number"
+            showLabel={true}
+            state={formInputs}
+            setState={setFormInputs}
+            direction="column"
+            required
+          />
+          <form
+            onSubmit={(event) => {
+              handleSave();
+              setOpen(false);
+              event.preventDefault();
+            }}
+          >
+            <DialogFooter>
+              <Button size="lg" appearance="primary" type="submit">
+                Submit
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
