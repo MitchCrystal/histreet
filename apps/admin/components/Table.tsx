@@ -21,7 +21,7 @@ export default function Table({
   prependLink,
 }: {
   tableColumnNames: { id: string; name: string }[];
-  tableRows: Record<string, string>[];
+  tableRows: Record<string, any>[];
   link?: boolean;
   linkProperty?: string;
   prependLink?: string;
