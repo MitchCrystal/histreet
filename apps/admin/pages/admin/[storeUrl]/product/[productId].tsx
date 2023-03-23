@@ -31,15 +31,15 @@ function ProductDetail() {
   }
 
   // in progress
-  // function handleCapture(target) {
-  //   if (target.files) {
-  //     if (target.files.length !== 0) {
-  //       const file = target.files[0];
-  //       const newUrl = URL.createObjectURL(file);
-  //       setImgSource(newUrl);
-  //     }
-  //   }
-  // }
+  function handleCapture(target) {
+    if (target.files) {
+      if (target.files.length !== 0) {
+        const file = target.files[0];
+        const newUrl = URL.createObjectURL(file);
+        setImgSource(newUrl);
+      }
+    }
+  }
 
   return (
     <>
@@ -70,11 +70,20 @@ function ProductDetail() {
                 style={{ width: '100%' }}
               />
             </div>
-    
+            {/* <label htmlFor="title">
+              <input className="w-full" type="text" id="title" name="title" />
+            </label> */}
           </Card>
-
           <Card>
-            <Textarea label="description" id="description" state={productInputs} setState={setProductsInputs} direction='column' ></Textarea>
+            {/* <InputWithLabel label="description" id="description" type="textarea" showLabel={true} state={descriptionInput} setState={setDescriptionInput} direction='row' ></InputWithLabel> */}
+
+            <label htmlFor="description">
+              <textarea
+                className="m-1 flex h-36 w-full rounded-md border border-slate-300 bg-transparent py-2 px-3 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50"
+                id="description"
+                name="description"
+              />
+            </label>
           </Card>
 
           <Card>
@@ -102,7 +111,12 @@ function ProductDetail() {
                 state={productInputs}
                 setState={setProductsInputs}
                 direction="column"
-              />
+              ></InputWithLabel>
+              {/* <label className="flex flex-col" htmlFor="det-price">
+                Price
+                <input type="text" id="price" name="price" />
+              </label> */}
+
               <InputWithLabel
                 label="sku"
                 id="sku"
@@ -111,7 +125,12 @@ function ProductDetail() {
                 state={productInputs}
                 setState={setProductsInputs}
                 direction="column"
-              />
+              ></InputWithLabel>
+              {/* <label className="flex flex-col" htmlFor="sku">
+                SKU
+                <input type="text" id="sku" name="sku" />
+              </label> */}
+
               <InputWithLabel
                 label="inventory"
                 id="inventory"
@@ -120,20 +139,22 @@ function ProductDetail() {
                 state={productInputs}
                 setState={setProductsInputs}
                 direction="column"
-              />
+              ></InputWithLabel>
+              {/* <label className="flex flex-col" htmlFor="inventory"> 
+                Inventory
+                <input type="text" id="inventory" name="inventory" />
+              </label> */}
             </div>
           </Card>
-          
-          <div className='flex justify-end ' >
-            <Button
-              size="sm"
-              appearance="default"
-              type="submit"
-              value="Active/InActive"
-            >
-              <Link href="">Deactivate</Link>
-            </Button>
-          </div>
+
+          <Button
+            size="sm"
+            appearance="default"
+            type="submit"
+            value="Active/InActive"
+          >
+            Active/Inactive
+          </Button>
         </form>
       </div>
     </>
