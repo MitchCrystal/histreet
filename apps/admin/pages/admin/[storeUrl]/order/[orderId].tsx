@@ -4,28 +4,37 @@ import Button from '../../../../components/Button';
 import Card from '../../../../components/Card';
 import Table from '../../../../components/Table';
 import Address from '../../../../components/Address';
-import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { GetServerSideProps } from 'next';
+import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { Order } from 'database';
-import { useQuery } from '@tanstack/react-query';
+import { GetServerSideProps } from 'next';
 
-function OrderDetail({ order }: any) {
+function OrderDetail() {
   const router = useRouter();
+  // get order data
+  const {
+    data: order,
+    isLoading,
+    isError,
+  }: UseQueryResult<Order, unknown> = useQuery({
+    queryKey: ['order'],
+    queryFn: () =>
+      fetch(`/api/order/${router.query.orderId}`).then((res) => res.json()),
+    enabled: !!router.isReady,
+  });
 
   // // get bill_address
   const { data: bill_address } = useQuery({
     queryKey: ['bill_address'],
     queryFn: () =>
-      fetch(`/api/address/${order.bill_address_id}`).then((res) => res.json()),
+      fetch(`/api/address/${order?.bill_address_id}`).then((res) => res.json()),
     enabled: !!order && !order.hasOwnProperty('error'),
   });
-
-  // // get ship_address
+  // get ship_address
   const { data: ship_address } = useQuery({
     queryKey: ['ship_address'],
     queryFn: () =>
-      fetch(`/api/address/${order.ship_address_id}`).then((res) => res.json()),
+      fetch(`/api/address/${order?.ship_address_id}`).then((res) => res.json()),
     enabled: !!order && !order.hasOwnProperty('error'),
   });
 
@@ -33,59 +42,23 @@ function OrderDetail({ order }: any) {
   const { data: customer } = useQuery({
     queryKey: ['customer'],
     queryFn: () =>
-      fetch(`/api/customer/${order.customer_id}`).then((res) => res.json()),
+      fetch(`/api/customer/${order?.customer_id}`).then((res) => res.json()),
     enabled: !!order && !order.hasOwnProperty('error'),
   });
 
-  if (!order || order.hasOwnProperty('error'))
-    return (
-      <div>
-        {' '}
-        <p>No order matched</p>
-        <div className="flex justify-end">
-          <Button
-            size="default"
-            appearance="primary"
-            onClick={() => router.back()}
-          >
-            Back
-          </Button>
-        </div>
-      </div>
-    );
-
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Error</p>;
+  if (order.hasOwnProperty('error')) return <p>No order matched</p>;
+  if (!bill_address || !ship_address) return <p>fetching address...</p>;
+  if (!customer) return <p>fetching email...</p>;
   const order_details = order.order_details;
   const items_ordered = order.order_details.reduce((acc: number, item: any) => {
     return (acc = acc + item.quantity);
   }, 0);
 
-  // get products
-  const products_id = order_details?.map((item: any) => item.productId);
-  const [productDetails, setProductDetails] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  // const customerData = JSON.parse(customer);
 
-  useEffect(() => {
-    if (products_id && productDetails.length === 0) {
-      setIsLoading(true);
-      const queries = products_id.map((id: string) => {
-        return {
-          querykey: ['id', id],
-          queryFn: () => fetch(`/api/product/${id}`).then((res) => res.json()),
-        };
-      });
-      const promises = queries.map((query: any) => query.queryFn());
-      Promise.all(promises).then((results) => {
-        setProductDetails(results);
-        setIsLoading(false);
-      });
-    }
-  }, [products_id, productDetails]);
-
-  const products_price = order_details?.map((item: any) => item.price);
-  const products_quantity = order_details?.map((item: any) => item.quantity);
-  const products_name = productDetails.map((item) => item.product_name);
-  const products_SKU = productDetails.map((item) => item.SKU);
-
+  //@TODO : set tableColumn with order data
   const tableColumnNames = [
     { id: 'Product_name', name: 'Product name' },
     { id: 'SKU', name: 'SKU' },
@@ -93,29 +66,22 @@ function OrderDetail({ order }: any) {
     { id: 'Quantity', name: 'Quantity' },
     { id: 'Total', name: 'Total' },
   ];
-  const tableRows = products_id.map((id: string, index: number) => {
-    const price = products_price[index];
-    const quantity = products_quantity[index];
-    const name = products_name[index];
-    const sku = products_SKU[index];
-    return {
-      id: id,
-      Product_name: name,
-      SKU: sku,
-      Price: String(price),
-      Quantity: String(quantity),
-      Total: String(price * quantity),
-    };
-  });
-
-  if (!bill_address || !ship_address) return <p>fetching address...</p>;
-  if (!customer) return <p>fetching email...</p>;
-  if (isLoading) return <p>fetching product details...</p>;
+  const tableRows = [
+    {
+      id: '1',
+      Product_name: 'Black T-shirt',
+      SKU: '12345',
+      Price: '30',
+      Quantity: '3',
+      Total: '90',
+    },
+  ];
 
   // render page
   return (
     <>
       <div className="w-1/2 md:w-5/6 lg:w-full">
+        <Heading title={`Order #${order.friendly_order_number}`} type="h1" />
         <div className="flex justify-end">
           <Button
             size="default"
@@ -125,7 +91,6 @@ function OrderDetail({ order }: any) {
             Back
           </Button>
         </div>
-        <Heading title={`Order #${order.friendly_order_number}`} type="h1" />
       </div>
       <div className="xl:flex">
         <div className="w-1/2 md:w-5/6 lg:w-full">
@@ -179,25 +144,47 @@ function OrderDetail({ order }: any) {
   );
 }
 
-export default function ({ order }: any) {
+export default function () {
   return (
     <AdminLayout title="Order Details">
-      <OrderDetail order={order} />
+      <OrderDetail />
     </AdminLayout>
   );
 }
 
-export const getServerSideProps: GetServerSideProps<{ order: Order }> = async (
-  context
-) => {
-  const { orderId } = context.query;
-  const order = await fetch(`http://localhost:3001/api/order/${orderId}`).then(
-    (res) => res.json()
-  );
+// get server side props
+// export const getServerSideProps: GetServerSideProps<{
+//   data: any;
+// }> = async (context) => {
+//   const { orderId } = context.query;
+//   const results = await getOrder(orderId as string);
 
-  return {
-    props: {
-      order,
-    },
-  };
-};
+//   const data = JSON.stringify(results);
+
+//   const bill_address_id = JSON.parse(data).bill_address_id;
+//   const ship_address_id = JSON.parse(data).ship_address_id;
+//   const customer_id = JSON.parse(data).customer_id;
+//   const [bill_address, ship_address, customer] = await Promise.all([
+//     getAddress(bill_address_id),
+//     getAddress(ship_address_id),
+//     getCustomer(customer_id).then((res) => JSON.stringify(res)),
+//   ]);
+
+//   return {
+//     props: {
+//       data,
+//       bill_address,
+//       ship_address,
+//       customer,
+//     },
+//   };
+
+//   return {
+//     props: {
+//       data: null,
+//       bill_address: null,
+//       ship_address: null,
+//       customer: null,
+//     },
+//   };
+// };
