@@ -26,7 +26,7 @@ function SignIn() {
           toast.success('Logged In!', { position: 'bottom-center' });
         });
     }
-  }, [session,router]);
+  }, [session, router]);
 
   async function handleSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
@@ -37,12 +37,17 @@ function SignIn() {
         redirect: false,
       }).then((res: any) => {
         if (!res.ok) {
-          throw new Error('Error signing in');
+          toast.error('Wrong email or password try again', { position: 'bottom-center' });
+          setIsLoading(false)
+          setFormInputs({
+            user_email: '',
+            password_hash: '',
+          })
         }
       }),
       {
         loading: 'Logging in...',
-        success: 'Almost there!',
+        success: 'Check completed' ,
         error: () => {
           setIsLoading(false);
           return 'Error logging in.';
