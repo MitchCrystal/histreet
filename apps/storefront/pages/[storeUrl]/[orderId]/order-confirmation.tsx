@@ -2,43 +2,12 @@ import HeadingText from '../../../components/HeadingText';
 import Address from '../../../components/Address';
 import Button from '../../../components/Button';
 import { useRouter } from 'next/router';
-import { InferGetServerSidePropsType } from 'next'
-import type { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '../../../utils/prisma';
 
-type Data = { ... }
-
-export const getServerSideProps = async (req:NextApiRequest,res:NextApiResponse) => {
-  const { addressId } = req.query;
-  if (!addressId || addressId === undefined) {
-    return res.status(404).json({ error: 'Address not found' });
-  }
-  const address = await prisma.address.findUnique({
-    where: {
-      address_id: String(addressId),
-    },
-  });
-  if (address) {
-    res.status(200).json(address);
-  } else {
-    return res.status(404).json({ error: 'Address not found' });
-  }
-}
-
-
-  return {
-    props: {
-      data,
-    },
-  }
-}
-export default function OrderConfirmation({data}:InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function OrderConfirmation() {
   const router = useRouter();
   function onClick() {
     router.push('/');
   }
-
-  
 
   return (
     <div className="flex flex-col justify-start gap-8 items-center w-full h-screen m-auto">

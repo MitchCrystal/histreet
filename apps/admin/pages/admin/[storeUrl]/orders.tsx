@@ -6,7 +6,7 @@ import { useQuery, UseQueryResult } from '@tanstack/react-query';
 
 function Orders() {
   const router = useRouter();
-
+  const storeUrl = router.query.storeUrl;
   const {
     data: orders,
     isLoading,
@@ -14,7 +14,7 @@ function Orders() {
   }: UseQueryResult<Record<string, any>[]> = useQuery({
     queryKey: ['order'],
     queryFn: () =>
-      fetch('/api/orders?store_id=store_1').then((res) => res.json()),
+      fetch(`/api/orders?store_id=${storeUrl}`).then((res) => res.json()),
     enabled: !!router.isReady,
     initialData: [],
   });
