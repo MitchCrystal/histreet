@@ -8,8 +8,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from './dropdown-menu';
-import { useContext } from 'react';
-import { CartContext } from '../pages/_app';
 import CartSlideOut from './CartSlideOut';
 
 const menuItems = [
@@ -28,13 +26,6 @@ const menuItems = [
 export default function Navbar() {
   const router = useRouter();
 
-  const {
-    cartItems,
-    totalItemsInCart,
-  }: { cartItems: any; totalItemsInCart: any } = useContext(CartContext);
-
-  console.log({ cartItems });
-
   return (
     <>
       <nav className="py-8 px-4 border-b border-gray-300">
@@ -43,7 +34,7 @@ export default function Navbar() {
             {/* @TODO change to dynamic value */}
             <Logo logoSrc={''} storeName="Demo Store" />
           </Link>
-          <div className="sm:hidden flex gap-4">
+          <div className="md:hidden flex gap-4">
             <DropdownMenu>
               <DropdownMenuTrigger>Browse</DropdownMenuTrigger>
               <DropdownMenuContent>
@@ -65,7 +56,7 @@ export default function Navbar() {
               <ShoppingCartIcon className="h-6" />
             </Link>
           </div>
-          <div className="hidden sm:flex sm:gap-4">
+          <div className="hidden md:flex md:gap-4">
             {menuItems.map((item) => {
               if (item.id !== 'cart') {
                 return (

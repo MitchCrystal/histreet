@@ -29,8 +29,6 @@ function Products() {
     fetch('/api/products/' + router.query.storeUrl).then((res) => res.json())
   );
 
-  console.log(products);
-
   if (isLoading) return <Loading />;
   if (isError) return <Error />;
 

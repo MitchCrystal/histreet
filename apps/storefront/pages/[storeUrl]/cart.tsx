@@ -9,6 +9,7 @@ import { useContext } from 'react';
 import { CartContext } from '../_app';
 import Loading from '../../components/Loading';
 import Error from '../../components/Error';
+import EmptyCart from '../../components/EmptyCart';
 
 type ProductType = {
   product_name: string;
@@ -47,10 +48,10 @@ function Cart() {
     enabled: !!router.isReady && cart.cartItems.length > 0,
   });
 
-  if (cart.cartItems.length === 0) return <p>Cart is empty</p>;
   if (isLoading) return <Loading />;
   if (isError) return <Error />;
-  if (!Array.isArray(products)) return <p>Cart is empty</p>;
+  if (cart.cartItems.length === 0) return <EmptyCart />;
+  if (!Array.isArray(products)) return <EmptyCart />;
 
   return (
     <>

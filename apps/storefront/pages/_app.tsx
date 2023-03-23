@@ -1,5 +1,5 @@
 import '../styles/globals.css';
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useEffect, useMemo, useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { AppProps } from 'next/app';
 
@@ -48,7 +48,7 @@ export default function App({ Component, pageProps }: AppProps) {
           .filter((item: any) => item.quantityInCart > 0);
       });
     },
-    [cartItems]
+    []
   );
 
   const handleAddToCart = useMemo(
@@ -56,7 +56,6 @@ export default function App({ Component, pageProps }: AppProps) {
       const itemAlreadyInCart = cartItems.find(
         (item: ProductType) => item.product_id === product.product_id
       );
-      console.log({ itemAlreadyInCart });
       if (itemAlreadyInCart) {
         setCartItems((prev: any) => [
           ...prev.filter(
@@ -69,7 +68,6 @@ export default function App({ Component, pageProps }: AppProps) {
           },
         ]);
       } else {
-        console.log('NOT IN CART');
         setCartItems((prev: any) => [
           ...prev,
           {

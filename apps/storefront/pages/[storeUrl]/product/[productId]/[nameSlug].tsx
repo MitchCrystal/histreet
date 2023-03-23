@@ -38,7 +38,6 @@ function ProductPage() {
       fetch(`/api/product/${router.query.productId}`).then((res) => res.json()),
     enabled: !!router.isReady,
   });
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [formValues, setFormValues] = useState({ quantity: 1 });
   const [currentImage, setCurrentImage] = useState<any>('');
 

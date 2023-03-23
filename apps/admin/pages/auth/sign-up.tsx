@@ -5,7 +5,7 @@ import Heading from '../../components/Heading';
 import Button from '../../components/Button';
 import Link from 'next/link';
 import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 
 type formValues = {
   email: string;
@@ -15,24 +15,24 @@ type formValues = {
   lastName: string;
   password: string;
   confirmPassword: string;
-}
+};
 
 function SignUp() {
-  const router = useRouter()
+  const router = useRouter();
   const createAcc = useMutation({
-    mutationFn: (values:formValues)=>{
+    mutationFn: (values: formValues) => {
       return fetch('/api/auth/sign-up', {
         method: 'POST',
-        headers:{
-          "Content-Type": "application/json",
-        }, 
-        body: JSON.stringify(values)
-      })
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      });
     },
     onSuccess: () => {
-      console.log('sign up done')
-      },
-    })
+      console.log('sign up done');
+    },
+  });
 
   const [formInputs, setFormInputs] = useState({
     email: '',
@@ -52,7 +52,7 @@ function SignUp() {
 
   function handleSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
-    createAcc.mutate(formInputs)
+    createAcc.mutate(formInputs);
     router.push('/auth/sign-in');
   }
 

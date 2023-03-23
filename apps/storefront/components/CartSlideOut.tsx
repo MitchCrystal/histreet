@@ -4,6 +4,7 @@ import { useContext } from 'react';
 import { CartContext, ProductType } from '../pages/_app';
 import Button from './Button';
 import CartQuantityInput from './CartQuantityInput';
+import EmptyCart from './EmptyCart';
 import {
   Sheet,
   SheetContent,
@@ -38,80 +39,94 @@ export default function CartSlideOut() {
           <SheetTitle>Your cart</SheetTitle>
           <SheetDescription>
             {totalItemsInCart() === 0
-              ? 'Your cart is empty'
+              ? ''
               : `You have ${totalItemsInCart()} item${
                   totalItemsInCart() > 0 ? 's' : ''
                 } in your cart`}
           </SheetDescription>
         </SheetHeader>
-        <div className="flex gap-8 flex-col overflow-auto max-h-full">
-          <div className="border-t border-gray-100 mt-2">
-            <div className="grid grid-cols-5 mt-6 text-sm mx-3">
-              {columns.map((column) => (
-                <p
-                  key={column.id}
-                  className={`${column.id === 'details' ? 'col-span-2' : ''} ${
-                    column.id === 'total' ? 'text-center' : ''
-                  }`}
+        {totalItemsInCart() > 0 ? (
+          <div className="flex gap-8 flex-col overflow-auto max-h-full">
+            <div className="border-t border-gray-100 mt-2">
+              <div className="grid-cols-5 mt-6 text-sm mx-3 lg:grid hidden">
+                {columns.map((column) => (
+                  <p
+                    key={column.id}
+                    className={`${
+                      column.id === 'details' ? 'col-span-2' : ''
+                    } ${column.id === 'total' ? 'text-center' : ''}`}
+                  >
+                    {column.name}
+                  </p>
+                ))}
+              </div>
+              {cartItems.map((item) => (
+                <div
+                  key={item.product_id}
+                  className="text-black mt-4 flex flex-col items-start lg:grid lg:grid-cols-5 lg:items-center text-center text-sm mx-3 gap-2"
                 >
-                  {column.name}
-                </p>
+                  <img
+                    src={item.product_images[0].src}
+                    alt={item.product_images[0].alt}
+                    className="w-12 h-12 rounded-md hidden lg:block"
+                  />
+                  <div className="lg:col-span-2 lg:flex lg:items-start lg:justify-center lg:flex-col">
+                    <Link
+                      href={`/${router.query.storeUrl}/product/${item.product_id}/${item.product_name_slug}`}
+                    >
+                      <p className="truncate">{item.product_name}</p>
+                    </Link>
+                    <p className="hidden lg:inline">£{item.product_price}</p>
+                  </div>
+                  <div className="hidden lg:block">
+                    <CartQuantityInput
+                      lineItem={item}
+                      additionalClassNames="text-sm"
+                    />
+                  </div>
+                  <div className="flex items-center justify-start gap-2 lg:hidden">
+                    <p className="inline lg:hidden">£{item.product_price}</p>
+                    <p className="lg:hidden">x{item.quantityInCart}</p>
+                  </div>
+                  <p className="hidden lg:block">
+                    £{item.product_price * (item?.quantityInCart || 0)}
+                  </p>
+                </div>
               ))}
             </div>
-            {cartItems.map((item) => (
-              <div
-                key={item.product_id}
-                className="text-black mt-4 grid grid-cols-5 items-center text-center text-sm mx-3"
-              >
-                <img
-                  src={item.product_images[0].src}
-                  alt={item.product_images[0].alt}
-                  className="w-12 h-12 rounded-md"
-                />
-                <div className="col-span-2 flex items-start justify-center flex-col">
-                  <Link
-                    href={`/${router.query.storeUrl}/product/${item.product_id}/${item.product_name_slug}`}
-                  >
-                    <p className="truncate">{item.product_name}</p>
-                  </Link>
-                  <p>£{item.product_price}</p>
-                </div>
-                <CartQuantityInput
-                  lineItem={item}
-                  additionalClassNames="text-sm"
-                />
-                <p>£{item.product_price * (item?.quantityInCart || 0)}</p>
-              </div>
-            ))}
-          </div>
-          <div className="flex items-center justify-center flex-col min-w-full gap-2">
-            <Link href={`/${router.query.storeUrl}/cart`} className="w-full">
+            <div className="flex items-center justify-center flex-col min-w-full gap-2">
+              <Link href={`/${router.query.storeUrl}/cart`} className="w-full">
+                <Button
+                  size="default"
+                  appearance="subtle"
+                  additionalClasses="w-full"
+                >
+                  View full cart
+                </Button>
+              </Link>
               <Button
                 size="default"
-                appearance="subtle"
+                appearance="primary"
                 additionalClasses="w-full"
               >
-                View full cart
+                Checkout •{' '}
+                {cartItems.reduce((acc, curr) => {
+                  return (acc += curr.quantityInCart || 0);
+                }, 0)}{' '}
+                item
+                {cartItems.reduce((acc, curr) => {
+                  return (acc += curr.quantityInCart || 0);
+                }, 0) > 1
+                  ? 's'
+                  : ''}
               </Button>
-            </Link>
-            <Button
-              size="default"
-              appearance="primary"
-              additionalClasses="w-full"
-            >
-              Checkout •{' '}
-              {cartItems.reduce((acc, curr) => {
-                return (acc += curr.quantityInCart || 0);
-              }, 0)}{' '}
-              item
-              {cartItems.reduce((acc, curr) => {
-                return (acc += curr.quantityInCart || 0);
-              }, 0) > 1
-                ? 's'
-                : ''}
-            </Button>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="mt-4">
+            <EmptyCart />
+          </div>
+        )}
       </SheetContent>
     </Sheet>
   );
