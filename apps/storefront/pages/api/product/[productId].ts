@@ -7,11 +7,9 @@ type Data =
       description: string;
       product_price: number;
       product_id: string;
-      product_images: {
-        image_id: string;
-        image_url: string;
-        image_alt: string;
-      }[];
+      product_images: any;
+      inventory_qty: number;
+      is_active: boolean;
     }
   | { error: boolean };
 
@@ -36,10 +34,11 @@ export default async function handler(
         product_images: true,
         product_id: true,
         inventory_qty: true,
+        is_active: true,
       },
     });
 
-    if (product) {
+    if (product && product.is_active) {
       res.status(200).json(product);
     } else {
       throw new Error('Product not found');

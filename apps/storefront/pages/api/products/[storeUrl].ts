@@ -7,7 +7,8 @@ type Data =
       product_price: number;
       product_id: string;
       product_name_slug: string;
-      product_images: Record<string, string>[];
+      product_images: any;
+      inventory_qty: number;
     }[]
   | { error: boolean };
 
@@ -42,6 +43,7 @@ export default async function handler(
         product_images: true,
         product_id: true,
         product_name_slug: true,
+        inventory_qty: true,
       },
     });
 

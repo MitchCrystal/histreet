@@ -10,6 +10,7 @@ export default function InputWithLabel({
   setState,
   direction,
   additionalClasses,
+  additionalOnChangeFunction,
   ...delegated
 }: {
   label: string;
@@ -20,6 +21,7 @@ export default function InputWithLabel({
   setState: React.Dispatch<React.SetStateAction<any>>;
   direction: 'row' | 'column';
   additionalClasses?: string;
+  additionalOnChangeFunction?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   [x: string]: any;
 }) {
   return (
@@ -43,7 +45,10 @@ export default function InputWithLabel({
           className={`m-1 flex h-10 w-full rounded-md border border-slate-300 bg-transparent py-2 px-3 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 ${additionalClasses}`}
           value={state[id]}
           type={type}
-          onChange={(e) => setState({ ...state, [id]: e.target.value })}
+          onChange={(e) => {
+            additionalOnChangeFunction && additionalOnChangeFunction(e);
+            setState({ ...state, [id]: e.target.value });
+          }}
           {...delegated}
         />
       </div>
