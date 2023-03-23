@@ -29,6 +29,16 @@ export default async function createAccount(
         },
       },
     });
+    await prisma.storefront.create({
+      data: {
+        store: {
+          connect: {
+            store_id: store.store_id,
+          },
+        },
+      },
+    });
+
     res.status(201).send({ created: true });
   } catch (e) {
     console.log(e);

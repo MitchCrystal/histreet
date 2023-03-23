@@ -34,6 +34,11 @@ export default function AdminLayout({
       href: `/admin/${router.query.storeUrl}/editor`,
       current: false,
     },
+    {
+      name: 'Visit Store',
+      href: `${process.env.NEXT_PUBLIC_STOREFRONT_URL}/`,
+      current: false,
+    },
   ];
   const [isNavOpen, setIsNavOpen] = useState(false);
 

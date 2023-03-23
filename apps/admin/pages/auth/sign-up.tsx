@@ -31,7 +31,7 @@ function SignUp() {
       });
     },
     onSuccess: () => {
-      toast.success('Please Sign in');
+      toast.success('Please Sign in',{ position: 'bottom-center' });
     },
   });
 
