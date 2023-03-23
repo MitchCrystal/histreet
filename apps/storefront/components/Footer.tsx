@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
     <>
-      <footer className="border-t border-gray-300 py-8 px-6">
+      <footer className="border-t border-gray-300 py-8 px-6 bg-gray-800 text-white">
         <div className="max-w-[1200px] m-auto">
           <p className="text-sm">
             {/* @TODO Insert dynamic email */}

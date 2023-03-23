@@ -4,12 +4,7 @@ import prisma from '../../../utils/prisma';
 type Data =
   | {
       product_name: string;
-      description: string;
-      product_price: number;
-      product_id: string;
-      product_images: any;
-      inventory_qty: number;
-      is_active: boolean;
+      SKU: string;
     }
   | { error: boolean };
 
@@ -29,16 +24,11 @@ export default async function handler(
       },
       select: {
         product_name: true,
-        description: true,
-        product_price: true,
-        product_images: true,
-        product_id: true,
-        inventory_qty: true,
-        is_active: true,
+        SKU: true,
       },
     });
 
-    if (product && product.is_active) {
+    if (product) {
       res.status(200).json(product);
     } else {
       throw new Error('Product not found');

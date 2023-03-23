@@ -5,7 +5,8 @@ import Heading from '../../components/Heading';
 import Button from '../../components/Button';
 import Link from 'next/link';
 import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
+import { toast } from 'react-hot-toast';
 
 type formValues = {
   email: string;
@@ -15,29 +16,29 @@ type formValues = {
   lastName: string;
   password: string;
   confirmPassword: string;
-}
+};
 
 function SignUp() {
-  const router = useRouter()
+  const router = useRouter();
   const createAcc = useMutation({
-    mutationFn: (values:formValues)=>{
+    mutationFn: (values: formValues) => {
       return fetch('/api/auth/sign-up', {
         method: 'POST',
-        headers:{
-          "Content-Type": "application/json",
-        }, 
-        body: JSON.stringify(values)
-      })
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      });
     },
     onSuccess: () => {
-      console.log('sign up done')
-      },
-    })
+      toast.success('Please Sign in',{ position: 'bottom-center' });
+    },
+  });
 
   const [formInputs, setFormInputs] = useState({
     email: '',
     storeName: '',
-    storeURL: '(e.g. top-toys)',
+    storeURL: '',
     firstName: '',
     lastName: '',
     password: '',
@@ -52,7 +53,8 @@ function SignUp() {
 
   function handleSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
-    createAcc.mutate(formInputs)
+    createAcc.mutate(formInputs);
+    toast.success('Successfully Signed Up');
     router.push('/auth/sign-in');
   }
 

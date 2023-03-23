@@ -5,67 +5,62 @@ import MainLayout from '../../layouts/MainLayout';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { CartContext } from '../_app';
 import Loading from '../../components/Loading';
 import Error from '../../components/Error';
+import EmptyCart from '../../components/EmptyCart';
 
-export type CartProduct = {
+type ProductType = {
   product_name: string;
   product_price: number;
   product_id: string;
   product_name_slug: string;
-  product_images: Record<string, string>[];
-}[];
+  product_images: {
+    id: string;
+    src: string;
+    alt: string;
+  }[];
+  quantityInCart?: number;
+};
 
 function Cart() {
   const router = useRouter();
   const cart: {
-    cartItems: { id: string; quantity: number }[];
-    setCartItems: React.Dispatch<React.SetStateAction<any>>;
+    cartItems: ProductType[];
+    setCartItems: React.Dispatch<React.SetStateAction<ProductType[]>>;
+    handleAddToCart: (product: ProductType, quantity: number) => number;
+    handleUpdateCart: (product: ProductType, quantity: number) => number;
   } = useContext(CartContext);
 
   const {
     data: products,
     isLoading,
     isError,
-  }: UseQueryResult<CartProduct, unknown> = useQuery({
+  }: UseQueryResult<ProductType, unknown> = useQuery({
     queryKey: ['cart-products'],
     queryFn: () =>
       fetch(
         `/api/products/cart/${JSON.stringify(
-          cart.cartItems.map((item) => item.id)
+          cart.cartItems.map((item) => item.product_id)
         )}`
       ).then((res) => res.json()),
-    enabled: !!router.isReady,
+    enabled: !!router.isReady && cart.cartItems.length > 0,
   });
-  const [orderTotal, setOrderTotal] = useState(0);
-
-  useEffect(() => {
-    const total = cart.cartItems.reduce((acc, curr) => {
-      return (acc +=
-        (products?.find((product) => product.product_id === curr.id)
-          ?.product_price || 0) * curr.quantity);
-    }, 0);
-
-    setOrderTotal(total);
-  }, [cart.cartItems, products]);
 
   if (isLoading) return <Loading />;
   if (isError) return <Error />;
-  if (!Array.isArray(products)) return <p>Cart is empty</p>;
+  if (cart.cartItems.length === 0) return <EmptyCart />;
+  if (!Array.isArray(products)) return <EmptyCart />;
+
   return (
     <>
       <HeadingText size="h3">Cart</HeadingText>
-      <div className="md:grid sm:grid-cols-9 mt-8 flex flex-col gap-8 w-full">
+      <div className="lg:grid lg:grid-cols-9 mt-8 flex flex-col gap-8 w-full">
         <div className="col-span-6">
-          <div className="overflow-auto">
-            <div className="min-w-[500px] ">
-              <CartLineItemTable
-                products={products}
-                cartContext={cart}
-                setOrderTotal={setOrderTotal}
-              />
+          <div className="overflow-x-auto">
+            <div className="min-w-[600px] ">
+              <CartLineItemTable products={products} cartContext={cart} />
             </div>
           </div>
           <div className="flex items-center justify-end">
@@ -88,18 +83,31 @@ function Cart() {
                 {new Intl.NumberFormat('en-GB', {
                   style: 'currency',
                   currency: 'GBP',
-                }).format(orderTotal)}
+                }).format(
+                  cart.cartItems.reduce(
+                    (acc, curr) =>
+                      (acc += curr.product_price * (curr.quantityInCart ?? 0)),
+                    0
+                  )
+                )}
               </HeadingText>
             </div>
-            <p>
-              Total items:{' '}
-              {cart.cartItems.reduce((acc, curr) => {
-                return (acc += curr.quantity);
-              }, 0)}
-            </p>
           </div>
-          <Button size="default" appearance="primary" additionalClasses="mb-2">
-            Checkout
+          <Button
+            size="default"
+            appearance="primary"
+            additionalClasses="mb-2 scale-100 mx-2"
+          >
+            Checkout •{' '}
+            {cart.cartItems.reduce((acc, curr) => {
+              return (acc += curr.quantityInCart || 0);
+            }, 0)}{' '}
+            item
+            {cart.cartItems.reduce((acc, curr) => {
+              return (acc += curr.quantityInCart || 0);
+            }, 0) > 1
+              ? 's'
+              : ''}
           </Button>
         </div>
       </div>

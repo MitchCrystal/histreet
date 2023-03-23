@@ -5,6 +5,8 @@ import { Bars3Icon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { signOut } from 'next-auth/react';
+import Button from '../components/Button';
 
 export default function AdminLayout({
   children,
@@ -30,6 +32,11 @@ export default function AdminLayout({
     {
       name: 'Store Editor',
       href: `/admin/${router.query.storeUrl}/editor`,
+      current: false,
+    },
+    {
+      name: 'Visit Store',
+      href: `${process.env.NEXT_PUBLIC_STOREFRONT_URL}/`,
       current: false,
     },
   ];
@@ -68,8 +75,16 @@ export default function AdminLayout({
               );
             })}
           </div>
-          <div className="flex flex-col items-center border-t w-full px-3 py-3 text-base  text-red-600">
-            Log Out
+          <div className="flex flex-col items-center border-t w-full px-3 py-3 ">
+            <Button
+              size="sm"
+              appearance="link"
+              type="button"
+              onClick={() => signOut({ callbackUrl: '/' })}
+              className="text-base  text-red-600"
+            >
+              Log Out
+            </Button>
           </div>
         </nav>
         <nav
@@ -98,7 +113,15 @@ export default function AdminLayout({
               className="flex flex-col items-center border-y w-full px-3 py-3 text-base text-red-600"
               onClick={() => setIsNavOpen((prev) => !prev)}
             >
-              Log Out
+              <Button
+                size="sm"
+                appearance="link"
+                type="button"
+                onClick={() => signOut({ callbackUrl: '/' })}
+                className="text-base  text-red-600"
+              >
+                Log Out
+              </Button>
             </div>
           </div>
         </nav>
