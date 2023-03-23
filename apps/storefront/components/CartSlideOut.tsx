@@ -104,22 +104,27 @@ export default function CartSlideOut() {
                   View full cart
                 </Button>
               </Link>
-              <Button
-                size="default"
-                appearance="primary"
-                additionalClasses="w-full"
+              <Link
+                href={`/${router.query.storeUrl}/checkout`}
+                className="w-full"
               >
-                Checkout •{' '}
-                {cartItems.reduce((acc, curr) => {
-                  return (acc += curr.quantityInCart || 0);
-                }, 0)}{' '}
-                item
-                {cartItems.reduce((acc, curr) => {
-                  return (acc += curr.quantityInCart || 0);
-                }, 0) > 1
-                  ? 's'
-                  : ''}
-              </Button>
+                <Button
+                  size="default"
+                  appearance="primary"
+                  additionalClasses="w-full"
+                >
+                  Checkout •{' '}
+                  {cartItems.reduce((acc, curr) => {
+                    return (acc += curr.quantityInCart || 0);
+                  }, 0)}{' '}
+                  item
+                  {cartItems.reduce((acc, curr) => {
+                    return (acc += curr.quantityInCart || 0);
+                  }, 0) > 1
+                    ? 's'
+                    : ''}
+                </Button>
+              </Link>
             </div>
           </div>
         ) : (

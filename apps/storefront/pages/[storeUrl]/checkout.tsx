@@ -1,20 +1,21 @@
-import InputWithLabel from '../../components/InputWithLabel';
 import Logo from '../../components/Logo';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useContext, useEffect, useState } from 'react';
 import Button from '../../components/Button';
-import Checkbox from '../../components/Checkbox';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import StripeCheckoutWidget from '../../components/StripeCheckoutWidget';
 import HeadingText from '../../components/HeadingText';
-import DropdownSelector from '../../components/DropdownSelector';
 import CheckoutFormFields from '../../components/CheckoutFormFields';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { CartContext, ProductType } from '../_app';
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
 );
 
 export default function Checkout() {
+  const router = useRouter();
   const [clientSecret, setClientSecret] = useState('');
   const [shippingInputs, setShippingInputs] = useState({
     email: '',
@@ -34,35 +35,52 @@ export default function Checkout() {
   });
 
   const [billingInputs, setBillingInputs] = useState({
-    email: '',
-    phone_number: '',
-    firstName: '',
-    lastName: '',
-    firstLine: '',
-    secondLine: '',
-    city: '',
-    county: '',
-    postcode: '',
-    country: 'United Kingdom',
+    billing_email: '',
+    billing_phone_number: '',
+    billing_firstName: '',
+    billing_lastName: '',
+    billing_firstLine: '',
+    billing_secondLine: '',
+    billing_city: '',
+    billing_county: '',
+    billing_postcode: '',
+    billing_country: 'United Kingdom',
   });
 
   const [isOnPaymentScreen, setIsOnPaymentScreen] = useState(false);
+  const { cartItems }: { cartItems: ProductType[] } = useContext(CartContext);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    setIsOnPaymentScreen(true);
-  };
-
-  useEffect(() => {
-    // Create PaymentIntent as soon as the page loads
     fetch('/api/stripe/create-payment-intent', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ items: [{ id: 'xl-tshirt' }] }),
+      body: JSON.stringify({
+        products: cartItems,
+        shippingAddress: shippingInputs,
+        billingAddress: billingInputs,
+      }),
     })
       .then((res) => res.json())
       .then((data) => setClientSecret(data.clientSecret));
-  }, []);
+    setIsOnPaymentScreen(true);
+  };
+
+  // useEffect(() => {
+  //   // Create PaymentIntent as soon as the page loads
+  //   if (!isOnPaymentScreen) return;
+  //   fetch('/api/stripe/create-payment-intent', {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify({
+  //       products: cartItems,
+  //       shippingAddress: shippingInputs,
+  //       billingAddress: billingInputs,
+  //     }),
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => setClientSecret(data.clientSecret));
+  // }, [isOnPaymentScreen]);
 
   const appearance = {
     theme: 'stripe',
@@ -83,8 +101,23 @@ export default function Checkout() {
         <div className="grid grid-cols-5 h-full">
           <div className="bg-gray-50 lg:col-span-3 col-span-5 min-h-screen">
             <div className="md:py-12 md:px-24 py-8 px-8">
-              <div className="mb-4">
+              <div className="mb-4 flex items-center justify-between">
                 <HeadingText size="h2">Checkout</HeadingText>
+                {isOnPaymentScreen ? (
+                  <Button
+                    appearance="link"
+                    size="default"
+                    onClick={() => setIsOnPaymentScreen(false)}
+                  >
+                    Back to details
+                  </Button>
+                ) : (
+                  <Link href={`/${router.query.storeUrl}/cart`}>
+                    <Button appearance="link" size="default">
+                      Return to cart
+                    </Button>
+                  </Link>
+                )}
               </div>
               {isOnPaymentScreen && clientSecret ? (
                 <Elements options={options} stripe={stripePromise}>

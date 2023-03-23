@@ -148,7 +148,7 @@ export default function CheckoutFormFields({
               <div className="flex flex-col sm:flex-row sm:gap-4 mb-2 sm:mb-6 justify-between ">
                 <InputWithLabel
                   label="First Name*"
-                  id="firstName"
+                  id="billing_firstName"
                   type="text"
                   showLabel={true}
                   state={billingInputs}
@@ -158,7 +158,7 @@ export default function CheckoutFormFields({
                 />
                 <InputWithLabel
                   label="Last Name*"
-                  id="lastName"
+                  id="billing_lastName"
                   type="text"
                   showLabel={true}
                   state={billingInputs}
@@ -170,7 +170,7 @@ export default function CheckoutFormFields({
               <div className="flex flex-col sm:flex-row sm:gap-4 mb-2 sm:mb-6 justify-between ">
                 <InputWithLabel
                   label="Address Line 1*"
-                  id="firstLine"
+                  id="billing_firstLine"
                   type="text"
                   showLabel={true}
                   state={billingInputs}
@@ -180,7 +180,7 @@ export default function CheckoutFormFields({
                 />
                 <InputWithLabel
                   label="Address Line 2"
-                  id="secondLine"
+                  id="billing_secondLine"
                   type="text"
                   showLabel={true}
                   state={billingInputs}
@@ -191,7 +191,7 @@ export default function CheckoutFormFields({
               <div className="flex flex-col sm:flex-row sm:gap-4 mb-2 sm:mb-6 justify-between ">
                 <InputWithLabel
                   label="City*"
-                  id="city"
+                  id="billing_city"
                   type="text"
                   showLabel={true}
                   state={billingInputs}
@@ -201,7 +201,7 @@ export default function CheckoutFormFields({
                 />
                 <InputWithLabel
                   label="County"
-                  id="county"
+                  id="billing_county"
                   type="text"
                   showLabel={true}
                   state={billingInputs}
@@ -212,7 +212,7 @@ export default function CheckoutFormFields({
               <div className="flex flex-col sm:flex-row sm:gap-4 mb-2 sm:mb-6 justify-between ">
                 <InputWithLabel
                   label="Postcode*"
-                  id="postcode"
+                  id="billing_postcode"
                   type="text"
                   showLabel={true}
                   state={billingInputs}
@@ -222,7 +222,7 @@ export default function CheckoutFormFields({
                 />
                 <DropdownSelector
                   label="Country*"
-                  selectId="country"
+                  selectId="billing_country"
                   options={[{ id: 'gb', name: 'United Kingdom' }]}
                 />
               </div>
