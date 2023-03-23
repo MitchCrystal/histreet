@@ -36,7 +36,7 @@ export default function AdminLayout({
     },
     {
       name: 'Visit Store',
-      href: `${process.env.NEXT_PUBLIC_STOREFRONT_URL}/`,
+      href: `${process.env.NEXT_PUBLIC_STOREFRONT_URL}/${router.query.storeUrl}`,
       current: false,
     },
   ];
@@ -125,7 +125,7 @@ export default function AdminLayout({
             </div>
           </div>
         </nav>
-        <div className="m-4">{children}</div>
+        <div className="m-4 w-full">{children}</div>
       </div>
     </>
   );
