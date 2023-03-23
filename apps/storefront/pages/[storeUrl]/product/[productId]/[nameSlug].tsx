@@ -69,7 +69,6 @@ function ProductPage() {
   const quantityInCart = cartItems.find(
     (item: any) => item.product_id === product.product_id
   )?.quantityInCart;
-
   return (
     <div>
       <Breadcrumbs

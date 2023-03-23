@@ -2,11 +2,10 @@ import '../styles/globals.css';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { AppProps } from 'next/app';
-import cart from './[storeUrl]/cart';
 
 export const CartContext: any = createContext([]);
 
-type ProductType = {
+export type ProductType = {
   product_name: string;
   product_price: number;
   product_id: string;
@@ -19,9 +18,8 @@ type ProductType = {
   quantityInCart?: number;
 };
 
+export const queryClient = new QueryClient();
 export default function App({ Component, pageProps }: AppProps) {
-  const queryClient = new QueryClient();
-
   const [cartItems, setCartItems] = useState<any>([]); //ProductType
 
   useEffect(() => {
@@ -36,15 +34,19 @@ export default function App({ Component, pageProps }: AppProps) {
 
   const handleUpdateCart = useMemo(
     () => (product: ProductType, updateByQuantity: number) => {
-      setCartItems((prev: any) => [
-        ...prev.filter(
-          (item: ProductType) => item.product_id !== product.product_id
-        ),
-        {
-          ...product,
-          quantityInCart: Number(updateByQuantity),
-        },
-      ]);
+      setCartItems((prev: any) => {
+        return prev
+          .map((item: ProductType) => {
+            if (item.product_id === product.product_id) {
+              return {
+                ...item,
+                quantityInCart: Number(updateByQuantity),
+              };
+            }
+            return item;
+          })
+          .filter((item: any) => item.quantityInCart > 0);
+      });
     },
     [cartItems]
   );
@@ -91,7 +93,7 @@ export default function App({ Component, pageProps }: AppProps) {
   );
 
   const cartObj: {
-    cartItems: { id: string; quantity: number }[];
+    cartItems: ProductType[];
     setCartItems: React.Dispatch<React.SetStateAction<any>>;
     handleAddToCart: (product: ProductType, quantityToAdd: number) => void;
     totalItemsInCart: () => void;

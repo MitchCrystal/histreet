@@ -36,7 +36,6 @@ function Cart() {
     data: products,
     isLoading,
     isError,
-    isFetching,
   }: UseQueryResult<ProductType, unknown> = useQuery({
     queryKey: ['cart-products'],
     queryFn: () =>
@@ -58,7 +57,7 @@ function Cart() {
       <HeadingText size="h3">Cart</HeadingText>
       <div className="lg:grid lg:grid-cols-9 mt-8 flex flex-col gap-8 w-full">
         <div className="col-span-6">
-          <div className="overflow-y-scroll">
+          <div className="overflow-x-auto">
             <div className="min-w-[600px] ">
               <CartLineItemTable products={products} cartContext={cart} />
             </div>
