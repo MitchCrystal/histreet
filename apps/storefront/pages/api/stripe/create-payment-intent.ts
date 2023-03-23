@@ -16,7 +16,17 @@ export default async function handler(
 ) {
   const { products, shippingAddress, billingAddress } = req.body;
 
-  console.log({ products });
+  const lineItemsObj: any = {};
+
+  products.forEach((product: any) => {
+    const obj = {
+      id: product.product_id,
+      qty: product.quantityInCart,
+      price: product.product_price,
+    };
+    const combinedKey = `item_${product.product_id}`;
+    lineItemsObj[combinedKey] = JSON.stringify(obj);
+  });
 
   // Create a PaymentIntent with the order amount and currency
   const paymentIntent = await stripe.paymentIntents.create({
@@ -26,7 +36,8 @@ export default async function handler(
       enabled: true,
     },
     metadata: {
-      //   lineItems: JSON.stringify({...products}),
+      ...lineItemsObj,
+      //   test: JSON.stringify({ id: 1, name: 'test' }),
       ...shippingAddress,
       ...billingAddress,
     },
