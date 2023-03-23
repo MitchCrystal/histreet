@@ -1,5 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { Order, Customer } from 'database';
+import { Customer } from 'database';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../utils/prisma';
 

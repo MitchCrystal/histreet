@@ -3,6 +3,7 @@ import Table from '../../../components/Table';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import Heading from '../../../components/Heading';
 
 function Orders() {
   const router = useRouter();
@@ -14,7 +15,8 @@ function Orders() {
   }: UseQueryResult<Record<string, any>[]> = useQuery({
     queryKey: ['order'],
     queryFn: () =>
-      fetch(`/api/orders?store_id=${storeUrl}`).then((res) => res.json()),
+      //need to change store_id dynamic todo
+      fetch(`/api/orders?store_id=store_1`).then((res) => res.json()),
     enabled: !!router.isReady,
     initialData: [],
   });
@@ -27,7 +29,7 @@ function Orders() {
 
   return (
     <>
-      <p>Orders</p>
+      <Heading title={'Orders'} type="h2" />
       <Table
         link={true}
         linkProperty="order_id"
