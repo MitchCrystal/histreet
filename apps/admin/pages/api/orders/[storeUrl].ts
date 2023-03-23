@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { Order, Customer } from 'database';
+import { Customer } from 'database';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import prisma from '../../utils/prisma';
+import prisma from '../../../utils/prisma';
 
 type OrderDTO = {
   order_id: string;
@@ -17,26 +17,44 @@ type OrderDB = {
   friendly_order_number: number;
   customer: Customer;
   total_order_cost: number;
-  order_details: string[];
+  order_details: OrderDetails;
   created_at: Date;
 };
+
+type OrderDetails = {
+  product_id: string;
+  quantity: number;
+  price: number;
+}[];
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<OrderDTO[]>
 ) {
-  const storeId = req.query.store_id?.toString();
-  if (storeId == null) {
+  const storeUrl = req.query.storeUrl;
+  console.log(storeUrl, 'storeUrl');
+  if (storeUrl == null) {
     return res.status(400);
   } else {
-    const orders = await findOrders(storeId);
-    return res.status(200).json(getOrderDTO(orders));
+    const store_id = await findStoreId(storeUrl as string);
+    const orders = await findOrders(store_id?.store_id as string);
+    return res.status(200).json(getOrderDTO(orders as OrderDB[]));
   }
 }
 
-const findOrders = async (storeId: string) => {
+const findStoreId = async (storeUrl: string) => {
+  const response = await prisma.store.findFirst({
+    where: { store_url: storeUrl },
+    select: {
+      store_id: true,
+    },
+  });
+  return response;
+};
+
+const findOrders = async (findStoreId: string) => {
   const response = await prisma.order.findMany({
-    where: { store_id: storeId },
+    where: { store_id: findStoreId },
 
     select: {
       order_id: true,
@@ -47,7 +65,7 @@ const findOrders = async (storeId: string) => {
       customer: true,
     },
   });
-
+  //add another prisma function to target storeUrl using store id from fn above and return both
   return response;
 };
 
@@ -68,7 +86,7 @@ const getOrderDTO = (orders: OrderDB[]) => {
   });
 };
 
-const getTotalItems = (orderDetails: any[]) => {
+const getTotalItems = (orderDetails: OrderDetails) => {
   return orderDetails
     .map((orderDetailString) => orderDetailString.quantity)
     .reduce((a, b) => a + b);
