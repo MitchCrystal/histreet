@@ -6,6 +6,7 @@ import Button from '../../components/Button';
 import Link from 'next/link';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import { toast } from 'react-hot-toast';
 
 type formValues = {
   email: string;
@@ -30,14 +31,14 @@ function SignUp() {
       });
     },
     onSuccess: () => {
-      console.log('sign up done');
+      toast.success('Please Sign in');
     },
   });
 
   const [formInputs, setFormInputs] = useState({
     email: '',
     storeName: '',
-    storeURL: '(e.g. top-toys)',
+    storeURL: '',
     firstName: '',
     lastName: '',
     password: '',
@@ -53,6 +54,7 @@ function SignUp() {
   function handleSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
     createAcc.mutate(formInputs);
+    toast.success('Successfully Signed Up');
     router.push('/auth/sign-in');
   }
 
