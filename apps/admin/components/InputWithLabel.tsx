@@ -15,7 +15,7 @@ export default function InputWithLabel({
   id: string;
   type: string;
   showLabel: boolean;
-  state: Record<string, string>;
+  state: Record<string, any>;
   setState: React.Dispatch<React.SetStateAction<any>>;
   direction: 'row' | 'column';
   [x: string]: any;

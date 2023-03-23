@@ -4,7 +4,7 @@ import { Label } from './Label';
 type Props = {
   label: string;
   id: string;
-  state: Record<string, string>;
+  state: Record<string, any>;
   setState: React.Dispatch<React.SetStateAction<any>>;
   direction: 'row' | 'column';
   [x: string]: any;

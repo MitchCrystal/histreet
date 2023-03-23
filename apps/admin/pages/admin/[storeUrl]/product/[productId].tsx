@@ -6,51 +6,85 @@ import InputWithLabel from '../../../../components/InputWithLabel';
 import Textarea from '../../../../components/Textarea';
 import Link from 'next/link';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { Image } from 'next/image';
+import { useMutation, useQuery, UseQueryResult } from '@tanstack/react-query';
 
+interface Product {
+  product_name: string;
+  description: string;
+  product_price: number;
+  product_images: string[];
+  inventory_qty: number;
+  SKU: string;
+}
 
 function ProductDetail() {
+  const router = useRouter();
+  const { productId } = router.query;
+
   const [productInputs, setProductsInputs] = useState({
     item: '',
     description: '',
-    price: '',
+    price: '0',
     sku: '',
-    inventory: '',
-  });
-  const [isEditing, setIsEditing] = useState(false);
-  const [storeformInputs, setStoreFormInputs] = useState({
-    id: '',
-    storeName: '',
-    supportEmail: '',
+    inventory: '0',
+    images: [] as string[],
   });
 
-  function edit() {
-    setIsEditing(true);
-  }
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['product'],
+    queryFn: async () => {
+      const resp = await fetch(`/api/product/${productId}`);
+      const product: Product = await resp.json();
 
-  function cancel() {
-    setIsEditing(false);
-  }
+      setProductsInputs({
+        item: product.product_name,
+        description: product.description,
+        price: `${product.product_price}`,
+        sku: product.SKU,
+        inventory: `${product.inventory_qty}`,
+        images: product.product_images,
+      });
 
-  function save() {
-    //tanstack function to send stormFormInputs to db on click save button
-    setIsEditing(false);
-  }
+      return product;
+    },
+    enabled: Boolean(productId),
+  });
 
-  function getStoreData() {
-    //tanstack query to get store data
-    //if result is not empty {}
-    //setIsEditing(true)
-  }
+  const { mutate } = useMutation((body: Product) =>
+    fetch(`/api/product/${productId}`, {
+      method: 'PUT',
+      headers: { ['Content-type']: 'application/json' },
+      body: JSON.stringify(body),
+    }).then((resp) => resp.json())
+  );
 
   // checkout Cloudinary interface before devloping file upload
   const [chosenFile, setChosenFile] = useState([]);
   const [flag, setFlag] = useState(false);
 
-  function handleSubmit() {}
+  function handleSubmit(event: SubmitEvent) {
+    event.preventDefault();
+
+    try {
+      const body = {
+        product_name: productInputs.item,
+        description: productInputs.description,
+        product_price: Number(productInputs.price),
+        SKU: productInputs.sku,
+        inventory_qty: Number(productInputs.inventory),
+        product_images: productInputs.images,
+      };
+      mutate(body);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   function handleImageSubmit() {}
 
-  function flagHandler(event: any) { 
+  function flagHandler(event: any) {
     setChosenFile(event.target.file[0]);
     setFlag(true);
   }
@@ -72,7 +106,7 @@ function ProductDetail() {
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <div className="flex flex-row justify-between h-6">
             <Heading title="T-shirt" type="h2"></Heading>
-            <div className="flex justify-end" >
+            <div className="flex justify-end">
               <Button
                 size="sm"
                 appearance="default"
@@ -100,12 +134,21 @@ function ProductDetail() {
           </Card>
 
           <Card>
-            <Textarea  label="description" id="description" state={productInputs} setState={setProductsInputs} direction='row' />
+            <Textarea
+              label="description"
+              id="description"
+              state={productInputs}
+              setState={setProductsInputs}
+              direction="row"
+            />
           </Card>
 
           <Card>
             <div className="flex flex-col justify-between h-36">
               <div className="h-20">images</div>
+              {/* {productInputs.images.map((src) => (
+                <img key={src} src={src} /> // use nextjs image
+              ))} */}
 
               <label className="flex flex-row justify-end " htmlFor="upload">
                 <input
@@ -129,7 +172,7 @@ function ProductDetail() {
                 setState={setProductsInputs}
                 direction="column"
               ></InputWithLabel>
-          
+
               <InputWithLabel
                 label="sku"
                 id="sku"
@@ -139,7 +182,7 @@ function ProductDetail() {
                 setState={setProductsInputs}
                 direction="column"
               ></InputWithLabel>
-            
+
               <InputWithLabel
                 label="inventory"
                 id="inventory"
@@ -152,14 +195,14 @@ function ProductDetail() {
             </div>
           </Card>
 
-          <div className=' flex justify-end ' >
-              <Button size="default" appearance="default">
-                <Link href="/admin/d/products">Cancel</Link>
-              </Button>
-              <Button size="default" appearance="default">
-                Save
-              </Button>
-            </div>
+          <div className=" flex justify-end ">
+            <Button size="default" appearance="default">
+              <Link href="/admin/d/products">Cancel</Link>
+            </Button>
+            <Button size="default" appearance="default" type="submit">
+              Save
+            </Button>
+          </div>
         </form>
       </div>
     </>

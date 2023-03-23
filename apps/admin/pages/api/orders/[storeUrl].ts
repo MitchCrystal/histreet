@@ -89,5 +89,5 @@ const getOrderDTO = (orders: OrderDB[]) => {
 const getTotalItems = (orderDetails: OrderDetails) => {
   return orderDetails
     .map((orderDetailString) => orderDetailString.quantity)
-    .reduce((a, b) => a + b);
+    .reduce((a, b) => a + b, 0);
 };
