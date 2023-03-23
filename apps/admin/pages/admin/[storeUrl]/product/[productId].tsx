@@ -72,12 +72,14 @@ function ProductDetail() {
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <div className="flex flex-row justify-between h-6">
             <Heading title="T-shirt" type="h2"></Heading>
-            <div>
-              <Button size="default" appearance="default">
-                <Link href="">Cancel</Link>
-              </Button>
-              <Button size="default" appearance="default">
-                Save
+            <div className="flex justify-end" >
+              <Button
+                size="sm"
+                appearance="default"
+                type="submit"
+                value="Active/InActive"
+              >
+                Active/Inactive
               </Button>
             </div>
           </div>
@@ -150,17 +152,14 @@ function ProductDetail() {
             </div>
           </Card>
 
-          <div className="flex justify-end" >
-             <Button
-              size="sm"
-              appearance="default"
-              type="submit"
-              value="Active/InActive"
-            >
-              Active/Inactive
-            </Button>
-          </div>
-         
+          <div className=' flex justify-end ' >
+              <Button size="default" appearance="default">
+                <Link href="/admin/d/products">Cancel</Link>
+              </Button>
+              <Button size="default" appearance="default">
+                Save
+              </Button>
+            </div>
         </form>
       </div>
     </>
