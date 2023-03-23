@@ -2,9 +2,34 @@ import HeadingText from '../../../components/HeadingText';
 import Address from '../../../components/Address';
 import Button from '../../../components/Button';
 import { useRouter } from 'next/router';
+import Checkoutcard from '../../../components/Checkoutcard';
+
 
 export default function OrderConfirmation() {
   const router = useRouter();
+  const orders = [
+    {
+      id: 1,
+      image: 'https://picsum.photos/200/300',
+      name: 'tshirt',
+      price: 111,
+      quantity: 1,
+    },
+    {
+      id: 2,
+      image: 'https://picsum.photos/200/300',
+      name: 'shorts',
+      price: 333,
+      quantity: 1,
+    },
+    {
+      id: 3,
+      image: 'https://picsum.photos/200/300',
+      name: 'pants',
+      price: 2323,
+      quantity: 1,
+    },
+  ];
   function onClick() {
     router.push('/');
   }
@@ -55,8 +80,8 @@ export default function OrderConfirmation() {
               </div>
             </div>
           </div>
-          <div className="flex flex-col items-center border-slate-200 border w-full h-full">
-            here
+          <div className="flex placement-content-center border-slate-200 border w-[100%] h-[100%]">
+            <Checkoutcard CheckoutProps={orders}/>
           </div>
         </div>
       </div>
