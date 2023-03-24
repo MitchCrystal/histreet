@@ -84,7 +84,7 @@ model Order {
   products   Product[]
   order_details   Json[]
   created_at   DateTime @default(now())
-  total_order_cost      Int
+  total_order_cost      Decimal
   customer      Customer @relation(fields: [customer_id], references: [customer_id])
   payment_id    String?
 }

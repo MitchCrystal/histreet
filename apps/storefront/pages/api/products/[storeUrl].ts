@@ -1,10 +1,11 @@
+import { Prisma } from 'database';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../utils/prisma';
 
 type Data =
   | {
       product_name: string;
-      product_price: number;
+      product_price: Prisma.Decimal;
       product_id: string;
       product_name_slug: string;
       product_images: any;
