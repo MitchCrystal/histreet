@@ -43,7 +43,7 @@ export default async function handler(
     }
   }
 }
-
+//map through response and turn all null values to string
 const findStoreId = async (storeUrl: string) => {
   const response = await prisma.store.findUnique({
     where: { store_url: storeUrl },
@@ -55,6 +55,7 @@ const findStoreId = async (storeUrl: string) => {
   return response;
 };
 
+//map through response and turn all null values to string
 const findStorefront = async (storeId: string) => {
   const response = await prisma.storefront.findFirst({
     where: { store_id: storeId },
