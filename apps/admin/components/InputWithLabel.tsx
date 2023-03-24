@@ -15,13 +15,13 @@ export default function InputWithLabel({
   id: string;
   type: string;
   showLabel: boolean;
-  state: Record<string, string>;
+  state: Record<string, any>;
   setState: React.Dispatch<React.SetStateAction<any>>;
   direction: 'row' | 'column';
   [x: string]: any;
 }) {
   return (
-    <div className={`grid w-full max-w-sm items-center gap-1.5 `}>
+    <div className={`grid w-full items-center gap-1.5 `}>
       <div
         className={`flex w-full ${
           direction === 'row'

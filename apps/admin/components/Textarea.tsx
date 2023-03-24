@@ -4,7 +4,7 @@ import { Label } from './Label';
 type Props = {
   label: string;
   id: string;
-  state: Record<string, string>;
+  state: Record<string, any>;
   setState: React.Dispatch<React.SetStateAction<any>>;
   direction: 'row' | 'column';
   [x: string]: any;
@@ -19,7 +19,7 @@ export default function Textarea({
   ...delegated
 }: Props) {
   return (
-    <div className="grid w-full max-w-sm items-center gap-1.5">
+    <div className="grid w-full items-center gap-1.5">
       <div
         className={`flex w-full ${
           direction === 'row'

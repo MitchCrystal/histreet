@@ -89,6 +89,7 @@ function Products() {
   });
 
   const [formProducts, setFormProducts] = useState<Record<string, any>[]>([]);
+
   useEffect(() => {
     setFormProducts(products);
   }, [products]);
