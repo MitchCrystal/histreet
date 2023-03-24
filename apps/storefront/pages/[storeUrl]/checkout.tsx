@@ -56,6 +56,7 @@ export default function Checkout() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        store_url: router.query.storeUrl,
         products: cartItems,
         shippingAddress: shippingInputs,
         billingAddress: billingInputs,
@@ -65,22 +66,6 @@ export default function Checkout() {
       .then((data) => setClientSecret(data.clientSecret));
     setIsOnPaymentScreen(true);
   };
-
-  // useEffect(() => {
-  //   // Create PaymentIntent as soon as the page loads
-  //   if (!isOnPaymentScreen) return;
-  //   fetch('/api/stripe/create-payment-intent', {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify({
-  //       products: cartItems,
-  //       shippingAddress: shippingInputs,
-  //       billingAddress: billingInputs,
-  //     }),
-  //   })
-  //     .then((res) => res.json())
-  //     .then((data) => setClientSecret(data.clientSecret));
-  // }, [isOnPaymentScreen]);
 
   const appearance = {
     theme: 'stripe',

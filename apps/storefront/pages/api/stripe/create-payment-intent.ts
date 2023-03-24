@@ -14,7 +14,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  const { products, shippingAddress, billingAddress } = req.body;
+  const { products, shippingAddress, billingAddress, store_url } = req.body;
 
   const lineItemsObj: any = {};
 
@@ -36,8 +36,8 @@ export default async function handler(
       enabled: true,
     },
     metadata: {
+      store_url,
       ...lineItemsObj,
-      //   test: JSON.stringify({ id: 1, name: 'test' }),
       ...shippingAddress,
       ...billingAddress,
     },

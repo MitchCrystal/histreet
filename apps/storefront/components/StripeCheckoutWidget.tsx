@@ -3,12 +3,13 @@ import {
   PaymentElement,
   useStripe,
   useElements,
-  AddressElement,
 } from '@stripe/react-stripe-js';
 import Button from './Button';
 import HeadingText from './HeadingText';
+import { useRouter } from 'next/router';
 
 export default function CheckoutForm() {
+  const router = useRouter();
   const stripe = useStripe();
   const elements = useElements();
 
