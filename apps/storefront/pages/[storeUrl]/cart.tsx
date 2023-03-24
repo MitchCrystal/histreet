@@ -93,22 +93,24 @@ function Cart() {
               </HeadingText>
             </div>
           </div>
-          <Button
-            size="default"
-            appearance="primary"
-            additionalClasses="mb-2 scale-100 mx-2"
-          >
-            Checkout •{' '}
-            {cart.cartItems.reduce((acc, curr) => {
-              return (acc += curr.quantityInCart || 0);
-            }, 0)}{' '}
-            item
-            {cart.cartItems.reduce((acc, curr) => {
-              return (acc += curr.quantityInCart || 0);
-            }, 0) > 1
-              ? 's'
-              : ''}
-          </Button>
+          <Link href={`/${router.query.storeUrl}/checkout`} className="w-full">
+            <Button
+              size="default"
+              appearance="primary"
+              additionalClasses="mb-2 scale-100 w-full"
+            >
+              Checkout •{' '}
+              {cart.cartItems.reduce((acc, curr) => {
+                return (acc += curr.quantityInCart || 0);
+              }, 0)}{' '}
+              item
+              {cart.cartItems.reduce((acc, curr) => {
+                return (acc += curr.quantityInCart || 0);
+              }, 0) > 1
+                ? 's'
+                : ''}
+            </Button>
+          </Link>
         </div>
       </div>
     </>

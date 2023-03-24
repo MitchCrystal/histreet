@@ -3,20 +3,13 @@ import Table from '../../../components/Table';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
-import Heading from '../../../components/Heading';
 
 function Orders() {
   const router = useRouter();
   const storeUrl = router.query.storeUrl;
-  const {
-    data: orders,
-    isLoading,
-    isError,
-  }: UseQueryResult<Record<string, any>[]> = useQuery({
+  const { data: orders }: UseQueryResult<Record<string, any>[]> = useQuery({
     queryKey: ['order'],
-    queryFn: () =>
-      //need to change store_id dynamic todo
-      fetch(`/api/orders?store_id=store_1`).then((res) => res.json()),
+    queryFn: () => fetch(`/api/orders/${storeUrl}`).then((res) => res.json()),
     enabled: !!router.isReady,
     initialData: [],
   });
@@ -29,7 +22,7 @@ function Orders() {
 
   return (
     <>
-      <Heading title={'Orders'} type="h2" />
+      <p>Orders</p>
       <Table
         link={true}
         linkProperty="order_id"

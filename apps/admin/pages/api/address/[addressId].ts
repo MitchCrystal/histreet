@@ -1,4 +1,4 @@
-import { Address } from 'database';
+import type { Address } from 'database';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../utils/prisma';
 
