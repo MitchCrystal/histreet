@@ -7,10 +7,9 @@ import { useQuery, UseQueryResult } from '@tanstack/react-query';
 function Orders() {
   const router = useRouter();
   const storeUrl = router.query.storeUrl;
-  const {data: orders}: UseQueryResult<Record<string, any>[]> = useQuery({
+  const { data: orders }: UseQueryResult<Record<string, any>[]> = useQuery({
     queryKey: ['order'],
-    queryFn: () =>
-      fetch(`/api/orders/${storeUrl}`).then((res) => res.json()),
+    queryFn: () => fetch(`/api/orders/${storeUrl}`).then((res) => res.json()),
     enabled: !!router.isReady,
     initialData: [],
   });
