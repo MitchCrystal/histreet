@@ -28,6 +28,16 @@ function Editor() {
     supportEmail: '',
   });
 
+  //////
+  function handleStoreNameChange(e: { target: { value: any } }) {
+    setStoreFormInputs({
+      ...storeformInputs,
+      storeName: e.target.value,
+    });
+  }
+
+  /////
+
   const { data: storeform }: UseQueryResult<Record<string, string>> = useQuery({
     queryKey: ['storeForm'],
     queryFn: () => fetch(`/api/editor/${storeUrl}`).then((res) => res.json()),
@@ -130,6 +140,7 @@ function Editor() {
               state={storeformInputs}
               showLabel={true}
               setState={setStoreFormInputs}
+              onChange={handleStoreNameChange}
               direction="row"
             />
           </div>
