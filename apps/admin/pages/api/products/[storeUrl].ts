@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
-import prisma from '../../utils/prisma';
+import prisma from '../../../utils/prisma';
 
 type Product = {
   product_id: string;
@@ -14,15 +14,25 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Product[]>
 ) {
-  const storeId = req.query.store_id?.toString();
-  if (storeId == null) {
+  const storeUrl = req.query.storeUrl?.toString();
+  if (storeUrl == null) {
     return res.status(400);
   } else {
-    const products = await findProducts(storeId);
-    console.log('products' + products);
+    const store_id = await findStoreId(storeUrl as string);
+    const products = await findProducts(store_id?.store_id as string);
     return res.status(200).json(products);
   }
 }
+
+const findStoreId = async (storeUrl: string) => {
+  const response = await prisma.store.findFirst({
+    where: { store_url: storeUrl },
+    select: {
+      store_id: true,
+    },
+  });
+  return response;
+};
 
 const findProducts = async (storeId: string) => {
   const response = await prisma.product.findMany({

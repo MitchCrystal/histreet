@@ -5,6 +5,7 @@ import Heading from '../../../components/Heading';
 import InputWithLabel from '../../../components/InputWithLabel';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-hot-toast';
 import { useQuery, UseQueryResult, useMutation } from '@tanstack/react-query';
 import {
   Dialog,
@@ -16,19 +17,36 @@ import {
   DialogDescription,
 } from '../../../components/Modal';
 
+type productValues = {
+  product_name: string;
+  store_id: string;
+  product_name_slug: string;
+  product_price: number;
+  SKU: string;
+};
+
 function Products() {
   const router = useRouter();
-  // const storeUrl = router.query.storeUrl;
+  const storeUrl = router.query.storeUrl;
   const [open, setOpen] = useState(false);
   const [formInputs, setFormInputs] = useState({
     SKU: '',
     product_name: '',
     product_price: '',
   });
+  const slugify = (str: string) => {
+    const baseSlug = str
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/[\s_-]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    return baseSlug;
+  };
 
   const createProduct = useMutation({
-    mutationFn: (values) => {
-      return fetch('/api/product/add-product', {
+    mutationFn: (values: productValues) => {
+      return fetch('/api/product/addProduct', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -38,24 +56,32 @@ function Products() {
     },
   });
 
-  const handleSave = () => {
-    // fetch createProduct - save to DB
-    createProduct.mutate(/*pass correct data*/);
-    // render to product detail page
-    // router.push(`${storeUrl}/products/${product_name_slug}`);
+  const handleSave = (event: React.SyntheticEvent) => {
+    event.preventDefault();
+    const newProduct = {
+      ...formInputs,
+      product_price: Number(formInputs.product_price),
+      store_id: 'clfjs0yyh0000a0qff7pnasvx',
+      product_name_slug: slugify(formInputs.product_name),
+    };
+    createProduct.mutate(newProduct, {
+      onError: (error) => {
+        toast.error('Failed to add product.');
+      },
+      onSuccess: () => {
+        router.reload();
+      },
+    });
   };
 
   const { data: products }: UseQueryResult<Record<string, any>[]> = useQuery({
     queryKey: ['products'],
-    queryFn: () =>
-      //store_id need to be dynamic todo
-      fetch(`/api/products?store_id=store_1`).then((res) => res.json()),
+    queryFn: () => fetch(`/api/products/${storeUrl}`).then((res) => res.json()),
     enabled: !!router.isReady,
     initialData: [],
   });
 
   const [formProducts, setFormProducts] = useState<Record<string, any>[]>([]);
-
   useEffect(() => {
     setFormProducts(products);
   }, [products]);
@@ -87,6 +113,7 @@ function Products() {
         ]}
         tableRows={formProducts}
       />
+      {/*Modal area*/}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger></DialogTrigger>
         <DialogContent>
@@ -128,7 +155,7 @@ function Products() {
           />
           <form
             onSubmit={(event) => {
-              handleSave();
+              handleSave(event);
               setOpen(false);
               event.preventDefault();
             }}
