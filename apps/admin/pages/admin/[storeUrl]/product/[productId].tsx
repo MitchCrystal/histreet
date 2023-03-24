@@ -84,6 +84,7 @@ function ProductDetail() {
 
   function handleImageSubmit() {}
 
+  // TODO: will be for Active/Inactive
   function flagHandler(event: any) {
     setChosenFile(event.target.file[0]);
     setFlag(true);
@@ -105,7 +106,7 @@ function ProductDetail() {
       <div className="flex w-[calc(90vw-70px)] h-[calc(96vh-48px)] flex-col ">
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <div className="flex flex-row justify-between h-6">
-            <Heading title="T-shirt" type="h2"></Heading>
+            <Heading title={productInputs.item} type="h2"></Heading>
             <div className="flex justify-end">
               <Button
                 size="sm"
@@ -145,11 +146,11 @@ function ProductDetail() {
 
           <Card>
             <div className="flex flex-col justify-between h-36">
-              <div className="h-20">images</div>
-              {/* {productInputs.images.map((src) => (
-                <img key={src} src={src} /> // use nextjs image
-              ))} */}
-
+              <div className="flex flex-row h-20 gap-3">
+                {productInputs.images.map((src) => (
+                  <img className='flex w-20 rounded' key={src} src={src} /> // use nextjs image
+                ))}
+              </div>
               <label className="flex flex-row justify-end " htmlFor="upload">
                 <input
                   type="file"
