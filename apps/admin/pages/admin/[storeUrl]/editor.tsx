@@ -1,17 +1,56 @@
 import AdminLayout from '../../../layouts/AdminLayout';
 import Button from '../../../components/Button';
 import Heading from '../../../components/Heading';
-import InputWithLabel  from '../../../components/InputWithLabel';
+import InputWithLabel from '../../../components/InputWithLabel';
 import Textarea from '../../../components/Textarea';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useQuery, UseQueryResult } from '@tanstack/react-query';
+
+type StoreformInputs = {
+  id: string;
+  storeName: string;
+  storeDescription: string | null;
+  supportEmail: string | null;
+};
 
 function Editor() {
+  const router = useRouter();
+  const storeUrl = router.query.storeUrl;
+
   const [isEditing, setIsEditing] = useState(false);
-  const [storeformInputs, setStoreFormInputs] = useState({
+  const [storeformInputs, setStoreFormInputs] = useState<
+    Record<string, string>
+  >({
     id: '',
     storeName: '',
+    storeDescription: '',
     supportEmail: '',
   });
+
+  //////
+  function handleStoreNameChange(e: { target: { value: any } }) {
+    setStoreFormInputs({
+      ...storeformInputs,
+      storeName: e.target.value,
+    });
+  }
+
+  /////
+
+  const { data: storeform }: UseQueryResult<Record<string, string>> = useQuery({
+    queryKey: ['storeForm'],
+    queryFn: () => fetch(`/api/editor/${storeUrl}`).then((res) => res.json()),
+    enabled: !!router.isReady,
+    initialData: {},
+  });
+
+  useEffect(() => {
+    setStoreFormInputs(storeform);
+    // console.log(
+    //   'storeformInput inside useEffect:' + JSON.stringify(storeformInputs)
+    // );
+  }, [storeformInputs, storeform]);
 
   function edit() {
     setIsEditing(true);
@@ -23,6 +62,7 @@ function Editor() {
 
   function save() {
     //tanstack function to send stormFormInputs to db on click save button
+
     setIsEditing(false);
   }
 
@@ -52,12 +92,14 @@ function Editor() {
           </div>
         </div>
         <div className="flex flex-col justify-around items-start h-3/5 ">
-          <div className="flex flex-row w-full">Store Name: My Store Name</div>
           <div className="flex flex-row w-full">
-            Support Email: MyEmail@email.com
+            Store Name: {storeformInputs.storeName}
           </div>
           <div className="flex flex-row w-full">
-            Description: This is my store
+            Support Email: {storeformInputs.supportEmail}
+          </div>
+          <div className="flex flex-row w-full">
+            Description: {storeformInputs.storeDescription}
           </div>
         </div>
       </div>
@@ -93,21 +135,22 @@ function Editor() {
           <div className="flex flex-row w-full">
             <InputWithLabel
               label="Store Name"
-              id="store name"
+              id="storeName"
               type="text"
               state={storeformInputs}
               showLabel={true}
               setState={setStoreFormInputs}
+              onChange={handleStoreNameChange}
               direction="row"
             />
           </div>
           <div className="flex flex-row w-full">
             <InputWithLabel
               label="Support Email"
-              id="support email"
-              type="text"
-              state={storeformInputs}
+              id="supportEmail"
+              type="email"
               showLabel={true}
+              state={storeformInputs}
               setState={setStoreFormInputs}
               direction="row"
             />
@@ -115,7 +158,7 @@ function Editor() {
           <div className="flex flex-row w-full">
             <Textarea
               label="Description"
-              id="description"
+              id="storeDescription"
               state={storeformInputs}
               setState={setStoreFormInputs}
               direction="row"
