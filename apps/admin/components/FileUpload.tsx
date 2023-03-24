@@ -1,6 +1,5 @@
 import { CldUploadButton } from 'next-cloudinary';
 import Button from './Button';
-import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 export default function FileUpload({ onChangeEvent }:any) {
@@ -10,7 +9,7 @@ export default function FileUpload({ onChangeEvent }:any) {
       <div>
         <div>
           <CldUploadButton
-            uploadPreset="s1tgcyoa"
+            uploadPreset='s1tgcyoa'
             onUpload={(result: any, widget: any, error: any) => {
               onChangeEvent(result.info.secure_url);
               widget.close();
