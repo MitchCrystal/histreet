@@ -13,6 +13,9 @@ export default function AdminLayout({
   title,
 }: PropsWithChildren<{ title: string }>) {
   const router = useRouter();
+  //adding getServerSideProps target getSession() check active session if false redirect sign in
+  //check if active sessin has access to specific store/storeUrl
+  //dynamically show store name on main bar
   const initialNavigation = [
     {
       name: 'Dashboard',

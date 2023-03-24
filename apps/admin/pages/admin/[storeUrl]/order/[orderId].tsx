@@ -188,7 +188,7 @@ export const getServerSideProps: GetServerSideProps<{ order: any }> = async (
   context
 ) => {
   const { orderId } = context.query;
-  const order = await fetch(`http://localhost:3001/api/order/${orderId}`).then(
+  const order = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/order/${orderId}`).then(
     (res) => res.json()
   );
 

@@ -5,17 +5,16 @@ import Card from '../../../../components/Card';
 import InputWithLabel from '../../../../components/InputWithLabel';
 import Textarea from '../../../../components/Textarea';
 import Link from 'next/link';
-import { useState } from 'react';
+import { FormEventHandler, useState } from 'react';
 import { useRouter } from 'next/router';
-// import { Image } from 'next/image';
 import { useMutation, useQuery, UseQueryResult } from '@tanstack/react-query';
 import FileUpload from '../../../../components/FileUpload';
 
-interface Product {
+type Product = {
   product_name: string;
   description: string;
   product_price: number;
-  product_images: string[];
+  product_images?: string[];
   inventory_qty: number;
   SKU: string;
 }
@@ -27,9 +26,9 @@ function ProductDetail() {
   const [productInputs, setProductsInputs] = useState({
     item: '',
     description: '',
-    price: '0',
+    price: 0,
     sku: '',
-    inventory: '0',
+    inventory: 0,
     images: [] as string[],
   });
 
@@ -42,10 +41,10 @@ function ProductDetail() {
       setProductsInputs({
         item: product.product_name,
         description: product.description,
-        price: `${product.product_price}`,
+        price: product.product_price,
         sku: product.SKU,
-        inventory: `${product.inventory_qty}`,
-        images: product.product_images,
+        inventory: product.inventory_qty,
+        images: product.product_images ??[],
       });
 
       return product;
@@ -63,7 +62,7 @@ function ProductDetail() {
 
   const [flag, setFlag] = useState(false);
 
-  function handleSubmit(event: SubmitEvent) {
+  function handleSubmit(event:any) {
     event.preventDefault();
 
     try {
@@ -89,7 +88,7 @@ function ProductDetail() {
   return (
     <>
       <div className="flex w-[calc(90vw-70px)] h-[calc(96vh-48px)] flex-col ">
-        <form className="flex flex-col gap-4" /*onSubmit={handleSubmit}*/>
+        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <div className="flex flex-row justify-between h-6">
             <Heading title={productInputs.item} type="h2"></Heading>
             <div className="flex justify-end">
@@ -143,7 +142,7 @@ function ProductDetail() {
                   name="upload"
                   onChange={flagHandler}
                 /> */}
-                <FileUpload />
+                {/* <FileUpload /> */}
               </label>
             </div>
           </Card>
@@ -153,7 +152,8 @@ function ProductDetail() {
               <InputWithLabel
                 label="price"
                 id="price"
-                type="text"
+                type="number"
+                step="0.01"
                 showLabel={true}
                 state={productInputs}
                 setState={setProductsInputs}
@@ -173,7 +173,7 @@ function ProductDetail() {
               <InputWithLabel
                 label="inventory"
                 id="inventory"
-                type="text"
+                type="number"
                 showLabel={true}
                 state={productInputs}
                 setState={setProductsInputs}

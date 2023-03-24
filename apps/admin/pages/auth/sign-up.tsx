@@ -54,7 +54,7 @@ function SignUp() {
   function handleSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
     createAcc.mutate(formInputs);
-    toast.success('Successfully Signed Up');
+    toast.success('Successfully Signed Up',{position: 'bottom-center'});
     router.push('/auth/sign-in');
   }
 

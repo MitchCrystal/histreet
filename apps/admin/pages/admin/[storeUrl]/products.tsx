@@ -19,7 +19,7 @@ import {
 
 type productValues = {
   product_name: string;
-  store_id: Record<string, any> | undefined;
+  store_id?: Record<string, any>;
   product_name_slug: string;
   product_price: number;
   SKU: string;

@@ -22,7 +22,6 @@ function Editor() {
   const [storeformInputs, setStoreFormInputs] = useState<
     Record<string, string>
   >({
-    id: '',
     storeName: '',
     storeDescription: '',
     supportEmail: '',
@@ -45,12 +44,18 @@ function Editor() {
     initialData: {},
   });
 
+  /** backend what ever null from data set to empty string*/
   useEffect(() => {
-    setStoreFormInputs(storeform);
-    // console.log(
-    //   'storeformInput inside useEffect:' + JSON.stringify(storeformInputs)
-    // );
-  }, [storeformInputs, storeform]);
+    if (!storeform.storeName) {
+      return;
+    }
+    setStoreFormInputs({
+      storeName: storeform.storeName ?? '',
+      storeDescription: storeform.storeDescription ?? '',
+      supportEmail: storeform.supportEmail ?? '',
+    });
+    console.log(storeform, 'storeform');
+  }, [storeform]);
 
   function edit() {
     setIsEditing(true);
@@ -140,7 +145,6 @@ function Editor() {
               state={storeformInputs}
               showLabel={true}
               setState={setStoreFormInputs}
-              onChange={handleStoreNameChange}
               direction="row"
             />
           </div>
