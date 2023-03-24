@@ -6,7 +6,6 @@ import Checkoutcard from '../components/Checkoutcard';
 const inter = Inter({ subsets: ['latin'] });
 
 export default function Home() {
-
   return (
     <>
       <Head>
@@ -18,4 +17,3 @@ export default function Home() {
     </>
   );
 }
-
