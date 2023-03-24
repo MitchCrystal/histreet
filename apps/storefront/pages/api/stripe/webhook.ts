@@ -63,7 +63,7 @@ export default async function handler(
         data: {
           customer_first_name: firstName,
           customer_last_name: lastName,
-          phone_number: parseInt(phoneNumber),
+          phone_number: String(phoneNumber),
           customer_email: email,
           store: {
             connect: {
@@ -74,6 +74,14 @@ export default async function handler(
       });
     }
 
+    const getOrderCountForStore = await prisma.order.count({
+      where: {
+        store_id: store?.store_id,
+      },
+    });
+
+    console.log('getOrderCountForStore', getOrderCountForStore);
+
     const order = await prisma.order.create({
       data: {
         customer: {
@@ -81,9 +89,10 @@ export default async function handler(
             customer_id: customer.customer_id,
           },
         },
+        friendly_order_number: getOrderCountForStore + 1000,
         total_order_cost: 10,
         order_details: [{ id: 'clfk8f02m0002ono088oiycn3', qty: 8, price: 18 }],
-        order: {
+        store: {
           connect: {
             store_id: store?.store_id,
           },
