@@ -19,9 +19,48 @@ interface Product {
   SKU: string;
 }
 
+///////////  Testing Photo/File upload. 
+// TODO: If Cloudinary widget not used, move to its own component  //////
+function Upload() {
+  const [imgSource, setImgSource] = useState('');
+  function handleCapture(target) {
+    if (target.files) {
+      if (target.files.length !== 0) {
+        const file = target.files[0];
+        const newUrl = URL.createObjectURL(file);
+        setImgSource(newUrl);
+      }
+    }
+  }
+
+  return (
+    <div className=''>
+      <div className='flex h-20 gap-4'>
+        {/* <label className='label' htmlFor='icon-button-file'>
+     
+        </label> */}
+        {/* https://engineering.99x.io/how-to-access-the-camera-of-a-mobile-device-using-react-progressive-web-app-pwa-9d77168e5f2d */}
+        <img className='flex w-20 rounded' src={imgSource} alt={''}></img>
+        <input
+          accept='image/*'
+          id='icon-button-file'
+          type='file'
+          capture='environment'
+          onChange={(event) => handleCapture(event.target)}
+        />
+
+      </div>
+    </div>
+  );
+}
+
+////////////////
+
+
 function ProductDetail() {
   const router = useRouter();
   const { productId } = router.query;
+
 
   const [productInputs, setProductsInputs] = useState({
     item: '',
@@ -60,8 +99,6 @@ function ProductDetail() {
     }).then((resp) => resp.json())
   );
 
-  // checkout Cloudinary interface before devloping file upload
-  const [chosenFile, setChosenFile] = useState([]);
   const [flag, setFlag] = useState(false);
 
   function handleSubmit(event: SubmitEvent) {
@@ -86,8 +123,7 @@ function ProductDetail() {
 
   // TODO: will be for Active/Inactive
   function flagHandler(event: any) {
-    setChosenFile(event.target.file[0]);
-    setFlag(true);
+    
   }
 
   // in progress
@@ -145,19 +181,20 @@ function ProductDetail() {
           </Card>
 
           <Card>
-            <div className="flex flex-col justify-between h-36">
+            <div className="flex flex-row justify-between h-36">
               <div className="flex flex-row h-20 gap-3">
                 {productInputs.images.map((src) => (
                   <img className='flex w-20 rounded' key={src} src={src} /> // use nextjs image
                 ))}
               </div>
               <label className="flex flex-row justify-end " htmlFor="upload">
-                <input
+                {/* <input
                   type="file"
                   id="upload"
                   name="upload"
                   onChange={flagHandler}
-                />
+                /> */}
+                {/* <FileUpload /> */}
               </label>
             </div>
           </Card>
