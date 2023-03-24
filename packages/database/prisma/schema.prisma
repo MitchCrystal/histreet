@@ -101,7 +101,7 @@ model Product {
   tags        String?
   product_images   Json?
   orders   Order[]
-  product_price      Float
+  product_price     Decimal
   categories      String?
   department      String?
   is_active      Boolean @default(true)
