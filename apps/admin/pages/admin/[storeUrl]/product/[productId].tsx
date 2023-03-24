@@ -7,7 +7,7 @@ import Textarea from '../../../../components/Textarea';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { Image } from 'next/image';
+// import { Image } from 'next/image';
 import { useMutation, useQuery, UseQueryResult } from '@tanstack/react-query';
 import FileUpload from '../../../../components/FileUpload';
 
@@ -20,11 +20,9 @@ interface Product {
   SKU: string;
 }
 
-
 function ProductDetail() {
   const router = useRouter();
   const { productId } = router.query;
-
 
   const [productInputs, setProductsInputs] = useState({
     item: '',
@@ -86,25 +84,12 @@ function ProductDetail() {
   function handleImageSubmit() {}
 
   // TODO: will be for Active/Inactive
-  function flagHandler(event: any) {
-    
-  }
-
-  // in progress
-  // function handleCapture(target) {
-  //   if (target.files) {
-  //     if (target.files.length !== 0) {
-  //       const file = target.files[0];
-  //       const newUrl = URL.createObjectURL(file);
-  //       setImgSource(newUrl);
-  //     }
-  //   }
-  // }
+  function flagHandler(event: any) {}
 
   return (
     <>
       <div className="flex w-[calc(90vw-70px)] h-[calc(96vh-48px)] flex-col ">
-        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+        <form className="flex flex-col gap-4" /*onSubmit={handleSubmit}*/>
           <div className="flex flex-row justify-between h-6">
             <Heading title={productInputs.item} type="h2"></Heading>
             <div className="flex justify-end">
@@ -148,7 +133,7 @@ function ProductDetail() {
             <div className="flex flex-col justify-between h-36">
               <div className="flex flex-row h-20 gap-3">
                 {productInputs.images.map((src) => (
-                  <img className='flex w-20 rounded' key={src} src={src} /> // use nextjs image
+                  <img className="flex w-20 rounded" key={src} src={src} /> // use nextjs image
                 ))}
               </div>
               <label className="flex flex-row justify-end " htmlFor="upload">

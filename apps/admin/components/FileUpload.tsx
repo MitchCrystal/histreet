@@ -3,8 +3,7 @@ import Button from './Button';
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 
-export default function FileUpload({ onChangeEvent }:any) {
-
+export default function FileUpload({ onChangeEvent }: any) {
   return (
     <>
       <div>
@@ -25,9 +24,9 @@ export default function FileUpload({ onChangeEvent }:any) {
               })
             }
           >
-            <Button size="lg" appearance="primary" type="button">
+            {/* <Button size="lg" appearance="primary" type="button">
               Choose File to Upload
-            </Button>
+            </Button> */}
           </CldUploadButton>
         </div>
       </div>
