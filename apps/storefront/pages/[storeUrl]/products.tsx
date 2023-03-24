@@ -25,8 +25,13 @@ function Products() {
     data: products,
     isLoading,
     isError,
-  } = useQuery(['products'], () =>
-    fetch('/api/products/' + router.query.storeUrl).then((res) => res.json())
+  } = useQuery(
+    ['products'],
+    () =>
+      fetch('/api/products/' + router.query.storeUrl).then((res) => res.json()),
+    {
+      enabled: !!router.query.storeUrl,
+    }
   );
 
   if (isLoading) return <Loading />;

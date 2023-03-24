@@ -16,7 +16,9 @@ export default function Checkbox({ id, label, state, setState }: Props) {
         type="checkbox"
         onChange={(e) => setState({ ...state, [id]: e.target.checked })}
       />
-      <label className="text-sm text-gray-900">{label}</label>
+      <label className="text-sm text-gray-900" htmlFor={id}>
+        {label}
+      </label>
     </div>
   );
 }

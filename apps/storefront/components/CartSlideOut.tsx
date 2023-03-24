@@ -74,7 +74,7 @@ export default function CartSlideOut() {
                     <Link
                       href={`/${router.query.storeUrl}/product/${item.product_id}/${item.product_name_slug}`}
                     >
-                      <p className="truncate">{item.product_name}</p>
+                      <p className="truncate lg:w-32">{item.product_name}</p>
                     </Link>
                     <p className="hidden lg:inline">£{item.product_price}</p>
                   </div>
@@ -104,22 +104,27 @@ export default function CartSlideOut() {
                   View full cart
                 </Button>
               </Link>
-              <Button
-                size="default"
-                appearance="primary"
-                additionalClasses="w-full"
+              <Link
+                href={`/${router.query.storeUrl}/checkout`}
+                className="w-full"
               >
-                Checkout •{' '}
-                {cartItems.reduce((acc, curr) => {
-                  return (acc += curr.quantityInCart || 0);
-                }, 0)}{' '}
-                item
-                {cartItems.reduce((acc, curr) => {
-                  return (acc += curr.quantityInCart || 0);
-                }, 0) > 1
-                  ? 's'
-                  : ''}
-              </Button>
+                <Button
+                  size="default"
+                  appearance="primary"
+                  additionalClasses="w-full"
+                >
+                  Checkout •{' '}
+                  {cartItems.reduce((acc, curr) => {
+                    return (acc += curr.quantityInCart || 0);
+                  }, 0)}{' '}
+                  item
+                  {cartItems.reduce((acc, curr) => {
+                    return (acc += curr.quantityInCart || 0);
+                  }, 0) > 1
+                    ? 's'
+                    : ''}
+                </Button>
+              </Link>
             </div>
           </div>
         ) : (
