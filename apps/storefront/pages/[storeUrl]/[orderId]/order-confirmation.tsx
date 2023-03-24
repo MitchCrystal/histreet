@@ -1,12 +1,14 @@
+import prisma from '../../../utils/prisma';
 import HeadingText from '../../../components/HeadingText';
 import Address from '../../../components/Address';
 import Button from '../../../components/Button';
 import { useRouter } from 'next/router';
 import Checkoutcard from '../../../components/Checkoutcard';
-import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next";
+import { GetServerSidePropsContext } from 'next';
 
-export default function OrderConfirmation() {
+export default function OrderConfirmation({ order }: { order: any }) {
   const router = useRouter();
+  console.log(order)
   const orders = [
     {
       id: 1,
@@ -28,7 +30,7 @@ export default function OrderConfirmation() {
       name: 'pants',
       price: 2323,
       quantity: 1,
-    }
+    },
   ];
   function onClick() {
     router.push(`/${router.query.storeUrl}`);
@@ -44,11 +46,11 @@ export default function OrderConfirmation() {
           <HeadingText size="h3">Confirmation</HeadingText>
         </div>
         <div>
-          <HeadingText size="h4">Order #2292</HeadingText>
+          <HeadingText size="h4">Order #21092</HeadingText>
         </div>
         <div className="flex flex-row justify-between items-center border-slate-200 border w-full h-full">
           <div className="flex flex-col justify-center items-center border-slate-200 border w-full h-full">
-            <div className='flex p-10'>example@example.com</div>
+            <div className="flex p-10">example@example.com</div>
             <div className="flex flex-row gap-10">
               <div>
                 {' '}
@@ -81,11 +83,11 @@ export default function OrderConfirmation() {
             </div>
           </div>
           <div className="flex placement-content-center border-slate-200 border w-[100%] h-[100%]">
-            <Checkoutcard values={orders}/>
+            <Checkoutcard values={orders} />
           </div>
         </div>
       </div>
-      <div className='flex mb-10'>
+      <div className="flex mb-10">
         <Button size="lg" appearance="primary" type="button" onClick={onClick}>
           Visit Store
         </Button>
@@ -94,40 +96,24 @@ export default function OrderConfirmation() {
   );
 }
 
-// import { Address } from 'database';
-// type AddressWithError = Address | { error: boolean | string };
-// // import prisma from '../../../utils/prisma';
-
-// export async function getServerSideProps(){
-//   const order = async function handler(
-//     req: NextApiRequest,
-//     res: NextApiResponse<AddressWithError>
-//   ) {
-//     if (req.method === 'GET') {
-//       try {
-//         const { addressId } = req.query;
-//         if (!addressId || addressId === undefined) {
-//           return res.status(404).json({ error: 'Address not found' });
-//         }
-//         const address = await prisma.address.findUnique({
-//           where: {
-//             address_id: String(addressId),
-//           },
-//         });
-//         if (address) {
-//           res.status(200).json(address);
-//         } else {
-//           return res.status(404).json({ error: 'Address not found' });
-//         }
-//       } catch (error) {
-//         return res.status(500).json({ error: true });
-//       }
-//     }
-//   }
-  
-//   return {
-//     props: {
-//       order,
-//     },
-//   };
-// };
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const orderId = context.query.orderId;
+  const order = await prisma.order.findUnique({
+    where: {
+      order_id: String(orderId),
+    },
+    select: {
+      bill_address: true,
+      ship_address: true,
+      friendly_order_number:true
+    },
+  });
+  if (!order) {
+    return { props: null };
+  }
+  {
+    const data = JSON.stringify(order);
+    console.log(data);
+    return { props: { data } };
+  }
+}
