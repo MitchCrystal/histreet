@@ -46,6 +46,5 @@ const findProducts = async (storeId: string) => {
       product_price: true,
     },
   });
-  console.log('product' + JSON.stringify(response));
   return response;
 };

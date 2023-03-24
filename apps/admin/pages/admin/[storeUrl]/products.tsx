@@ -19,7 +19,7 @@ import {
 
 type productValues = {
   product_name: string;
-  store_id: string;
+  store_id: Record<string, any> | undefined;
   product_name_slug: string;
   product_price: number;
   SKU: string;
@@ -33,7 +33,15 @@ function Products() {
     SKU: '',
     product_name: '',
     product_price: '',
+    store_id: '',
   });
+
+  const { data: storeId }: UseQueryResult<Record<string, any>> = useQuery({
+    queryKey: ['storeId'],
+    queryFn: () => fetch(`/api/${storeUrl}`).then((res) => res.json()),
+    enabled: !!router.isReady,
+  });
+
   const slugify = (str: string) => {
     const baseSlug = str
       .toLowerCase()
@@ -61,8 +69,8 @@ function Products() {
     const newProduct = {
       ...formInputs,
       product_price: Number(formInputs.product_price),
-      store_id: 'clfjs0yyh0000a0qff7pnasvx',
       product_name_slug: slugify(formInputs.product_name),
+      store_id: storeId,
     };
     createProduct.mutate(newProduct, {
       onError: (error) => {
@@ -73,7 +81,6 @@ function Products() {
       },
     });
   };
-
   const { data: products }: UseQueryResult<Record<string, any>[]> = useQuery({
     queryKey: ['products'],
     queryFn: () => fetch(`/api/products/${storeUrl}`).then((res) => res.json()),
