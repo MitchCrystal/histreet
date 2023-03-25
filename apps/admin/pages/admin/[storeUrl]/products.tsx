@@ -53,14 +53,16 @@ function Products() {
   };
 
   const createProduct = useMutation({
-    mutationFn: (values: productValues) => {
-      return fetch('/api/product/addProduct', {
+    mutationFn: async (values: productValues) => {
+      const response = await fetch('/api/product/addProduct', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(values),
       });
+      const data = await response.json();
+      return data.product_id;
     },
   });
 
@@ -76,8 +78,8 @@ function Products() {
       onError: (error) => {
         toast.error('Failed to add product.');
       },
-      onSuccess: () => {
-        router.reload();
+      onSuccess: (res) => {
+        router.push(`/admin/${storeUrl}/product/${res}`);
       },
     });
   };
