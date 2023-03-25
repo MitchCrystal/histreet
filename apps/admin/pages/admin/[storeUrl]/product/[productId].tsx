@@ -9,6 +9,8 @@ import { FormEventHandler, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useMutation, useQuery, UseQueryResult } from '@tanstack/react-query';
 import FileUpload from '../../../../components/FileUpload';
+import getServerSideProps from '../../../../utils/authorization'
+export{getServerSideProps}
 
 type Product = {
   product_name: string;

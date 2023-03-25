@@ -16,9 +16,6 @@ export default function AdminLayout({
   const router = useRouter();
   const logoSrc = '/histreet-yellow-square.png'
   const storeUrl = router.query.storeUrl
-  //adding getServerSideProps target getSession() check active session if false redirect sign in
-  //check if active sessin has access to specific store/storeUrl
-  //dynamically show store name on main bar
   const initialNavigation = [
     {
       name: 'Dashboard',
@@ -146,5 +143,4 @@ export default function AdminLayout({
     </>
   );
 }
-
 

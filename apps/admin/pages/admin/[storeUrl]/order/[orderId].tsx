@@ -8,6 +8,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
 import { useQuery } from '@tanstack/react-query';
+import { getSession } from 'next-auth/react';
+
 
 function OrderDetail({ order }: any) {
   const router = useRouter();
@@ -199,6 +201,15 @@ export default function ({ order }: any) {
 export const getServerSideProps: GetServerSideProps<{ order: any }> = async (
   context
 ) => {
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
   const { orderId } = context.query;
   const order = await fetch(
     `${process.env.NEXT_PUBLIC_APP_URL}/api/order/${orderId}`
@@ -213,6 +224,7 @@ export const getServerSideProps: GetServerSideProps<{ order: any }> = async (
   return {
     props: {
       order,
+      session
     },
   };
 };

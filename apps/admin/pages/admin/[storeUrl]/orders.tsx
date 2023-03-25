@@ -4,6 +4,8 @@ import Heading from '../../../components/Heading';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import getServerSideProps from '../../../utils/authorization'
+export{getServerSideProps}
 
 function Orders() {
   const router = useRouter();

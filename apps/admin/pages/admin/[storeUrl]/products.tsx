@@ -16,6 +16,8 @@ import {
   DialogTitle,
   DialogDescription,
 } from '../../../components/Modal';
+import getServerSideProps from '../../../utils/authorization'
+export{getServerSideProps}
 
 type productValues = {
   product_name: string;

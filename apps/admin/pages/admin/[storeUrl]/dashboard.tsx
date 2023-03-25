@@ -1,4 +1,6 @@
 import AdminLayout from '../../../layouts/AdminLayout';
+import getServerSideProps from '../../../utils/authorization'
+export{getServerSideProps}
 
 function Dashboard() {
   return (
