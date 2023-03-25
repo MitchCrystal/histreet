@@ -1,8 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import { useContext, useEffect } from 'react';
+import { CartContext } from '../_app';
 
 export default function ProcessingOrder() {
   const router = useRouter();
+  const {
+    setCartItems,
+  }: { setCartItems: React.Dispatch<React.SetStateAction<any>> } =
+    useContext(CartContext);
 
   const {
     data: orderId,
@@ -18,6 +24,10 @@ export default function ProcessingOrder() {
       enabled: !!router.isReady && !!router.query.payment_intent,
     }
   );
+
+  useEffect(() => {
+    setCartItems([]);
+  }, []);
 
   if (isError || (router.isReady && !router.query.payment_intent))
     return (

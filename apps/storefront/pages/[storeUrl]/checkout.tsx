@@ -10,6 +10,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { CartContext, ProductType } from '../_app';
 import Head from 'next/head';
+import Checkoutcard from '../../components/Checkoutcard';
+import Loading from '../../components/Loading';
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -17,6 +19,7 @@ const stripePromise = loadStripe(
 
 export default function Checkout() {
   const router = useRouter();
+  const { cartItems }: { cartItems: ProductType[] } = useContext(CartContext);
   const [clientSecret, setClientSecret] = useState('');
   const [shippingInputs, setShippingInputs] = useState({
     email: '',
@@ -49,7 +52,6 @@ export default function Checkout() {
   });
 
   const [isOnPaymentScreen, setIsOnPaymentScreen] = useState(false);
-  const { cartItems }: { cartItems: ProductType[] } = useContext(CartContext);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -75,6 +77,14 @@ export default function Checkout() {
     clientSecret,
     appearance,
   } as any;
+
+  useEffect(() => {
+    if (cartItems.length === 0) {
+      router.back();
+    }
+  }, [cartItems]);
+
+  if (cartItems.length === 0) return <Loading />;
 
   return (
     <>
@@ -127,9 +137,10 @@ export default function Checkout() {
               </div>
             </div>
             <div className="bg-gray-100 border-gray-200 border-l py-12 px-12 hidden lg:block lg:col-span-2">
-              <HeadingText size="h3">Order Summary</HeadingText>
-              hello, this area is where the basket summary will go :0 - please
-              remove this border when done
+              <div className="flex flex-col gap-4">
+                <HeadingText size="h3">Order Summary</HeadingText>
+                <Checkoutcard lineItems={cartItems} />
+              </div>
             </div>
           </div>
         </div>

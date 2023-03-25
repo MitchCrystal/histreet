@@ -1,59 +1,58 @@
-type Order = {
-  id: number;
-  image: string;
-  name: string;
-  price: number;
-  quantity: number;
-}[];
+import { ProductType } from '../pages/_app';
+import HeadingText from './HeadingText';
 
-//@TODO fix order data to match context data
-
-export default function Checkoutcard({values}:{values: Order}) {
-  function totalPrice(ord: Order) {
-    let total = ord.reduce((accumulator, ord) => {
-      return accumulator + ord.price;
-    }, 0);
-    return total;
-  }
-
-  function totalQant(ord: Order) {
-    let total = ord.reduce((accumulator: any, ord: any) => {
-      let number = Number(accumulator) + Number(ord.quantity);
-      return number;
+export default function Checkoutcard({
+  lineItems,
+}: {
+  lineItems: ProductType[];
+}) {
+  function totalPrice(ord: ProductType[]) {
+    let total = ord.reduce((acc, ord) => {
+      return acc + ord.product_price * (ord.quantityInCart || 0);
     }, 0);
     return total;
   }
 
   return (
-    <div className="flex flex-col m-auto w-[80%] h-[80%] place-content-center ">
-      <div className="grid grid-cols-4 w-full h-full place-content-center ">
-        <div className="font-bold col-span-2">ITEMS</div>
-        <div className="font-bold col-span-2">QTY</div>
+    <div>
+      <div className="grid grid-cols-9 items-center border-b border-gray-200 pb-2 gap-4">
+        <div className="col-span-5">Item</div>
+        <div className="col-span-2">Quantity</div>
+        <div className="col-span-2 text-right">Total</div>
       </div>
-      <div className="grid grid-row-4 my-2 w-full h-full ">
-        {values.map((order) => {
+      <div className="">
+        {lineItems.map((order) => {
           return (
-            <div className="grid grid-cols-4 my-2 w-full h-full" key={order.id}>
-                <img
-                  src={order.image??'/missing_img.png'}
-                  alt="order-image"
-                  className="rounded w-12 h-12 "
-                />
-              <div className="">
-                {order.name}
-              </div>
-              <div className="">£{order.price}</div>
-              <div className="">x {order.quantity}</div>
+            <div
+              className="grid grid-cols-11 items-center mt-2 gap-4"
+              key={order.product_id}
+            >
+              <img
+                src={order.product_images[0].src ?? '/missing_img.png'}
+                alt={order.product_images[0].alt ?? 'missing image placeholder'}
+                className="col-span-2 rounded-md w-12 h-12 overflow-hidden object-cover"
+              />
+              <p className="col-span-5 w-full truncate">{order.product_name}</p>
+              <p className="col-span-2">x {order.quantityInCart}</p>
+              <p className="col-span-2 text-right">
+                {new Intl.NumberFormat('en-GB', {
+                  style: 'currency',
+                  currency: 'GBP',
+                }).format(order.product_price)}
+              </p>
             </div>
           );
         })}
       </div>
-      <div className="grid grid-cols-4 w-full h-full place-content-center ">
-        <div className="font-bold col-span-2">Order Total</div>
-        <div className="font-bold">£{totalPrice(values)}</div>
-        <div className="font-bold">x{totalQant(values)}</div>
+      <div className="flex items-center justify-between mt-8">
+        <HeadingText size="h4">Order Total</HeadingText>
+        <HeadingText size="h4">
+          {new Intl.NumberFormat('en-GB', {
+            style: 'currency',
+            currency: 'GBP',
+          }).format(totalPrice(lineItems))}
+        </HeadingText>
       </div>
     </div>
   );
 }
-
