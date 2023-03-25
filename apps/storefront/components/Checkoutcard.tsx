@@ -1,5 +1,12 @@
 import { ProductType } from '../pages/_app';
 import HeadingText from './HeadingText';
+type Order = {
+  id: string;
+  image?: string;
+  name: string;
+  price: number;
+  quantity: number;
+}[];
 
 export default function Checkoutcard({
   lineItems,
