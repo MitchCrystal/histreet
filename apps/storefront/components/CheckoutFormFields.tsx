@@ -4,6 +4,15 @@ import Checkbox from './Checkbox';
 import DropdownSelector from './DropdownSelector';
 import HeadingText from './HeadingText';
 import InputWithLabel from './InputWithLabel';
+type Props = {
+  shippingInputs: any;
+  billingInputs: any;
+  setShippingInputs: React.Dispatch<React.SetStateAction<any>>;
+  setBillingInputs: React.Dispatch<React.SetStateAction<any>>;
+  handleSubmit: (e: FormEvent) => void;
+  checkbox: Record<string, any>;
+  setCheckbox: React.Dispatch<React.SetStateAction<any>>;
+};
 
 export default function CheckoutFormFields({
   shippingInputs,
@@ -13,15 +22,7 @@ export default function CheckoutFormFields({
   handleSubmit,
   checkbox,
   setCheckbox,
-}: {
-  shippingInputs: any;
-  billingInputs: any;
-  setShippingInputs: React.Dispatch<React.SetStateAction<any>>;
-  setBillingInputs: React.Dispatch<React.SetStateAction<any>>;
-  handleSubmit: (e: FormEvent) => void;
-  checkbox: Record<string, any>;
-  setCheckbox: React.Dispatch<React.SetStateAction<any>>;
-}) {
+}: Props) {
   return (
     <>
       <HeadingText size="h4">Your Contact Details</HeadingText>

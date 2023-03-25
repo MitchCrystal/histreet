@@ -4,7 +4,6 @@ import {
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js';
-import Button from './Button';
 import HeadingText from './HeadingText';
 import { useRouter } from 'next/router';
 

@@ -44,8 +44,6 @@ function ProductPage() {
   const {
     cartItems,
     handleAddToCart,
-    getCartTotal,
-    getProductQuantityInCart,
   }: {
     cartItems: any;
     handleAddToCart: (product: any, quantity: number) => void;
@@ -87,8 +85,8 @@ function ProductPage() {
       <div className="mt-6 md:grid sm:grid-cols-8 sm:gap-8 flex flex-col gap-4">
         <div className="col-span-3 flex flex-col gap-2">
           <img
-            src={currentImage.src}
-            alt={currentImage.alt}
+            src={currentImage?.src??'/missing_img.png'}
+            alt={currentImage?.alt??'no image'}
             className="object-cover h-[500px]"
           />
           <ImageRow

@@ -1,18 +1,19 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Button from './Button';
+type Props = {
+  heroImage: string;
+  alt: string;
+  heading: string;
+  subheading: string;
+};
 
 export default function HeroImageBanner({
   heroImage,
   alt,
   heading,
   subheading,
-}: {
-  heroImage: string;
-  alt: string;
-  heading: string;
-  subheading: string;
-}) {
+}: Props) {
   const router = useRouter();
 
   return (

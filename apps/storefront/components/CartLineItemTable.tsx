@@ -60,8 +60,8 @@ export default function CartLineItemTable({
           return (
             <Fragment key={lineItem.product_id}>
               <img
-                src={lineItem.product_images[0].src}
-                alt={lineItem.product_images[0].alt}
+                src={lineItem.product_images[0]?.src??'/missing_img.png'}
+                alt={lineItem.product_images[0]?.alt??'no image'}
                 className="min-w-20 max-w-20 min-h-20 max-h-20 object-fit rounded-md"
               />
               <Link
