@@ -38,7 +38,9 @@ export default function ProcessingOrder() {
     );
 
   if (!isLoading && orderId && router.query.storeUrl) {
-    router.push(`/${router.query.storeUrl}/${orderId}/order-confirmation`);
+    router.push(
+      `/${router.query.storeUrl}/${orderId.order_id}/order-confirmation`
+    );
   }
 
   return <div>Processing...</div>;
