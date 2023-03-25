@@ -41,9 +41,19 @@ export default async function handler(
     } catch (error) {
       return res.status(500).json({ error: true });
     }
+  } else {
+    const storefrontReq = {
+      id: req.body.id,
+      storeName: req.body.storeName,
+      storeDescription: req.body.storeDescription,
+      supportEmail: req.body.supportEmail,
+    };
+
+    updateStorefrontDB(storefrontReq);
+    return res.status(200).json(storefrontReq);
   }
 }
-//map through response and turn all null values to string
+
 const findStoreId = async (storeUrl: string) => {
   const response = await prisma.store.findUnique({
     where: { store_url: storeUrl },
@@ -55,7 +65,6 @@ const findStoreId = async (storeUrl: string) => {
   return response;
 };
 
-//map through response and turn all null values to string
 const findStorefront = async (storeId: string) => {
   const response = await prisma.storefront.findFirst({
     where: { store_id: storeId },
@@ -65,4 +74,20 @@ const findStorefront = async (storeId: string) => {
     },
   });
   return response;
+};
+
+const updateStorefrontDB = async (storefrontReq: StorefrontDBresult) => {
+  await prisma.$transaction([
+    prisma.store.update({
+      where: { store_id: storefrontReq.id },
+      data: { store_name: storefrontReq.storeName },
+    }),
+    prisma.storefront.update({
+      where: { store_id: storefrontReq.id },
+      data: {
+        support_email: storefrontReq.supportEmail,
+        store_description: storefrontReq.storeDescription,
+      },
+    }),
+  ]);
 };
