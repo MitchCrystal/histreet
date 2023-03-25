@@ -46,6 +46,8 @@ export default function CheckoutForm() {
     });
   }, [stripe]);
 
+  console.log(router.query.storeUrl);
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 

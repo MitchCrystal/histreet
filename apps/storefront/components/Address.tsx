@@ -9,10 +9,19 @@ type Props = {
   country: string;
 };
 
-export default function Address({ firstName, lastName, firstLine, secondLine, city, county, postcode, country }: Props) {
+export default function Address({
+  firstName,
+  lastName,
+  firstLine,
+  secondLine,
+  city,
+  county,
+  postcode,
+  country,
+}: Props) {
   return (
     <>
-      <div className="">
+      <div>
         <p className="font-bold mb-2">
           <span>{firstName} </span>
           <span>{lastName}</span>
@@ -22,7 +31,7 @@ export default function Address({ firstName, lastName, firstLine, secondLine, ci
         <p>{city}</p>
         {!!county && <p>{county}</p>}
         <p className="uppercase">{postcode}</p>
-        <p className="uppercase">{country}</p>
+        <p>{country}</p>
       </div>
     </>
   );

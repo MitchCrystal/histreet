@@ -1,10 +1,14 @@
 import prisma from '../../../utils/prisma';
 import HeadingText from '../../../components/HeadingText';
 import Address from '../../../components/Address';
-import Button from '../../../components/Button';
 import { useRouter } from 'next/router';
 import Checkoutcard from '../../../components/Checkoutcard';
-import { GetServerSidePropsContext } from 'next';
+import type { GetServerSidePropsContext } from 'next';
+import Error from '../../../components/Error';
+import { useEffect, useState } from 'react';
+import CheckoutLayout from '../../../layouts/CheckoutLayout';
+import { CheckCircleIcon } from '@heroicons/react/24/solid';
+
 type AddressData = {
   address_id: string;
   address_first_name: string;
@@ -20,16 +24,24 @@ type AddressData = {
 
 type Details = {
   id: string;
-  name: string;
-  image?: string;
   price: number;
-  quantity: number;
+  qty: number;
 }[];
 
 type Customer = {
-  customer_email: string; 
-  customer_first_name:string;
-}
+  customer_email: string;
+  phone_number: string;
+};
+
+type Product = {
+  product_images: {
+    id: string;
+    src: string;
+    alt: string;
+  }[];
+  product_name: string;
+  product_id: string;
+};
 
 type OrderData = {
   bill_address: AddressData;
@@ -37,35 +49,65 @@ type OrderData = {
   friendly_order_number: number;
   order_details: Details;
   customer: Customer;
+  products: Product[];
 };
 
 export default function OrderConfirmation({ order }: { order: OrderData }) {
   const router = useRouter();
-  function onClick() {
-    router.push(`/${router.query.storeUrl}`);
-  }
+
+  const [lineItems, setLineItems] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (!order || !router.query.orderId) return;
+    setLineItems(() => {
+      return order.order_details.map((item) => {
+        const product: Product | undefined = order.products.find(
+          (product) => product.product_id === item.id
+        );
+        return {
+          product_id: item.id,
+          product_name: product?.product_name,
+          product_images: product?.product_images,
+          product_price: item.price,
+          quantityInCart: item.qty,
+          product_name_slug: product?.product_name,
+        };
+      });
+    });
+  }, []);
+
+  if (!order || !router.query.orderId) return <Error />;
 
   return (
-    <div className="flex flex-col justify-start gap-8 items-center w-full h-screen m-auto">
-      <div className="flex justify-center items-center w-4/5 p-11 border-slate-200 border mt-8 shadow">
-        <HeadingText size="h2">Thank you for your order {order.customer.customer_first_name}!</HeadingText>
-      </div>
-      <div className="flex justify-start items-center flex-col w-4/5 p-11 border-slate-200 border shadow-md">
-        <div>
-          <HeadingText size="h3">Confirmation</HeadingText>
-        </div>
-        <div>
-          <HeadingText size="h4">
-            Order #{order.friendly_order_number}
-          </HeadingText>
-        </div>
-        <div className="flex flex-col md:flex-row justify-between items-center w-full h-full">
-          <div className="flex flex-col justify-center items-center w-full h-full">
-            <div className="flex p-10">{order.customer.customer_email}</div>
-            <div className="flex flex-col sm:flex-row gap-10">
+    <>
+      <CheckoutLayout
+        firstColumn={
+          <div className="flex flex-col justify-start gap-2 max-w-[600px] m-auto">
+            <div className="flex items-start justify-start gap-4 flex-col md:flex-row md:items-center">
+              <CheckCircleIcon className="text-green-600 w-12 max-w-12  mt-2 text-sm" />
               <div>
-                {' '}
-                Ship to:
+                <h2 className="text-gray-800">
+                  Order #{order.friendly_order_number}
+                </h2>
+                <HeadingText size="h2">
+                  Thanks for your order, {order.bill_address.address_first_name}
+                  !
+                </HeadingText>
+                <h3 className="text-lg">
+                  Your order has been successfuly processed.
+                </h3>
+              </div>
+            </div>
+            <div className="flex flex-col xl:flex-row gap-4 lg:gap-12 items-start justify-start mt-8 border p-4 rounded-md">
+              <div>
+                <h3 className="text-lg font-medium">Contact details</h3>
+                <p>{order.customer.customer_email}</p>
+                {!!order.customer.phone_number && (
+                  <p>{order.customer.phone_number}</p>
+                )}
+              </div>
+              <div>
+                <h3 className="text-lg font-medium">Shipping address</h3>
                 <Address
                   firstName={order.ship_address.address_first_name}
                   lastName={order.ship_address.address_last_name}
@@ -78,8 +120,7 @@ export default function OrderConfirmation({ order }: { order: OrderData }) {
                 />
               </div>
               <div>
-                {' '}
-                Bill to:
+                <h3 className="text-lg font-medium">Billing address</h3>
                 <Address
                   firstName={order.bill_address.address_first_name}
                   lastName={order.bill_address.address_last_name}
@@ -93,17 +134,10 @@ export default function OrderConfirmation({ order }: { order: OrderData }) {
               </div>
             </div>
           </div>
-          <div className="flex placement-content-center w-[100%] h-[100%]">
-            <Checkoutcard values={order.order_details} />
-          </div>
-        </div>
-      </div>
-      <div className="flex mb-10">
-        <Button size="lg" appearance="primary" type="button" onClick={onClick}>
-          Visit Store
-        </Button>
-      </div>
-    </div>
+        }
+        secondColumn={<Checkoutcard lineItems={lineItems} />}
+      />
+    </>
   );
 }
 
@@ -118,16 +152,24 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       ship_address: true,
       friendly_order_number: true,
       order_details: true,
+      products: {
+        select: {
+          product_id: true,
+          product_images: true,
+          product_name: true,
+          product_name_slug: true,
+        },
+      },
       customer: {
         select: {
           customer_email: true,
-          customer_first_name:true
+          phone_number: true,
         },
       },
     },
   });
   if (!order) {
-    return { props: null };
+    return { props: { order: false } };
   }
   {
     return { props: { order } };
