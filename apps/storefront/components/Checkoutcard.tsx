@@ -28,8 +28,16 @@ export default function Checkoutcard({
               key={order.product_id}
             >
               <img
-                src={order.product_images[0].src ?? '/missing_img.png'}
-                alt={order.product_images[0].alt ?? 'missing image placeholder'}
+                src={
+                  order.product_images && order.product_images.length > 0
+                    ? order.product_images[0].src
+                    : '/missing_img.png'
+                }
+                alt={
+                  order.product_images && order.product_images.length > 0
+                    ? order.product_images[0].alt
+                    : 'missing image placeholder'
+                }
                 className="col-span-2 rounded-md w-12 h-12 overflow-hidden object-cover"
               />
               <p className="col-span-5 w-full truncate">{order.product_name}</p>

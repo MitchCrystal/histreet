@@ -58,6 +58,7 @@ export default function OrderConfirmation({ order }: { order: OrderData }) {
   const [lineItems, setLineItems] = useState<any[]>([]);
 
   useEffect(() => {
+    if (!order || !router.query.orderId) return;
     setLineItems(() => {
       return order.order_details.map((item) => {
         const product: Product | undefined = order.products.find(
@@ -75,7 +76,7 @@ export default function OrderConfirmation({ order }: { order: OrderData }) {
     });
   }, []);
 
-  if (!order) return <Error />;
+  if (!order || !router.query.orderId) return <Error />;
 
   return (
     <>
