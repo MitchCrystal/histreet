@@ -24,6 +24,13 @@ function Orders() {
           style: 'currency',
           currency: 'GBP',
         }).format(Number(order.order_total)),
+        date_placed: new Date(order.date_placed).toLocaleTimeString([], {
+          year: 'numeric',
+          month: 'numeric',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        }),
       };
     });
     setFormOrders(formattedOrder);
@@ -32,6 +39,7 @@ function Orders() {
   return (
     <>
       <Heading title="Orders" type="h1"></Heading>
+      <div className="mb-8"></div>
       <Table
         link={true}
         linkProperty="order_id"

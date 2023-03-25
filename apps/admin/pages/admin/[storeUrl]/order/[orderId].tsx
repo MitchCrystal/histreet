@@ -118,7 +118,7 @@ function OrderDetail({ order }: any) {
   // render page
   return (
     <>
-      <div className="w-1/2 md:w-5/6 lg:w-full">
+      <div className="w-1/2 md:w-5/6 lg:w-full mb-4">
         <div className="flex justify-end">
           <Button
             size="default"

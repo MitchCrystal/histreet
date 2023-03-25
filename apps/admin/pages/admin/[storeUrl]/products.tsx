@@ -105,7 +105,7 @@ function Products() {
 
   return (
     <>
-      <div className="w-1/2 md:w-5/6 lg:w-full">
+      <div className="w-1/2 md:w-5/6 lg:w-full mb-8">
         <div className="flex justify-end">
           <Button
             size="default"
@@ -116,7 +116,7 @@ function Products() {
             Add Product
           </Button>{' '}
         </div>
-        <Heading title={'Products'} type="h2" />
+        <Heading title={'Products'} type="h1" />
       </div>
       <Table
         link={true}
