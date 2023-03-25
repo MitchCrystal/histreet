@@ -5,7 +5,7 @@ import InputWithLabel from '../../../components/InputWithLabel';
 import Textarea from '../../../components/Textarea';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import { useQuery, UseQueryResult, useMutation } from '@tanstack/react-query';
 
 type StoreformInputs = {
   id: string;
@@ -22,20 +22,11 @@ function Editor() {
   const [storeformInputs, setStoreFormInputs] = useState<
     Record<string, string>
   >({
+    id: '',
     storeName: '',
     storeDescription: '',
     supportEmail: '',
   });
-
-  //////
-  function handleStoreNameChange(e: { target: { value: any } }) {
-    setStoreFormInputs({
-      ...storeformInputs,
-      storeName: e.target.value,
-    });
-  }
-
-  /////
 
   const { data: storeform }: UseQueryResult<Record<string, string>> = useQuery({
     queryKey: ['storeForm'],
@@ -44,17 +35,31 @@ function Editor() {
     initialData: {},
   });
 
-  /** backend what ever null from data set to empty string*/
+  const postStoreformInputs = useMutation({
+    mutationFn: (newStoreformInputs: StoreformInputs) => {
+      return fetch(`/api/editor/${storeUrl}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newStoreformInputs),
+      });
+    },
+    onSuccess: () => {
+      setIsEditing(false);
+    },
+  });
+
   useEffect(() => {
     if (!storeform.storeName) {
       return;
     }
     setStoreFormInputs({
+      id: storeform.id,
       storeName: storeform.storeName ?? '',
       storeDescription: storeform.storeDescription ?? '',
       supportEmail: storeform.supportEmail ?? '',
     });
-    console.log(storeform, 'storeform');
   }, [storeform]);
 
   function edit() {
@@ -62,19 +67,25 @@ function Editor() {
   }
 
   function cancel() {
+    if (storeform != null) {
+      setStoreFormInputs({
+        id: storeform.id,
+        storeName: storeform.storeName ?? '',
+        storeDescription: storeform.storeDescription ?? '',
+        supportEmail: storeform.supportEmail ?? '',
+      });
+    }
     setIsEditing(false);
   }
 
   function save() {
-    //tanstack function to send stormFormInputs to db on click save button
-
-    setIsEditing(false);
-  }
-
-  function getStoreData() {
-    //tanstack query to get store data
-    //if result is not empty {}
-    //setIsEditing(true)
+    const storeformInputToPost = {
+      id: storeformInputs.id,
+      storeName: storeformInputs.storeName,
+      storeDescription: storeformInputs.storeDescription,
+      supportEmail: storeformInputs.supportEmail,
+    };
+    postStoreformInputs.mutate(storeformInputToPost);
   }
 
   return !isEditing ? (
