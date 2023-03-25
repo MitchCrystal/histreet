@@ -22,6 +22,8 @@ export default function ProcessingOrder() {
       ),
     {
       enabled: !!router.isReady && !!router.query.payment_intent,
+      retry: 5,
+      retryDelay: 1000,
     }
   );
 
@@ -37,8 +39,18 @@ export default function ProcessingOrder() {
       </p>
     );
 
-  if (!isLoading && orderId && router.query.storeUrl) {
-    router.push(`/${router.query.storeUrl}/${orderId}/order-confirmation`);
+  if (
+    !isLoading &&
+    orderId.order_id &&
+    orderId.order_id &&
+    router.query.storeUrl
+  ) {
+    // console.log(
+    //   `/${router.query.storeUrl}/${orderId.order_id}/order-confirmation`
+    // );
+    router.push(
+      `/${router.query.storeUrl}/${orderId.order_id}/order-confirmation`
+    );
   }
 
   return <div>Processing...</div>;

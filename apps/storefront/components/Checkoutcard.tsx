@@ -1,12 +1,5 @@
 import { ProductType } from '../pages/_app';
 import HeadingText from './HeadingText';
-type Order = {
-  id: string;
-  image?: string;
-  name: string;
-  price: number;
-  quantity: number;
-}[];
 
 export default function Checkoutcard({
   lineItems,
@@ -22,12 +15,12 @@ export default function Checkoutcard({
 
   return (
     <div>
-      <div className="grid grid-cols-9 items-center border-b border-gray-200 pb-2 gap-4">
-        <div className="col-span-5">Item</div>
+      <div className="grid grid-cols-11 items-center border-b border-gray-200 pb-2 gap-4">
+        <div className="col-span-7">Item</div>
         <div className="col-span-2">Quantity</div>
         <div className="col-span-2 text-right">Total</div>
       </div>
-      <div className="">
+      <div>
         {lineItems.map((order) => {
           return (
             <div
@@ -35,8 +28,16 @@ export default function Checkoutcard({
               key={order.product_id}
             >
               <img
-                src={order.product_images[0].src ?? '/missing_img.png'}
-                alt={order.product_images[0].alt ?? 'missing image placeholder'}
+                src={
+                  order.product_images && order.product_images.length > 0
+                    ? order.product_images[0].src
+                    : '/missing_img.png'
+                }
+                alt={
+                  order.product_images && order.product_images.length > 0
+                    ? order.product_images[0].alt
+                    : 'missing image placeholder'
+                }
                 className="col-span-2 rounded-md w-12 h-12 overflow-hidden object-cover"
               />
               <p className="col-span-5 w-full truncate">{order.product_name}</p>
