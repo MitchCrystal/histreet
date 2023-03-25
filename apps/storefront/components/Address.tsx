@@ -12,7 +12,7 @@ type Props = {
 export default function Address({ firstName, lastName, firstLine, secondLine, city, county, postcode, country }: Props) {
   return (
     <>
-      <div className="border p-5">
+      <div className="">
         <p className="font-bold mb-2">
           <span>{firstName} </span>
           <span>{lastName}</span>

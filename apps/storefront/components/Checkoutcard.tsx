@@ -1,12 +1,11 @@
 type Order = {
-  id: number;
-  image: string;
+  id: string;
+  image?: string;
   name: string;
   price: number;
   quantity: number;
 }[];
 
-//@TODO fix order data to match context data
 
 export default function Checkoutcard({values}:{values: Order}) {
   function totalPrice(ord: Order) {
