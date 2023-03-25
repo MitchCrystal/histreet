@@ -5,7 +5,7 @@
     "build": {
       "dependsOn": ["^build", "^db:generate"],
       "outputs": ["dist/**", ".next/**"],
-      "env": ["STRIPE_SECRET_KEY", "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY"]
+      "env": ["STRIPE_SECRET_KEY", "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY", "NEXT_PUBLIC_APP_URL"]
     },
     "lint": {
       "outputs": []

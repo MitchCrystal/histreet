@@ -132,7 +132,7 @@ function ProductDetail() {
             <div className="flex flex-col justify-between h-36">
               <div className="flex flex-row h-20 gap-3">
                 {productInputs.images.map((src) => (
-                  <img className="flex w-20 rounded" key={src} src={src} /> // use nextjs image
+                  <img className="flex w-20 rounded" key={src} src={src} alt='product'/> // use nextjs image
                 ))}
               </div>
               <label className="flex flex-row justify-end " htmlFor="upload">

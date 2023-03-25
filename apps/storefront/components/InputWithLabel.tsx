@@ -1,5 +1,17 @@
 import * as React from 'react';
 import * as LabelPrimitive from '@radix-ui/react-label';
+type Props = {
+  label: string;
+  id: string;
+  type: string;
+  showLabel: boolean;
+  state: Record<string, any>;
+  setState: React.Dispatch<React.SetStateAction<any>>;
+  direction: 'row' | 'column';
+  additionalClasses?: string;
+  additionalOnChangeFunction?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  [x: string]: any;
+}
 
 export default function InputWithLabel({
   label,
@@ -12,18 +24,7 @@ export default function InputWithLabel({
   additionalClasses,
   additionalOnChangeFunction,
   ...delegated
-}: {
-  label: string;
-  id: string;
-  type: string;
-  showLabel: boolean;
-  state: Record<string, any>;
-  setState: React.Dispatch<React.SetStateAction<any>>;
-  direction: 'row' | 'column';
-  additionalClasses?: string;
-  additionalOnChangeFunction?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  [x: string]: any;
-}) {
+}: Props) {
   return (
     <div className="grid w-full items-center gap-1.5">
       <div

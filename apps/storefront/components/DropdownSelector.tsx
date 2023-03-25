@@ -9,15 +9,13 @@ import {
   SelectSeparator,
 } from './SelectorLogic';
 
-export default function DropdownSelector({
-  options,
-  selectId,
-  label,
-}: {
+type Props = {
   options: { id: string; name: string }[];
   selectId: string;
   label: string;
-}) {
+};
+
+export default function DropdownSelector({ options, selectId, label }: Props) {
   return (
     <div className="w-full">
       <label className="text-sm font-medium mb-6" htmlFor={selectId}>

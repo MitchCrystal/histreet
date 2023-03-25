@@ -1,13 +1,14 @@
 import { useContext } from 'react';
 import { CartContext, ProductType } from '../pages/_app';
+type Props = {
+  lineItem: ProductType;
+  additionalClassNames?: string;
+};
 
 export default function CartQuantityInput({
   lineItem,
   additionalClassNames,
-}: {
-  lineItem: ProductType;
-  additionalClassNames?: string;
-}) {
+}: Props) {
   const {
     cartItems,
     handleUpdateCart,

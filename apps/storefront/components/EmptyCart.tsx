@@ -5,7 +5,6 @@ import HeadingText from './HeadingText';
 
 export default function EmptyCart() {
   const router = useRouter();
-  console.log(router.pathname);
   return (
     <div className="bg-gray-100 rounded-md flex items-center justify-center p-12 flex-col gap-6">
       <HeadingText size="h4">Your cart is empty</HeadingText>

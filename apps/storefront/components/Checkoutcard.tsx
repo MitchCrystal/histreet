@@ -6,6 +6,7 @@ type Order = {
   quantity: number;
 }[];
 
+//@TODO fix order data to match context data
 
 export default function Checkoutcard({values}:{values: Order}) {
   function totalPrice(ord: Order) {
@@ -34,7 +35,7 @@ export default function Checkoutcard({values}:{values: Order}) {
           return (
             <div className="grid grid-cols-4 my-2 w-full h-full" key={order.id}>
                 <img
-                  src={order.image}
+                  src={order.image??'/missing_img.png'}
                   alt="order-image"
                   className="rounded w-12 h-12 "
                 />

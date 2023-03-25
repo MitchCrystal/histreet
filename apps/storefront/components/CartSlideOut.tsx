@@ -66,8 +66,8 @@ export default function CartSlideOut() {
                   className="text-black mt-4 flex flex-col items-start lg:grid lg:grid-cols-5 lg:items-center text-center text-sm mx-3 gap-2"
                 >
                   <img
-                    src={item.product_images[0].src}
-                    alt={item.product_images[0].alt}
+                    src={item.product_images[0]?.src??'/missing_img.png'}
+                    alt={item.product_images[0]?.alt??'no image'}
                     className="w-12 h-12 rounded-md hidden lg:block"
                   />
                   <div className="lg:col-span-2 lg:flex lg:items-start lg:justify-center lg:flex-col">
