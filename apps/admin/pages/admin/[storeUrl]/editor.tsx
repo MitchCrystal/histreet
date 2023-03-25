@@ -6,6 +6,8 @@ import Textarea from '../../../components/Textarea';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useQuery, UseQueryResult, useMutation } from '@tanstack/react-query';
+import getServerSideProps from '../../../utils/authorization'
+export{getServerSideProps}
 
 type StoreformInputs = {
   id: string;

@@ -7,39 +7,39 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { signOut } from 'next-auth/react';
 import Button from '../components/Button';
+import Image from 'next/image'
 
 export default function AdminLayout({
   children,
   title,
 }: PropsWithChildren<{ title: string }>) {
   const router = useRouter();
-  //adding getServerSideProps target getSession() check active session if false redirect sign in
-  //check if active sessin has access to specific store/storeUrl
-  //dynamically show store name on main bar
+  const logoSrc = '/histreet-yellow-square.png'
+  const storeUrl = router.query.storeUrl
   const initialNavigation = [
     {
       name: 'Dashboard',
-      href: `/admin/${router.query.storeUrl}/dashboard`,
+      href: `/admin/${storeUrl}/dashboard`,
       current: true,
     },
     {
       name: 'Orders',
-      href: `/admin/${router.query.storeUrl}/orders`,
+      href: `/admin/${storeUrl}/orders`,
       current: false,
     },
     {
       name: 'Products',
-      href: `/admin/${router.query.storeUrl}/products`,
+      href: `/admin/${storeUrl}/products`,
       current: false,
     },
     {
       name: 'Store Editor',
-      href: `/admin/${router.query.storeUrl}/editor`,
+      href: `/admin/${storeUrl}/editor`,
       current: false,
     },
     {
       name: 'Visit Store',
-      href: `${process.env.NEXT_PUBLIC_STOREFRONT_URL}/${router.query.storeUrl}`,
+      href: `${process.env.NEXT_PUBLIC_STOREFRONT_URL}/${storeUrl}`,
       current: false,
     },
   ];
@@ -60,11 +60,21 @@ export default function AdminLayout({
           className="h-6 ml-4 md:hidden cursor-pointer"
           onClick={() => setIsNavOpen((prev) => !prev)}
         />
-        <div className="flex justify-end md:justify-between w-full">
-          <Link href={`/admin/${router.query.storeUrl}/dashboard`}>
-            <div className="flex ml-4 text-2xl">Logo</div>
+        <div className="flex justify-end md:justify-between items-center w-full">
+          <Link href={`/admin/${storeUrl}/dashboard`}>
+            <div className="flex gap-2 ml-4 text-2xl place-content-center">
+              <Image
+              src={logoSrc}
+              alt="company logo"
+              width={40}
+              height={40}
+              /> 
+              <div className='flex justify-center items-center'>
+              HiStreet
+              </div>
+            </div>
           </Link>
-          <div className="flex mr-4 text-2xl">Store name</div>
+          <div className="flex mr-4 text-2xl">{storeUrl}</div>
         </div>
       </div>
       <div className="flex h-[calc(100vh-48px)] flex-col md:flex-row">
@@ -133,3 +143,4 @@ export default function AdminLayout({
     </>
   );
 }
+
