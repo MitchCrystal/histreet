@@ -91,12 +91,21 @@ function Products() {
   const [formProducts, setFormProducts] = useState<Record<string, any>[]>([]);
 
   useEffect(() => {
-    setFormProducts(products);
+    const formattedProducts = products.map((product) => {
+      return {
+        ...product,
+        product_price: new Intl.NumberFormat('en-GB', {
+          style: 'currency',
+          currency: 'GBP',
+        }).format(Number(product.product_price)),
+      };
+    });
+    setFormProducts(formattedProducts);
   }, [products]);
 
   return (
     <>
-      <div className="w-1/2 md:w-5/6 lg:w-full">
+      <div className="w-1/2 md:w-5/6 lg:w-full mb-8">
         <div className="flex justify-end">
           <Button
             size="default"
@@ -107,7 +116,7 @@ function Products() {
             Add Product
           </Button>{' '}
         </div>
-        <Heading title={'Products'} type="h2" />
+        <Heading title={'Products'} type="h1" />
       </div>
       <Table
         link={true}
@@ -152,7 +161,7 @@ function Products() {
             required
           />
           <InputWithLabel
-            label="Product price"
+            label="Product price(£)"
             id="product_price"
             type="number"
             showLabel={true}

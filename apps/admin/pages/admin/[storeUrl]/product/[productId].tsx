@@ -17,7 +17,7 @@ type Product = {
   product_images?: string[];
   inventory_qty: number;
   SKU: string;
-}
+};
 
 function ProductDetail() {
   const router = useRouter();
@@ -44,7 +44,7 @@ function ProductDetail() {
         price: product.product_price,
         sku: product.SKU,
         inventory: product.inventory_qty,
-        images: product.product_images ??[],
+        images: product.product_images ?? [],
       });
 
       return product;
@@ -62,7 +62,7 @@ function ProductDetail() {
 
   const [flag, setFlag] = useState(false);
 
-  function handleSubmit(event:any) {
+  function handleSubmit(event: any) {
     event.preventDefault();
 
     try {
@@ -132,7 +132,12 @@ function ProductDetail() {
             <div className="flex flex-col justify-between h-36">
               <div className="flex flex-row h-20 gap-3">
                 {productInputs.images.map((src) => (
-                  <img className="flex w-20 rounded" key={src} src={src} alt='product'/> // use nextjs image
+                  <img
+                    className="flex w-20 rounded"
+                    key={src}
+                    src={src}
+                    alt="product"
+                  /> // use nextjs image
                 ))}
               </div>
               <label className="flex flex-row justify-end " htmlFor="upload">
@@ -150,7 +155,7 @@ function ProductDetail() {
           <Card>
             <div className="flex flex-row gap-3">
               <InputWithLabel
-                label="price"
+                label="price(£)"
                 id="price"
                 type="number"
                 step="0.01"
