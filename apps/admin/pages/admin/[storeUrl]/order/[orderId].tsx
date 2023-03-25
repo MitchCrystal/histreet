@@ -99,9 +99,15 @@ function OrderDetail({ order }: any) {
       id: id,
       Product_name: name,
       SKU: sku,
-      Price: String(price),
+      Price: new Intl.NumberFormat('en-GB', {
+        style: 'currency',
+        currency: 'GBP',
+      }).format(price),
       Quantity: String(quantity),
-      Total: String(price * quantity),
+      Total: new Intl.NumberFormat('en-GB', {
+        style: 'currency',
+        currency: 'GBP',
+      }).format(price * quantity),
     };
   });
 
@@ -137,7 +143,13 @@ function OrderDetail({ order }: any) {
             <div className="flex justify-between">
               <Heading title="Total Order" type="h3" />
               <div className="mr-28">
-                <Heading title={`£${order.total_order_cost}`} type="h3" />
+                <Heading
+                  title={`${new Intl.NumberFormat('en-GB', {
+                    style: 'currency',
+                    currency: 'GBP',
+                  }).format(order.total_order_cost)}`}
+                  type="h3"
+                />
               </div>
             </div>
           </Card>
@@ -188,9 +200,9 @@ export const getServerSideProps: GetServerSideProps<{ order: any }> = async (
   context
 ) => {
   const { orderId } = context.query;
-  const order = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/order/${orderId}`).then(
-    (res) => res.json()
-  );
+  const order = await fetch(
+    `${process.env.NEXT_PUBLIC_APP_URL}/api/order/${orderId}`
+  ).then((res) => res.json());
 
   if (order.error) {
     return {

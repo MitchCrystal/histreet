@@ -1,5 +1,6 @@
 import AdminLayout from '../../../layouts/AdminLayout';
 import Table from '../../../components/Table';
+import Heading from '../../../components/Heading';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
@@ -15,14 +16,22 @@ function Orders() {
   });
 
   const [formOrders, setFormOrders] = useState<Record<string, any>[]>([]);
-
   useEffect(() => {
-    setFormOrders(orders);
+    const formattedOrder = orders.map((order) => {
+      return {
+        ...order,
+        order_total: new Intl.NumberFormat('en-GB', {
+          style: 'currency',
+          currency: 'GBP',
+        }).format(Number(order.order_total)),
+      };
+    });
+    setFormOrders(formattedOrder);
   }, [orders]);
 
   return (
     <>
-      <p>Orders</p>
+      <Heading title="Orders" type="h1"></Heading>
       <Table
         link={true}
         linkProperty="order_id"
