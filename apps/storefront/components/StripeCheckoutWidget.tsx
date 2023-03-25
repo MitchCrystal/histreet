@@ -55,14 +55,13 @@ export default function CheckoutForm() {
       return;
     }
 
-    console.log('SUBMITTING!');
     setIsLoading(true);
 
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: 'http://localhost:3000',
+        return_url: `http://localhost:3000/${router.query.storeUrl}/processing-order`,
       },
     });
 

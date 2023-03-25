@@ -35,6 +35,8 @@ export default async function handler(
     phoneNumber,
   } = req.body.data.object.metadata;
 
+  console.log(req.body);
+
   if (req.body.type !== 'charge.succeeded') {
     res.status(500).json({ successfulPayment: false });
   } else {
@@ -91,6 +93,7 @@ export default async function handler(
         },
         friendly_order_number: getOrderCountForStore + 1000,
         total_order_cost: 10,
+        payment_id: req.body.data.object.payment_intent,
         order_details: [{ id: 'clfk8f02m0002ono088oiycn3', qty: 8, price: 18 }],
         store: {
           connect: {
