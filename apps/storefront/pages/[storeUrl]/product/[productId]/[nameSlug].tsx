@@ -35,7 +35,9 @@ function ProductPage() {
   }: UseQueryResult<Product, unknown> = useQuery({
     queryKey: ['product'],
     queryFn: () =>
-      fetch(`/api/product/${router.query.productId}`).then((res) => res.json()),
+      fetch(
+        `/api/product/${router.query.productId}/${router.query.storeUrl}`
+      ).then((res) => res.json()),
     enabled: !!router.isReady,
   });
   const [formValues, setFormValues] = useState({ quantity: 1 });
@@ -85,8 +87,8 @@ function ProductPage() {
       <div className="mt-6 md:grid sm:grid-cols-8 sm:gap-8 flex flex-col gap-4">
         <div className="col-span-3 flex flex-col gap-2">
           <img
-            src={currentImage?.src??'/missing_img.png'}
-            alt={currentImage?.alt??'no image'}
+            src={currentImage?.src ?? '/missing_img.png'}
+            alt={currentImage?.alt ?? 'no image'}
             className="object-cover h-[500px]"
           />
           <ImageRow

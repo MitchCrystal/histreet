@@ -22,7 +22,7 @@ export default async function handler(
     if (order) {
       res.status(200).json(order);
     } else {
-      res.status(404).json({ message: 'Order with payment id not found' });
+      res.status(500).json({ message: 'Order with payment id not found' });
     }
   } catch (err) {
     res.status(500).json({ error: true });
