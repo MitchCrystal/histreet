@@ -1,10 +1,15 @@
-import { GetServerSidePropsContext } from "next";
-import { getSession } from "next-auth/react";
+import { GetServerSidePropsContext } from 'next';
+import { getSession } from 'next-auth/react';
+import PrismaStrUrl from './storeUrl';
 
-export default async function ServerSideProps(context: GetServerSidePropsContext) {
+export default async function ServerSideProps(
+  context: GetServerSidePropsContext
+) {
   const session = await getSession(context);
-
-  if (!session) {
+  const userId = session?.user.id;
+  const currentStoreUrl = context.query.storeUrl
+  const prismaStoreUrl = await PrismaStrUrl(userId);
+  if (!session || currentStoreUrl !== prismaStoreUrl) {
     return {
       redirect: {
         destination: '/',
