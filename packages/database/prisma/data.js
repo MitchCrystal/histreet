@@ -433,11 +433,11 @@ const orders = [
     bill_address_id: 'addr1-normal-(ship)',
     ship_address_id: 'addr1-normal-(bill)',
     products: {
-      connect: [{ product_id: 'product3-with-normal-details-two-images' }],
+      connect: [{ product_id: 'prd3-w-nrml-dtls-2-imgs' }],
     },
     order_details: [
       {
-        productId: 'product3-with-normal-details-two-images',
+        productId: 'prd3-w-nrml-dtls-2-imgs',
         quantity: 2,
         price: 4000.75,
         name: 'Beach Ball',
@@ -455,44 +455,44 @@ const orders = [
     ship_address_id: 'addr-bill-and-ship-(ship)',
     products: {
       connect: [
-        { product_id: 'product-with-normal-details-four-images' },
-        { product_id: 'product-with-long-details-and-big-numbers' },
-        { product_id: 'product2-with-normal-details-one-image' },
-        { product_id: 'product1-with-normal-details-two-images' },
-        { product_id: 'product-with-normal-details-three-images' },
+        { product_id: 'prd-w-nrml-dtls-4-imgs' },
+        { product_id: 'prd-w-lng-dtls-and-big-nums' },
+        { product_id: 'prd2-w-nrml-dtls-1-img' },
+        { product_id: 'prd1-w-nrml-dtls-2-imgs' },
+        { product_id: 'prd-w-nrml-dtls-3-imgs' },
       ],
     },
     order_details: [
       {
-        productId: 'product-with-normal-details-four-images',
+        productId: 'prd-w-nrml-dtls-4-imgs',
         quantity: 1,
         price: 1200,
         name: 'Black Teapot',
         sku: '098789',
       },
       {
-        productId: 'product-with-long-details-and-big-numbers',
+        productId: 'prd-w-lng-dtls-and-big-nums',
         quantity: 4,
         price: 1234567,
         name: 'product1 - with a rather long name  just to see how this looks when displayed',
         sku: 'SKU-17937494797934',
       },
       {
-        productId: 'product2-with-normal-details-one-image',
+        productId: 'prd2-w-nrml-dtls-1-img',
         quantity: 3,
         price: 33.27,
         name: 'Quirky Teapot',
         sku: '4837',
       },
       {
-        productId: 'product1-with-normal-details-two-images',
+        productId: 'prd1-w-nrml-dtls-2-imgs',
         quantity: 2,
         price: 5,
         name: 'See-through Teapot',
         sku: '4H56K-7',
       },
       {
-        productId: 'product-with-normal-details-three-images',
+        productId: 'prd-w-nrml-dtls-3-imgs',
         quantity: 5,
         price: 850.25,
         name: 'Green Teapot',
@@ -509,11 +509,11 @@ const orders = [
     bill_address_id: 'addr-with-empty-optional-fields-(bill)',
     ship_address_id: 'addr-with-long-fields-bill-and-ship-(ship)',
     products: {
-      connect: [{ product_id: 'product-with-normal-details-four-images' }],
+      connect: [{ product_id: 'prd-w-nrml-dtls-4-imgs' }],
     },
     order_details: [
       {
-        productId: 'product-with-normal-details-four-images',
+        productId: 'prd-w-nrml-dtls-4-imgs',
         quantity: 3,
         price: 1200,
         name: 'Black Teapot',
@@ -532,36 +532,36 @@ const orders = [
     ship_address_id: 'addr-as-shipping-only',
     products: {
       connect: [
-        { product_id: 'product1-with-normal-details-one-image' },
-        { product_id: 'product2-with-normal-details-two-images' },
-        { product_id: 'product-with-normal-details-five-images' },
-        { product_id: 'product-with-negative-inventory-and-price' },
+        { product_id: 'prd1-w-nrml-dtls-1-img' },
+        { product_id: 'prd2-w-nrml-dtls-2-imgs' },
+        { product_id: 'prd-w-nrml-dtls-5-imgs' },
+        { product_id: 'prd-w-neg-inv-and-price' },
       ],
     },
     order_details: [
       {
-        productId: 'product1-with-normal-details-one-image',
+        productId: 'prd1-w-nrml-dtls-1-img',
         quantity: 2,
         price: 17.99,
         name: 'should we correct lowercase first letter?',
         sku: '868434',
       },
       {
-        productId: 'product2-with-normal-details-two-images',
+        productId: 'prd2-w-nrml-dtls-2-imgs',
         quantity: 3,
         price: 199.9,
         name: 'Blue Teapot',
         sku: '5454-BGH',
       },
       {
-        productId: 'product-with-normal-details-five-images',
+        productId: 'prd-w-nrml-dtls-5-imgs',
         quantity: 1,
         price: 1200,
         name: 'Mega-pot',
         sku: '5398789',
       },
       {
-        productId: 'product-with-negative-inventory-and-price',
+        productId: 'prd-w-neg-inv-and-price',
         quantity: -1,
         price: -1,
         name: 'Negative Teapot',
@@ -579,12 +579,12 @@ const orders = [
     ship_address_id: 'addr2-normal-(ship)',
     products: {
       connect: [
-        { product_id: 'product-with-short-details-and-zeros-no-image' },
+        { product_id: 'prd-w-sml-dtls-and-0s-no-img' },
       ],
     },
     order_details: [
       {
-        productId: 'product-with-short-details-and-zeros-no-image',
+        productId: 'prd-w-sml-dtls-and-0s-no-img',
         quantity: 0,
         price: 0,
         name: 'potato',
