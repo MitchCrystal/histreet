@@ -30,7 +30,6 @@ type Product = {
 function ProductDetail() {
   const router = useRouter();
   const { productId } = router.query;
-  console.log('router', router);
 
   const [imageUploaded, setImageUploaded] = useState(false);
   const [productInputs, setProductsInputs] = useState({
