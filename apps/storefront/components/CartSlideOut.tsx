@@ -66,8 +66,8 @@ export default function CartSlideOut() {
                   className="text-black mt-4 flex flex-col items-start lg:grid lg:grid-cols-5 lg:items-center text-center text-sm mx-3 gap-2"
                 >
                   <img
-                    src={item.product_images[0]?.src??'/missing_img.png'}
-                    alt={item.product_images[0]?.alt??'no image'}
+                    src={item.product_images[0]?.src ?? '/missing_img.png'}
+                    alt={item.product_images[0]?.alt ?? 'no image'}
                     className="w-12 h-12 rounded-md hidden lg:block"
                   />
                   <div className="lg:col-span-2 lg:flex lg:items-start lg:justify-center lg:flex-col">
@@ -78,7 +78,12 @@ export default function CartSlideOut() {
                         {item.product_name}
                       </p>
                     </Link>
-                    <p className="hidden lg:inline">£{item.product_price}</p>
+                    <p className="hidden lg:inline">
+                      {new Intl.NumberFormat('en-GB', {
+                        style: 'currency',
+                        currency: 'GBP',
+                      }).format(item.product_price)}
+                    </p>
                   </div>
                   <div className="hidden lg:block">
                     <CartQuantityInput
@@ -87,11 +92,20 @@ export default function CartSlideOut() {
                     />
                   </div>
                   <div className="flex items-center justify-start gap-2 lg:hidden">
-                    <p className="inline lg:hidden">£{item.product_price}</p>
+                    <p className="inline lg:hidden">
+                      {' '}
+                      {new Intl.NumberFormat('en-GB', {
+                        style: 'currency',
+                        currency: 'GBP',
+                      }).format(item.product_price)}
+                    </p>
                     <p className="lg:hidden">x{item.quantityInCart}</p>
                   </div>
                   <p className="hidden lg:block">
-                    £{item.product_price * (item?.quantityInCart || 0)}
+                    {new Intl.NumberFormat('en-GB', {
+                      style: 'currency',
+                      currency: 'GBP',
+                    }).format(item.product_price * (item?.quantityInCart || 0))}
                   </p>
                 </div>
               ))}

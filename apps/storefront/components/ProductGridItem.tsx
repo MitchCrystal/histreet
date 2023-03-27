@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type Product = {
   product_id: string;
@@ -19,7 +19,12 @@ type Product = {
 export default function ProductGridItem({ product }: { product: Product }) {
   const router = useRouter();
 
-  const [currentImage, setCurrentImage] = useState(product.product_images[0]);
+  const [currentImage, setCurrentImage] = useState(
+    (product.product_images && product.product_images[0]) ?? {
+      src: '/missing_img.png',
+      alt: 'no image',
+    }
+  );
 
   return (
     <div className="flex flex-col gap-4">
@@ -28,14 +33,17 @@ export default function ProductGridItem({ product }: { product: Product }) {
       >
         <div className="relative overflow-hidden md:min-h-[300px] max-h-[300px] flex flex-col items-center justify-center">
           <img
-            src={currentImage?.src??'/missing_img.png'}
-            alt={currentImage?.alt??'no image'}
+            src={currentImage?.src ?? '/missing_img.png'}
+            alt={currentImage?.alt ?? 'no image'}
             className="object-cover"
             onMouseEnter={() => {
-              if (!product.product_images[1]) return;
+              if (!product.product_images || !product.product_images[1]) return;
               setCurrentImage(product.product_images[1]);
             }}
-            onMouseLeave={() => setCurrentImage(product.product_images[0])}
+            onMouseLeave={() => {
+              if (!product.product_images || !product.product_images[1]) return;
+              setCurrentImage(product.product_images[0]);
+            }}
           />
         </div>
       </Link>
