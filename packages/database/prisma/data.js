@@ -224,27 +224,53 @@ const products = [
     product_name_slug: 'beach-ball',
     product_images: imageData.beachballImages,
   },
-  { product_id: 'product4-with-normal-details-two-images',
+  {
+    product_id: 'product4-with-normal-details-two-images',
     store_id: 'store-2-products-with-storefront-detail',
     SKU: '7241',
     product_name: 'Instant Sock Collection',
     inventory_qty: 399,
     description:
       'Did you ever want more socks than you know what to deal with? Well select our XL lucky dip sock collection and get a ton of random socks',
-    product_price: 345.99 ,
+    product_price: 345.99,
     product_name_slug: 'bunch-o-socks',
     product_images: imageData.socksImages,
   },
-  { product_id: 'product5-with-normal-details-two-images',
+  {
+    product_id: 'product5-with-normal-details-two-images',
     store_id: 'store-2-products-with-storefront-detail',
     SKU: '6f241',
-    product_name: "Bulk buy of toys",
+    product_name: 'Bulk buy of toys',
     inventory_qty: 76,
     description:
       'This is a big batch of toys, you get a random selection which may or may not include some of the items in the images. Take your chances and you might get something awesome, but most likely not',
     product_price: 652.43,
     product_name_slug: 'bunch-o-toys',
     product_images: imageData.toysImages,
+  },
+  {
+    product_id: 'product6-with-normal-details-two-images',
+    store_id: 'nice-mvp-store',
+    SKU: '89767',
+    product_name: 'Toothbrush',
+    inventory_qty: 76,
+    description:
+      'Some toothbrushes. Perfect for cleaning your teeth. But also useful, once they have got a bit worn out, for household cleaning. Basically a 2 in 1 functionality. What a bargain.',
+    product_price: 6.67,
+    product_name_slug: 'toothbrush',
+    product_images: imageData.toothbrushImages,
+  },
+    {
+    product_id: 'product7-with-normal-details-two-images',
+    store_id: 'nice-mvp-store',
+    SKU: '574',
+    product_name: 'Cool Dog',
+    inventory_qty: 1,
+    description:
+      'A dog to silently judge you whilst you brush your teeth. Includes sunglasses to protect its eyes from the gleam after you have done a great job brushing.',
+    product_price: 545.29,
+    product_name_slug: 'woof-woof',
+    product_images: imageData.dogImages,
   },
 ];
 

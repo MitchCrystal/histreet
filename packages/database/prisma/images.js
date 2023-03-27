@@ -155,6 +155,16 @@ const imageData = {
       src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679750170/socks1_cgraf6.jpg',
       alt: 'lots of socks',
     },
+    {
+      id: 'socksimg3',
+      src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679750170/socks2_mcgdfe.jpg',
+      alt: 'plenty of socks',
+    },
+    {
+      id: 'socksimg4',
+      src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679750170/socks4_kfcpsa.webp',
+      alt: 'socks',
+    },
   ],
   toysImages: [
     {
@@ -167,51 +177,79 @@ const imageData = {
       src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679842347/toys2_b8udwa.jpg',
       alt: 'lots of toys',
     },
+    {
+      id: 'toysimg3',
+      src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679750169/toy2_pro9cs.png',
+      alt: 'toy car',
+    },
+    {
+      id: 'toysimg4',
+      src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679750169/toy_wykyuc.jpg',
+      alt: 'toy telephone',
+    },
   ],
 
-  teapotHero: 
+  toothbrushImages: [
     {
-      id: 'teapotStoreHero',
-      src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679757689/teapots-splash_wirqzt.jpg',
-      alt: 'So many teapots',
+      id: 'toothbimg1',
+      src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679750167/toothbrush6_vprkkf.jpg',
+      alt: 'toothbrush',
     },
-
-  teapotLogo:
     {
-      id: 'teapotStoreLogo',
-      src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679758283/teapot-logo_c1nlwt.jpg',
-      alt: 'Teapot logo',
+      id: 'toothbimg2',
+      src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679750167/toothbrush_j2sxop.jpg',
+      alt: 'bamboo toothbrush',
     },
+  ],
 
-
-  toothbrushHero:
+  dogImages: [
     {
-      id: 'storeheroimg2',
-      src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679750167/toothbrush4_sjdec3.webp',
-      alt: 'Many colourful toothbrushes',
+      id: 'dogimg1',
+      src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679750168/dog4_wcvatd.webp',
+      alt: 'a dog in a tent bed thing',
     },
-
-  toothbrushLogo:
     {
-      id: 'storelogoimg2',
-      src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679758562/toothbrush-logo_jikk0t.heic',
-      alt: 'Toothbrush logo',
+      id: 'dogimg2',
+      src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679750168/dog_jx8ukz.webp',
+      alt: 'a dog lying down',
     },
+  ],
 
-  fruitNvegHero:
-    {
-      id: 'storeheroimg3',
-      src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679750137/apple3_u47hdj.png',
-      alt: 'Lots of multi coloured apples',
-    },
+  teapotHero: {
+    id: 'teapotStoreHero',
+    src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679757689/teapots-splash_wirqzt.jpg',
+    alt: 'So many teapots',
+  },
 
-  toysNsocksLogo:
-    {
-      id: 'storelogoimg3',
-      src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679758763/toyslogo_rrd3tu.jpg',
-      alt: 'Toys and socks logo',
-    }
+  teapotLogo: {
+    id: 'teapotStoreLogo',
+    src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679758283/teapot-logo_c1nlwt.jpg',
+    alt: 'Teapot logo',
+  },
 
+  toothbrushHero: {
+    id: 'storeheroimg2',
+    src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679750167/toothbrush4_sjdec3.webp',
+    alt: 'Many colourful toothbrushes',
+  },
+
+  toothbrushLogo: {
+    id: 'storelogoimg2',
+    src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679758562/toothbrush-logo_jikk0t.heic',
+    alt: 'Toothbrush logo',
+  },
+
+  fruitNvegHero: {
+    id: 'storeheroimg3',
+    src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679750137/apple3_u47hdj.png',
+    alt: 'Lots of multi coloured apples',
+  },
+
+  toysNsocksLogo: {
+    id: 'storelogoimg3',
+    src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679758763/toyslogo_rrd3tu.jpg',
+    alt: 'Toys and socks logo',
+  },
 };
 module.exports = imageData
 
