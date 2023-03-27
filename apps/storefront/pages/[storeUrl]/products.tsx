@@ -36,7 +36,7 @@ function Products() {
 
   if (isLoading) return <Loading />;
   if (isError) return <Error />;
-console.log(products)
+console.log('PRODUCTS', products)
   return (
     <>
       <HeadingText size="h3">Products</HeadingText>
