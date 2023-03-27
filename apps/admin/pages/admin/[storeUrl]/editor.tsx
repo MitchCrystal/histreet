@@ -259,7 +259,7 @@ function Editor() {
                 className="w-[100px]"
               ></img>
               <div className="flex items-center">
-                <FileUpload id="fileUpload" onChangeEvent={handleLogoUpload} />
+                <FileUpload id="fileUpload" onChangeEvent={false} />
               </div>
             </div>
           </div>

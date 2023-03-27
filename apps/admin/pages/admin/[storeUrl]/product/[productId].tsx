@@ -4,34 +4,42 @@ import Heading from '../../../../components/Heading';
 import Card from '../../../../components/Card';
 import InputWithLabel from '../../../../components/InputWithLabel';
 import Textarea from '../../../../components/Textarea';
-import Link from 'next/link';
-import { FormEventHandler, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useMutation, useQuery, UseQueryResult } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import FileUpload from '../../../../components/FileUpload';
-import getServerSideProps from '../../../../utils/authorization'
-export{getServerSideProps}
+import getServerSideProps from '../../../../utils/authorization';
+export { getServerSideProps };
+
+type ImageType = {
+  id: string;
+  alt: string;
+  src: string;
+};
 
 type Product = {
   product_name: string;
   description: string;
   product_price: number;
-  product_images?: string[];
+  product_images?: ImageType[];
   inventory_qty: number;
   SKU: string;
+  is_active: boolean;
 };
 
 function ProductDetail() {
   const router = useRouter();
   const { productId } = router.query;
 
+  const [imageUploaded, setImageUploaded] = useState(false);
   const [productInputs, setProductsInputs] = useState({
     item: '',
     description: '',
     price: 0,
     sku: '',
     inventory: 0,
-    images: [] as string[],
+    images: [] as ImageType[],
+    isActive: true,
   });
 
   const { data, isLoading, isError } = useQuery({
@@ -40,19 +48,24 @@ function ProductDetail() {
       const resp = await fetch(`/api/product/${productId}`);
       const product: Product = await resp.json();
 
-      setProductsInputs({
-        item: product.product_name,
-        description: product.description,
-        price: product.product_price,
-        sku: product.SKU,
-        inventory: product.inventory_qty,
-        images: product.product_images ?? [],
-      });
-
       return product;
     },
     enabled: Boolean(productId),
   });
+
+  useEffect(() => {
+    if (data) {
+      setProductsInputs({
+        item: data.product_name,
+        description: data.description,
+        price: data.product_price,
+        sku: data.SKU,
+        inventory: data.inventory_qty,
+        images: data.product_images ?? [],
+        isActive: data.is_active,
+      });
+    }
+  }, [data]);
 
   const { mutate } = useMutation((body: Product) =>
     fetch(`/api/product/${productId}`, {
@@ -62,7 +75,17 @@ function ProductDetail() {
     }).then((resp) => resp.json())
   );
 
-  const [flag, setFlag] = useState(false);
+  function handleImageUpload(url: string) {
+    console.log('url', url);
+    setImageUploaded(true);
+    setProductsInputs((prevProductInputs) => ({
+      ...prevProductInputs,
+      images: [
+        ...prevProductInputs.images,
+        { src: url, alt: 'product', id: `${prevProductInputs.images.length}` },
+      ],
+    }));
+  }
 
   function handleSubmit(event: any) {
     event.preventDefault();
@@ -75,17 +98,21 @@ function ProductDetail() {
         SKU: productInputs.sku,
         inventory_qty: Number(productInputs.inventory),
         product_images: productInputs.images,
+        is_active: productInputs.isActive,
       };
       mutate(body);
     } catch (error) {
       console.log(error);
     }
+      router.back();
   }
 
-  function handleImageSubmit() {}
-
-  // TODO: will be for Active/Inactive
-  function flagHandler(event: any) {}
+  function handleIsActive() {
+    setProductsInputs((prevProductInputs) => ({
+      ...prevProductInputs,
+      isActive: !prevProductInputs.isActive,
+    }));
+  }
 
   return (
     <>
@@ -93,14 +120,17 @@ function ProductDetail() {
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <div className="flex flex-row justify-between h-6">
             <Heading title={productInputs.item} type="h2"></Heading>
+            <div className='text-red-500' > 
+              <Heading title={productInputs.isActive ? "" : "ITEM DEACTIVATED"} type="h1"></Heading>
+            </div>
             <div className="flex justify-end">
               <Button
                 size="sm"
                 appearance="default"
-                type="submit"
                 value="Active/InActive"
+                onClick={handleIsActive}
               >
-                Active/Inactive
+                {productInputs.isActive ? "Deactivate Item" : "Activate Item"}
               </Button>
             </div>
           </div>
@@ -133,23 +163,14 @@ function ProductDetail() {
           <Card>
             <div className="flex flex-col justify-between h-36">
               <div className="flex flex-row h-20 gap-3">
-                {productInputs.images.map((src) => (
-                  <img
-                    className="flex w-20 rounded"
-                    key={src}
-                    src={src}
-                    alt="product"
-                  /> // use nextjs image
+                {productInputs.images.map((img) => (
+                  <div key={img.id} className="flex w-20 rounded">
+                    <img key={img.id} src={img.src} alt={img.alt} />
+                  </div>
                 ))}
               </div>
               <label className="flex flex-row justify-end " htmlFor="upload">
-                {/* <input
-                  type="file"
-                  id="upload"
-                  name="upload"
-                  onChange={flagHandler}
-                /> */}
-                {/* <FileUpload /> */}
+                <FileUpload id="fileUpload" onChangeEvent={handleImageUpload} />
               </label>
             </div>
           </Card>
@@ -190,8 +211,14 @@ function ProductDetail() {
           </Card>
 
           <div className=" flex justify-end ">
-            <Button size="default" appearance="default">
-              <Link href="/admin/d/products">Cancel</Link>
+            <Button
+              size="default"
+              appearance="default"
+              onClick={() => {
+                router.back();
+              }}
+            >
+              Cancel
             </Button>
             <Button size="default" appearance="default" type="submit">
               Save
