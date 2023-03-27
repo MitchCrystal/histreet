@@ -7,6 +7,7 @@ export const CartContext: any = createContext([]);
 
 export type ProductType = {
   product_name: string;
+  SKU: string;
   product_price: number;
   product_id: string;
   product_name_slug: string;

@@ -12,7 +12,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  console.log(req.body.data.object.metadata);
+  console.log('METADATA', Object.entries(req.body.data.object.metadata));
+
   const {
     email,
     store_url,
@@ -34,6 +35,16 @@ export default async function handler(
     city,
     phoneNumber,
   } = req.body.data.object.metadata;
+
+  const lineItems = Object.entries(req.body.data.object.metadata)
+    .filter((item) => item[0].includes('item_'))
+    .map((item: any) => JSON.parse(item[1]));
+
+  console.log(lineItems);
+  console.log(
+    'MAP',
+    lineItems.map((item) => ({ product_id: item.id }))
+  );
 
   console.log(req.body);
 
@@ -83,9 +94,7 @@ export default async function handler(
         },
       });
 
-      console.log('getOrderCountForStore', getOrderCountForStore);
-
-      const order = await prisma.order.create({
+      await prisma.order.create({
         data: {
           customer: {
             connect: {
@@ -95,9 +104,7 @@ export default async function handler(
           friendly_order_number: getOrderCountForStore + 1000,
           total_order_cost: 10,
           payment_id: req.body.data.object.payment_intent,
-          order_details: [
-            { id: 'clfk8f02m0002ono088oiycn3', qty: 8, price: 18 },
-          ],
+          order_details: lineItems,
           store: {
             connect: {
               store_id: store?.store_id,
@@ -136,6 +143,9 @@ export default async function handler(
                 },
               },
             },
+          },
+          products: {
+            connect: lineItems.map((item) => ({ product_id: item.id })),
           },
         },
       });
