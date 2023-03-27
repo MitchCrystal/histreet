@@ -1,10 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import Error from '../../components/Error';
 import HeadingText from '../../components/HeadingText';
-import Loading from '../../components/Loading';
 import ProductGridItem from '../../components/ProductGridItem';
 import MainLayout from '../../layouts/MainLayout';
+import prisma from '../../utils/prisma';
 
 type ProductType = {
   product_name: string;
@@ -19,23 +18,78 @@ type ProductType = {
   inventory_qty: number;
 };
 
-function Products() {
-  const router = useRouter();
-  const {
-    data: products,
-    isLoading,
-    isError,
-  } = useQuery(
-    ['products'],
-    () =>
-      fetch('/api/products/' + router.query.storeUrl).then((res) => res.json()),
-    {
-      enabled: !!router.query.storeUrl,
-    }
-  );
+export async function getServerSideProps(context: any) {
+  try {
+    const { storeUrl } = context.params;
 
-  if (isLoading) return <Loading />;
-  if (isError) return <Error />;
+    if (!storeUrl) {
+      return {
+        props: {
+          products: [],
+        },
+      };
+    }
+
+    const store = await prisma.store.findUnique({
+      where: {
+        store_url: String(storeUrl),
+      },
+      select: {
+        store_id: true,
+      },
+    });
+
+    const products = await prisma.product.findMany({
+      where: {
+        store_id: store?.store_id,
+        is_active: true,
+      },
+      select: {
+        product_name: true,
+        SKU: true,
+        product_price: true,
+        product_images: true,
+        product_id: true,
+        product_name_slug: true,
+        inventory_qty: true,
+      },
+    });
+
+    return {
+      props: {
+        products: products.map((item) => ({
+          ...item,
+          product_price: Number(item.product_price),
+        })),
+      },
+    };
+  } catch (error) {
+    return {
+      props: {
+        products: [],
+      },
+    };
+  }
+}
+
+function Products({ products }: { products?: ProductType[] }) {
+  const router = useRouter();
+  console.log({ products });
+  // const {
+  //   data: products,
+  //   isLoading,
+  //   isError,
+  // } = useQuery(
+  //   ['products'],
+  //   () =>
+  //     fetch('/api/products/' + router.query.storeUrl).then((res) => res.json()),
+  //   {
+  //     enabled: !!router.query.storeUrl,
+  //   }
+  // );
+
+  // if (isLoading) return <Loading />;
+  // if (isError) return <Error />;
 
   return (
     <>
@@ -62,10 +116,10 @@ function Products() {
   );
 }
 
-export default function () {
+export default function ({ products }: { products?: ProductType[] }) {
   return (
     <MainLayout title="Products">
-      <Products />
+      <Products products={products} />
     </MainLayout>
   );
 }
