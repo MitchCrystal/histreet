@@ -9,7 +9,7 @@ export default async function ServerSideProps(
   const userId = session?.user.id;
   const currentStoreUrl = context.query.storeUrl
   const prismaStoreUrl = await PrismaStrUrl(userId);
-  if (!session || currentStoreUrl !== prismaStoreUrl) {
+  if (!session || !currentStoreUrl || !prismaStoreUrl.includes(String(currentStoreUrl))) {
     return {
       redirect: {
         destination: '/',
