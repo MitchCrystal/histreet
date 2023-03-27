@@ -54,14 +54,25 @@ function ProductPage() {
   } = useContext(CartContext);
 
   useEffect(() => {
-    if (!currentImage && product) {
-      product.product_images && setCurrentImage(product.product_images[0]);
+    if (
+      !currentImage &&
+      product &&
+      product.product_images &&
+      router.isReady &&
+      product.product_id === router.query.productId
+    ) {
+      setCurrentImage(product.product_images[0]);
     }
   }, [product, currentImage]);
 
-  if (isLoading) return <Loading />;
+  if (product && product?.error) return <p>Product not found</p>;
+  if (
+    isLoading ||
+    !router.isReady ||
+    product?.product_id !== router.query.productId
+  )
+    return <Loading />;
   if (isError) return <Error />;
-  if (product.error) return <p>Product not found</p>;
 
   //@TODO Fix for if no product found, redirect to 404
 
@@ -91,11 +102,13 @@ function ProductPage() {
             alt={currentImage?.alt ?? 'no image'}
             className="object-cover h-[500px]"
           />
-          <ImageRow
-            images={product.product_images}
-            currentImage={currentImage}
-            setCurrentImage={setCurrentImage}
-          />
+          {product?.product_images?.length > 0 && (
+            <ImageRow
+              images={product.product_images}
+              currentImage={currentImage}
+              setCurrentImage={setCurrentImage}
+            />
+          )}
         </div>
         <div className="col-span-5 flex gap-4 flex-col p-4 sm:p-0">
           <HeadingText size="h3">{product.product_name}</HeadingText>
