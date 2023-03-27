@@ -2,6 +2,7 @@ import '../styles/globals.css';
 import { createContext, useEffect, useMemo, useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { AppProps } from 'next/app';
+import { useRouter } from 'next/router';
 
 export const CartContext: any = createContext([]);
 
@@ -21,16 +22,23 @@ export type ProductType = {
 
 export const queryClient = new QueryClient();
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter();
   const [cartItems, setCartItems] = useState<any>([]); //ProductType
 
   useEffect(() => {
-    const localCart = localStorage.getItem('cartItems');
+    if (!router.isReady) return;
+    const localCart = localStorage.getItem(
+      'cartItems_' + router.query.storeUrl
+    );
     setCartItems(localCart ? JSON.parse(localCart as string) : []);
-  }, []);
+  }, [router.isReady]);
 
   useEffect(() => {
     if (cartItems.length === 0) return;
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    localStorage.setItem(
+      'cartItems_' + router.query.storeUrl,
+      JSON.stringify(cartItems)
+    );
   }, [cartItems]);
 
   const handleUpdateCart = useMemo(
