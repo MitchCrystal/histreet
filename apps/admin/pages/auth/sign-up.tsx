@@ -4,7 +4,7 @@ import AuthLayout from '../../layouts/AuthLayout';
 import Heading from '../../components/Heading';
 import Button from '../../components/Button';
 import Link from 'next/link';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { toast } from 'react-hot-toast';
 
@@ -31,7 +31,7 @@ function SignUp() {
       });
     },
     onSuccess: () => {
-      toast.success('Please Sign in',{ position: 'bottom-center' });
+      toast.success('Please Sign in', { position: 'bottom-center' });
     },
   });
 
@@ -45,16 +45,38 @@ function SignUp() {
     confirmPassword: '',
   });
   const [signupPage, setSignupPage] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  function handlePrevNext(event: React.SyntheticEvent) {
+  const { refetch } = useQuery({
+    queryKey: ['emailAndStoreurl', formInputs.email, formInputs.storeURL],
+    queryFn: async () =>
+      await fetch(
+        `/api/auth/user/check?email=${formInputs.email}&storeURL=${formInputs.storeURL}`
+      ).then((res) => res.json()),
+    enabled: !!formInputs.email && !!formInputs.storeURL,
+  });
+
+  async function handlePrevNext(event: React.SyntheticEvent) {
     event.preventDefault();
-    setSignupPage(!signupPage);
+    setIsLoading(true);
+    const { data: response } = await refetch();
+    if (response?.message === 'email already exists') {
+      alert('email already exists. Please try another email.');
+    }
+    if (response?.message === 'storeURL already exists') {
+      alert('storeURL already exists. Please try another URL.');
+    }
+    if (response?.message === 'OK') {
+      setSignupPage(!signupPage);
+    }
+    setIsLoading(false);
   }
 
   function handleSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
+    // password confirmation here
     createAcc.mutate(formInputs);
-    toast.success('Successfully Signed Up',{position: 'bottom-center'});
+    toast.success('Successfully Signed Up', { position: 'bottom-center' });
     router.push('/auth/sign-in');
   }
 
@@ -67,6 +89,7 @@ function SignUp() {
         </Link>
       </p>
       <br></br>
+      {isLoading ? <p>Loading...</p> : null}
       <br></br>
       {!signupPage && (
         <>
@@ -93,8 +116,7 @@ function SignUp() {
           />
           <br></br>
           <InputWithLabel
-            label="Store URL - TODO CHECK AGAINST DATABASE"
-            /*TODO - ADD A CHECK AGAINST DATABASE*/
+            label="Store URL"
             id="storeURL"
             type="text"
             showLabel={true}
