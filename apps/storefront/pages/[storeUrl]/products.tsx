@@ -73,24 +73,6 @@ export async function getServerSideProps(context: any) {
 }
 
 function Products({ products }: { products?: ProductType[] }) {
-  const router = useRouter();
-  console.log({ products });
-  // const {
-  //   data: products,
-  //   isLoading,
-  //   isError,
-  // } = useQuery(
-  //   ['products'],
-  //   () =>
-  //     fetch('/api/products/' + router.query.storeUrl).then((res) => res.json()),
-  //   {
-  //     enabled: !!router.query.storeUrl,
-  //   }
-  // );
-
-  // if (isLoading) return <Loading />;
-  // if (isError) return <Error />;
-
   return (
     <>
       <HeadingText size="h3">Products</HeadingText>
