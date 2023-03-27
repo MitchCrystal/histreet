@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { signOut } from 'next-auth/react';
 import Button from '../components/Button';
 import Image from 'next/image'
+import { useQuery } from '@tanstack/react-query';
 
 export default function AdminLayout({
   children,
@@ -15,7 +16,13 @@ export default function AdminLayout({
 }: PropsWithChildren<{ title: string }>) {
   const router = useRouter();
   const logoSrc = '/histreet-yellow-square.png'
-  const storeUrl = router.query.storeUrl
+  const {storeUrl} = router.query
+  const {data:storeName,isError} = useQuery({
+    queryKey: ['storeName'],
+    queryFn: () => fetch(`/api/store-name/${storeUrl}`).then((res) => res.json()),
+    enabled: !!router.isReady && !!storeUrl,
+  });
+
   const initialNavigation = [
     {
       name: 'Dashboard',
@@ -44,6 +51,8 @@ export default function AdminLayout({
     },
   ];
   const [isNavOpen, setIsNavOpen] = useState(false);
+
+  if(isError) return <p>Cannot load the store name</p>
 
   return (
     <>
@@ -74,7 +83,7 @@ export default function AdminLayout({
               </div>
             </div>
           </Link>
-          <div className="flex mr-4 text-2xl">{storeUrl}</div>
+          <div className="flex mr-4 text-2xl">{storeName?.storeName}</div>
         </div>
       </div>
       <div className="flex h-[calc(100vh-48px)] flex-col md:flex-row">
