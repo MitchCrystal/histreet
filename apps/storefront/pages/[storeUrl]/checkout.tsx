@@ -80,12 +80,12 @@ export default function Checkout() {
   } as any;
 
   useEffect(() => {
-    if (cartItems.length === 0) {
+    if (router.isReady && cartItems.length === 0) {
       router.push(`/${router.query.storeUrl}/cart`);
     }
-  }, [cartItems]);
+  }, [cartItems, router]);
 
-  if (cartItems.length === 0) return <Loading />;
+  if (!router.isReady || cartItems.length === 0) return <Loading />;
 
   return (
     <>
