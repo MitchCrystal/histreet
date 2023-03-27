@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { toast } from 'react-hot-toast';
+import { z } from 'zod';
 
 type formValues = {
   email: string;
@@ -46,6 +47,25 @@ function SignUp() {
   });
   const [signupPage, setSignupPage] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const firstPageSchema = z
+    .object({
+      email: z.string().email(),
+      storeName: z.string().nonempty('store name is required'),
+      storeURL: z.string().nonempty('store url is required'),
+    })
+    .required();
+
+  const secondPageSchema = z
+    .object({
+      firstName: z.string().nonempty('first name is required'),
+      lastName: z.string().nonempty('last name is required'),
+      password: z.string().min(4),
+      confirmPassword: z.string().min(4),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: "Passwords don't match",
+      path: ['confirmPassword'],
+    });
 
   const { refetch } = useQuery({
     queryKey: ['emailAndStoreurl', formInputs.email, formInputs.storeURL],
@@ -58,26 +78,52 @@ function SignUp() {
 
   async function handlePrevNext(event: React.SyntheticEvent) {
     event.preventDefault();
-    setIsLoading(true);
-    const { data: response } = await refetch();
-    if (response?.message === 'email already exists') {
-      alert('email already exists. Please try another email.');
+    try {
+      const validatedForm = firstPageSchema.parse({
+        email: formInputs.email,
+        storeName: formInputs.storeName,
+        storeURL: formInputs.storeURL,
+      });
+      setIsLoading(true);
+      const { data: response } = await refetch();
+      if (response?.message === 'email already exists') {
+        alert('email already exists. Please try another email.');
+      }
+      if (response?.message === 'storeURL already exists') {
+        alert('storeURL already exists. Please try another URL.');
+      }
+      if (response?.message === 'OK') {
+        setSignupPage(!signupPage);
+      }
+      setIsLoading(false);
+    } catch (error) {
+      alert(
+        `Please check ${JSON.parse(error as string)[0].path} :  ${
+          JSON.parse(error as string)[0].message
+        }`
+      );
     }
-    if (response?.message === 'storeURL already exists') {
-      alert('storeURL already exists. Please try another URL.');
-    }
-    if (response?.message === 'OK') {
-      setSignupPage(!signupPage);
-    }
-    setIsLoading(false);
   }
 
   function handleSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
-    // password confirmation here
-    createAcc.mutate(formInputs);
-    toast.success('Successfully Signed Up', { position: 'bottom-center' });
-    router.push('/auth/sign-in');
+    try {
+      const validatedForm = secondPageSchema.parse({
+        firstName: formInputs.firstName,
+        lastName: formInputs.lastName,
+        password: formInputs.password,
+        confirmPassword: formInputs.confirmPassword,
+      });
+      createAcc.mutate(formInputs);
+      toast.success('Successfully Signed Up', { position: 'bottom-center' });
+      router.push('/auth/sign-in');
+    } catch (error) {
+      alert(
+        `Please check ${JSON.parse(error as string)[0].path} :  ${
+          JSON.parse(error as string)[0].message
+        }`
+      );
+    }
   }
 
   return (
