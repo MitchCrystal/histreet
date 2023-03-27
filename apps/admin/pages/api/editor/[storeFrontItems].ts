@@ -1,4 +1,3 @@
-import { Storefront } from 'database';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../utils/prisma';
 
@@ -7,6 +6,8 @@ type StorefrontDBresult = {
   storeName: string;
   storeDescription: string | null;
   supportEmail: string | null;
+  storeHeroImage: any;
+  storeLogo: any;
 };
 
 type StorefrontWithError = StorefrontDBresult | { error: boolean | string };
@@ -37,6 +38,8 @@ export default async function handler(
         storeName: store.store_name,
         storeDescription: storefront.store_description,
         supportEmail: storefront.support_email,
+        storeHeroImage: storefront.store_hero_image,
+        storeLogo: storefront.store_logo,
       });
     } catch (error) {
       return res.status(500).json({ error: true });
@@ -47,6 +50,8 @@ export default async function handler(
       storeName: req.body.storeName,
       storeDescription: req.body.storeDescription,
       supportEmail: req.body.supportEmail,
+      storeHeroImage: req.body.storeHeroImage,
+      storeLogo: req.body.storeLogo,
     };
 
     updateStorefrontDB(storefrontReq);
@@ -71,6 +76,8 @@ const findStorefront = async (storeId: string) => {
     select: {
       support_email: true,
       store_description: true,
+      store_logo: true,
+      store_hero_image: true,
     },
   });
   return response;
@@ -87,6 +94,8 @@ const updateStorefrontDB = async (storefrontReq: StorefrontDBresult) => {
       data: {
         support_email: storefrontReq.supportEmail,
         store_description: storefrontReq.storeDescription,
+        store_logo: storefrontReq.storeLogo,
+        store_hero_image: storefrontReq.storeHeroImage,
       },
     }),
   ]);

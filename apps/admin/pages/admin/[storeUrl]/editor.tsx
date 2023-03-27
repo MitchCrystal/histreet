@@ -2,35 +2,49 @@ import AdminLayout from '../../../layouts/AdminLayout';
 import Button from '../../../components/Button';
 import Heading from '../../../components/Heading';
 import InputWithLabel from '../../../components/InputWithLabel';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import Textarea from '../../../components/Textarea';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useQuery, UseQueryResult, useMutation } from '@tanstack/react-query';
-import getServerSideProps from '../../../utils/authorization'
-export{getServerSideProps}
+import getServerSideProps from '../../../utils/authorization';
+import FileUpload from '../../../components/FileUpload';
+export { getServerSideProps };
 
 type StoreformInputs = {
   id: string;
   storeName: string;
   storeDescription: string | null;
   supportEmail: string | null;
+  storeHeroImage: any;
+  storeLogo: any;
 };
 
 function Editor() {
   const router = useRouter();
   const storeUrl = router.query.storeUrl;
 
+  const [logoUploaded, setLogoUploaded] = useState(false);
+  const [heroUploaded, setHeroUploaded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [storeformInputs, setStoreFormInputs] = useState<
-    Record<string, string>
-  >({
+  const [storeformInputs, setStoreFormInputs] = useState<Record<string, any>>({
     id: '',
     storeName: '',
     storeDescription: '',
     supportEmail: '',
+    storeHeroImage: {
+      id: 'defaultStoreHeroImage',
+      src: '/missing_img.png',
+      alt: 'no image found',
+    },
+    storeLogo: {
+      id: 'defaultStoreLogo',
+      src: '/missing_img.png',
+      alt: 'no image found',
+    },
   });
 
-  const { data: storeform }: UseQueryResult<Record<string, string>> = useQuery({
+  const { data: storeform }: UseQueryResult<Record<string, any>> = useQuery({
     queryKey: ['storeForm'],
     queryFn: () => fetch(`/api/editor/${storeUrl}`).then((res) => res.json()),
     enabled: !!router.isReady,
@@ -53,7 +67,7 @@ function Editor() {
   });
 
   useEffect(() => {
-    if (!storeform.storeName) {
+    if (!storeform.storeName || logoUploaded || heroUploaded) {
       return;
     }
     setStoreFormInputs({
@@ -61,8 +75,18 @@ function Editor() {
       storeName: storeform.storeName ?? '',
       storeDescription: storeform.storeDescription ?? '',
       supportEmail: storeform.supportEmail ?? '',
+      storeHeroImage: storeform.storeHeroImage ?? {
+        id: 'defaultStoreHeroImage',
+        src: '/missing_img.png',
+        alt: 'no image found',
+      },
+      storeLogo: storeform.storeLogo ?? {
+        id: 'defaultStoreLogo',
+        src: '/missing_img.png',
+        alt: 'no image found',
+      },
     });
-  }, [storeform]);
+  }, [storeform, logoUploaded, heroUploaded]);
 
   function edit() {
     setIsEditing(true);
@@ -72,9 +96,19 @@ function Editor() {
     if (storeform != null) {
       setStoreFormInputs({
         id: storeform.id,
-        storeName: storeform.storeName ?? '',
+        storeName: storeform.storeName,
         storeDescription: storeform.storeDescription ?? '',
         supportEmail: storeform.supportEmail ?? '',
+        storeHeroImage: storeform.storeHeroImage ?? {
+          id: 'defaultStoreHeroImage',
+          src: '/missing_img.png',
+          alt: 'no image found',
+        },
+        storeLogo: storeform.storeLogo ?? {
+          id: 'defaultStoreLogo',
+          src: '/missing_img.png',
+          alt: 'no image found',
+        },
       });
     }
     setIsEditing(false);
@@ -86,8 +120,25 @@ function Editor() {
       storeName: storeformInputs.storeName,
       storeDescription: storeformInputs.storeDescription,
       supportEmail: storeformInputs.supportEmail,
+      storeHeroImage: storeformInputs.storeHeroImage,
+      storeLogo: storeformInputs.storeLogo,
     };
     postStoreformInputs.mutate(storeformInputToPost);
+  }
+
+  function handleLogoUpload(url: string) {
+    setLogoUploaded(true);
+    const temp = { ...storeformInputs };
+    temp.storeLogo.src = url;
+    temp.storeLogo.alt = storeformInputs.storeName + 'logo';
+    setStoreFormInputs(temp);
+  }
+  function handleHeroUpload(url: string) {
+    setHeroUploaded(true);
+    const temp = { ...storeformInputs };
+    temp.storeHeroImage.src = url;
+    temp.storeHeroImage.alt = storeformInputs.storeName + 'hero';
+    setStoreFormInputs(temp);
   }
 
   return !isEditing ? (
@@ -118,6 +169,20 @@ function Editor() {
           </div>
           <div className="flex flex-row w-full">
             Description: {storeformInputs.storeDescription}
+          </div>
+          <div className="flex flex-row w-full">
+            Store Logo:
+            <img
+              src={storeformInputs.storeLogo.src}
+              className="w-[100px]"
+            ></img>
+          </div>
+          <div className="flex flex-row w-full">
+            Store Landing Page Hero Image:
+            <img
+              src={storeformInputs.storeHeroImage.src}
+              className="w-[100px]"
+            ></img>
           </div>
         </div>
       </div>
@@ -180,6 +245,40 @@ function Editor() {
               setState={setStoreFormInputs}
               direction="row"
             />
+          </div>
+          <div className="flex flex-row items-center w-full">
+            <label
+              htmlFor="fileUpload"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 m-1 w-48"
+            >
+              Store Logo
+            </label>
+            <div className="m-1 w-full flex border rounded-md border-slate-300 py-2 px-3 ">
+              <img
+                src={storeformInputs.storeLogo.src}
+                className="w-[100px]"
+              ></img>
+              <div className="flex items-center">
+                <FileUpload id="fileUpload" onChangeEvent={handleLogoUpload} />
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-row items-center w-full">
+            <label
+              htmlFor="fileUpload"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 m-1 w-48 pr-4"
+            >
+              Store Landing Page Hero Image
+            </label>
+            <div className="m-1 w-full flex border rounded-md border-slate-300 py-2 px-3 ">
+              <img
+                src={storeformInputs.storeHeroImage.src}
+                className="w-[100px]"
+              ></img>
+              <div className="flex items-center">
+                <FileUpload id="fileUpload" onChangeEvent={handleHeroUpload} />
+              </div>
+            </div>
           </div>
         </div>
       </div>
