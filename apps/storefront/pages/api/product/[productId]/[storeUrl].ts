@@ -30,6 +30,7 @@ export default async function handler(
       },
       select: {
         product_name: true,
+        SKU: true,
         description: true,
         product_price: true,
         product_images: true,

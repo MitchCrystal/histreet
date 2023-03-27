@@ -7,7 +7,11 @@ const calculateOrderAmount = (products: any) => {
   // Replace this constant with a calculation of the order's amount
   // Calculate the order total on the server to prevent
   // people from directly manipulating the amount on the client
-  return 1400;
+  return (
+    products.reduce((acc: any, curr: any) => {
+      return acc + curr.product_price * curr.quantityInCart;
+    }, 0) * 100 // converts to pence
+  );
 };
 
 export default async function handler(
@@ -23,6 +27,8 @@ export default async function handler(
       id: product.product_id,
       qty: product.quantityInCart,
       price: product.product_price,
+      name: product.product_name,
+      sku: product.SKU,
     };
     const combinedKey = `item_${product.product_id}`;
     lineItemsObj[combinedKey] = JSON.stringify(obj);

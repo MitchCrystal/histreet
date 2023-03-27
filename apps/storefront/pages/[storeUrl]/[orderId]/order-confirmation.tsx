@@ -8,6 +8,7 @@ import Error from '../../../components/Error';
 import { useEffect, useState } from 'react';
 import CheckoutLayout from '../../../layouts/CheckoutLayout';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
+import Head from 'next/head';
 
 type AddressData = {
   address_id: string;
@@ -26,6 +27,7 @@ type Details = {
   id: string;
   price: number;
   qty: number;
+  name: string;
 }[];
 
 type Customer = {
@@ -66,7 +68,7 @@ export default function OrderConfirmation({ order }: { order: OrderData }) {
         );
         return {
           product_id: item.id,
-          product_name: product?.product_name,
+          product_name: item.name,
           product_images: product?.product_images,
           product_price: item.price,
           quantityInCart: item.qty,
@@ -80,6 +82,9 @@ export default function OrderConfirmation({ order }: { order: OrderData }) {
 
   return (
     <>
+      <Head>
+        <title>{`Order Confirmation | #${order.friendly_order_number}`}</title>
+      </Head>
       <CheckoutLayout
         firstColumn={
           <div className="flex flex-col justify-start gap-2 max-w-[600px] m-auto">
