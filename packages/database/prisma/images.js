@@ -235,7 +235,7 @@ const imageData = {
 
   toothbrushLogo: {
     id: 'storelogoimg2',
-    src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679758562/toothbrush-logo_jikk0t.heic',
+    src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679758562/toothbrush-logo_jikk0t.png',
     alt: 'Toothbrush logo',
   },
 
