@@ -37,7 +37,7 @@ export default function Home() {
           </Link>
         </div>
         <div className=" flex mx-5 sm:mx-10 absolute z-20 top-[15%]  sm:font-normal text-white text-3xl sm:text-6xl md:text-7xl lg:text-8xl">
-          Welcome to
+          Say hi... to
           <img
             src={'/histreet-yellow-square.png'}
             alt="Hi Street"
@@ -49,7 +49,7 @@ export default function Home() {
           Probably the UK&apos;s finest customisable storefront for your
           business
         </h2>
-        <h2 className="mx-5 sm:mx-10 absolute z-[70] text-sm top-[70%] xl:top-[60%] sm:text-2xl md:text-3xl lg:text-4xl text-white bg-opacity-50 bg-black p-4 sm:p-10 w-28 sm:w-3/6">
+        <h2 className="mx-5 sm:mx-10 absolute z-[70] text-sm top-[70%] xl:top-[65%] sm:text-2xl md:text-3xl lg:text-4xl text-white bg-opacity-50 bg-black p-4 sm:p-10 w-28 sm:w-3/6">
           Name your store and also set the contact email address!
         </h2>
         <img

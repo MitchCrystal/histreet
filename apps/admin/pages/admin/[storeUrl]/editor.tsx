@@ -143,11 +143,12 @@ function Editor() {
 
   return !isEditing ? (
     <>
-      <div className="flex flex-col w-[calc(90vw-50px)] h-[calc(96vh-48px)]">
-        <div className="flex flex-row w-full justify-between">
+      <div className="flex flex-col w-[100%] h-[calc(96vh-48px)]">
+        <div className="flex flex-row w-[100%] justify-between">
           <div className="flex flex-col">
-            <Heading title="Store Editor" type="h2" />
-            <Heading title="Details" type="h4" />
+            <Heading title="Store Editor" type="h1" />
+            <div className="h-10"></div>
+            <Heading title="Details" type="h2" />
           </div>
           <div className="flex">
             <Button
@@ -160,30 +161,20 @@ function Editor() {
             </Button>
           </div>
         </div>
-        <div className="flex flex-col justify-around items-start h-3/5 ">
-          <div className="flex flex-row w-full">
-            Store Name: {storeformInputs.storeName}
-          </div>
-          <div className="flex flex-row w-full">
-            Support Email: {storeformInputs.supportEmail}
-          </div>
-          <div className="flex flex-row w-full">
-            Description: {storeformInputs.storeDescription}
-          </div>
-          <div className="flex flex-row w-full">
-            Store Logo:
-            <img
-              src={storeformInputs.storeLogo.src}
-              className="w-[100px]"
-            ></img>
-          </div>
-          <div className="flex flex-row w-full">
-            Store Landing Page Hero Image:
-            <img
-              src={storeformInputs.storeHeroImage.src}
-              className="w-[100px]"
-            ></img>
-          </div>
+        <div className="grid grid-cols-1 grid-rows-[repeat(5,0.5fr_minmax(1.5fr_auto)] w-[98%] gap-4 gap-x-10 sm:grid-cols-[0.7fr_1.3fr] sm:grid-rows-5 p-4 h-full ">
+          <Heading title="Store Name:" type="h3" />
+          <div className="">{storeformInputs.storeName}</div>
+          <Heading title="Support Email:" type="h3" />
+          <div className="">{storeformInputs.supportEmail}</div>
+          <Heading title="Store Homepage Welcome Text:" type="h3" />
+          <div className="">{storeformInputs.storeDescription}</div>
+          <Heading title="Store Logo:" type="h3" />
+          <img src={storeformInputs.storeLogo.src} className="w-[100px]"></img>
+          <Heading title="Store Homepage Main Image:" type="h3" />
+          <img
+            src={storeformInputs.storeHeroImage.src}
+            className="w-[100px]"
+          ></img>
         </div>
       </div>
     </>
