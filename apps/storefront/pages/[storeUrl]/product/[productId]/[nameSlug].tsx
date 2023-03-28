@@ -1,4 +1,4 @@
-import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
@@ -8,8 +8,8 @@ import Error from '../../../../components/Error';
 import HeadingText from '../../../../components/HeadingText';
 import ImageRow from '../../../../components/ImageRow';
 import InputWithLabel from '../../../../components/InputWithLabel';
-import Loading from '../../../../components/Loading';
 import MainLayout from '../../../../layouts/MainLayout';
+import prisma from '../../../../utils/prisma';
 import { CartContext } from '../../../_app';
 
 type Product = {
@@ -26,20 +26,93 @@ type Product = {
   error?: string;
 };
 
-function ProductPage() {
-  const router = useRouter();
-  const {
-    data: product,
-    isLoading,
-    isError,
-  }: UseQueryResult<Product, unknown> = useQuery({
-    queryKey: ['product'],
-    queryFn: () =>
-      fetch(
-        `/api/product/${router.query.productId}/${router.query.storeUrl}`
-      ).then((res) => res.json()),
-    enabled: !!router.isReady,
+export async function getStaticPaths() {
+  const stores = await prisma.store.findMany({
+    select: {
+      store_url: true,
+      products: {
+        select: {
+          product_id: true,
+          product_name_slug: true,
+        },
+      },
+    },
   });
+
+  const formattedArray: any[] = [];
+
+  stores.forEach((store) => {
+    store.products.forEach((_, i) => {
+      formattedArray.push({
+        params: {
+          storeUrl: store.store_url,
+          productId: store.products[i].product_id,
+          nameSlug: store.products[i].product_name_slug,
+        },
+      });
+    });
+  });
+
+  return {
+    paths: formattedArray.map((item) => item),
+    fallback: true,
+  };
+}
+
+export async function getStaticProps(context: any) {
+  try {
+    const { productId } = context.params;
+
+    if (!productId || productId === undefined) {
+      throw new (Error as any)('Product not found');
+    }
+    const product = await prisma.product.findUnique({
+      where: {
+        product_id: String(productId),
+      },
+      select: {
+        product_name: true,
+        SKU: true,
+        description: true,
+        product_price: true,
+        product_images: true,
+        product_id: true,
+        inventory_qty: true,
+        is_active: true,
+      },
+    });
+
+    if (product && product.is_active) {
+      return {
+        props: {
+          product: {
+            ...product,
+            product_price: Number(product?.product_price),
+          },
+        },
+      };
+    } else {
+      console.log(product);
+      return {
+        props: {
+          product: [],
+        },
+        revalidate: 60,
+      };
+    }
+  } catch (err) {
+    console.log(err);
+    return {
+      props: {
+        product: [],
+      },
+      revalidate: 60,
+    };
+  }
+}
+
+function ProductPage({ product }: { product: Product }) {
+  const router = useRouter();
   const [formValues, setFormValues] = useState({ quantity: 1 });
   const [currentImage, setCurrentImage] = useState<any>('');
 
@@ -54,6 +127,10 @@ function ProductPage() {
   } = useContext(CartContext);
 
   useEffect(() => {
+    return () => toast.dismiss();
+  }, []);
+
+  useEffect(() => {
     if (
       !currentImage &&
       product &&
@@ -63,22 +140,14 @@ function ProductPage() {
     ) {
       setCurrentImage(product.product_images[0]);
     }
-  }, [product, currentImage]);
+  }, [product, currentImage, router.isReady, router.query.productId]);
 
   if (product && product?.error) return <p>Product not found</p>;
-  if (
-    isLoading ||
-    !router.isReady ||
-    product?.product_id !== router.query.productId
-  )
-    return <Loading />;
-  if (isError) return <Error />;
-
-  //@TODO Fix for if no product found, redirect to 404
 
   const quantityInCart = cartItems.find(
     (item: any) => item.product_id === product.product_id
   )?.quantityInCart;
+
   return (
     <div>
       <Breadcrumbs
@@ -97,12 +166,15 @@ function ProductPage() {
       />
       <div className="mt-6 md:grid sm:grid-cols-8 sm:gap-8 flex flex-col gap-4">
         <div className="col-span-3 flex flex-col gap-2">
-          <img
-            src={currentImage?.src ?? '/missing_img.png'}
-            alt={currentImage?.alt ?? 'no image'}
-            className="object-cover h-[500px]"
-          />
-          {product?.product_images?.length > 0 && (
+          <div className="h-[500px] relative">
+            <Image
+              src={currentImage?.src ?? '/missing_img.png'}
+              alt={currentImage?.alt ?? 'no image'}
+              className="object-cover"
+              fill
+            />
+          </div>
+          {product.product_images.length > 1 && (
             <ImageRow
               images={product.product_images}
               currentImage={currentImage}
@@ -193,7 +265,7 @@ function ProductPage() {
   );
 }
 
-export default function () {
+export default function ({ product }: { product: Product }) {
   return (
     <MainLayout title={`${product.product_name}`}>
       <ProductPage product={product} />

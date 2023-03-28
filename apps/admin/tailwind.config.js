@@ -15,7 +15,7 @@ module.exports = {
       colors: {
         'hi-yellow': '#FDC600',
         'hi-yellow-hover': '#FDC600A3',
-        'slate-blue': '#67ACCC',
+        'slate-blue': '#00000'/* '#67ACCC' */,
         'lt-powder-blue': '#BAE6FC',
       }
     }

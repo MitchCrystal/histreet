@@ -112,7 +112,8 @@ function Products() {
 
   return (
     <>
-      <div className="w-1/2 md:w-5/6 lg:w-full mb-8">
+      <div className="flex flex-row justify-between w-full md:w-5/6 lg:w-full mb-8">
+        <Heading title={'Products'} type="h1" />
         <div className="flex justify-end">
           <Button
             size="default"
@@ -123,7 +124,6 @@ function Products() {
             Add Product
           </Button>{' '}
         </div>
-        <Heading title={'Products'} type="h1" />
       </div>
       {isFetching && (
         <div className="flex justify-center mt-36">
