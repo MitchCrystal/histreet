@@ -43,6 +43,7 @@ export default async function handler(
       enabled: true,
     },
     metadata: {
+      total_order: calculateOrderAmount(products),
       store_url,
       ...lineItemsObj,
       ...shippingAddress,

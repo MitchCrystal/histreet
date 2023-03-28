@@ -107,9 +107,10 @@ export default function OrderConfirmation({ order }: { order: OrderData }) {
               <div>
                 <h3 className="text-lg font-medium">Contact details</h3>
                 <p>{order.customer.customer_email}</p>
-                {!!order.customer.phone_number && (
-                  <p>{order.customer.phone_number}</p>
-                )}
+                {!!order.customer.phone_number &&
+                  order.customer.phone_number !== 'undefined' && (
+                    <p>{order.customer.phone_number}</p>
+                  )}
               </div>
               <div>
                 <h3 className="text-lg font-medium">Shipping address</h3>
