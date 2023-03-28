@@ -10,6 +10,7 @@ type StoreData = {
   heroAlt: string;
   logoUrl: string;
   description: string;
+  globalStyles: string
 };
 
 type StoreFrontData = {
@@ -17,6 +18,7 @@ type StoreFrontData = {
   store_description: string | null;
   store_logo: Prisma.JsonObject;
   store_hero_image: Prisma.JsonObject;
+  global_styles: string;
 };
 
 type StoreDataWithError = StoreData | { error: boolean | string };
@@ -64,6 +66,9 @@ export default async function handler(
         storefront && storefront.store_description
           ? storefront.store_description
           : 'Welcome to our store',
+      globalStyles:
+        storefront && storefront.global_styles
+      ? storefront.global_styles: ''
     });
   } catch (error) {
     return res.status(500).json({ error: true });
@@ -89,6 +94,7 @@ const findStorefront = async (storeId: string) => {
       store_description: true,
       store_logo: true,
       store_hero_image: true,
+      global_styles: true,
     },
   });
   return response;
