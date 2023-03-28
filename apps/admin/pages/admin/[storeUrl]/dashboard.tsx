@@ -10,6 +10,7 @@ import {
 } from '@heroicons/react/24/outline';
 import LineChart from '../../../components/LineChart';
 import LoadingSpinner from '../../../components/Loading';
+import DashboardCard from '../../../components/DashboardCard';
 export { getServerSideProps };
 
 function Dashboard() {
@@ -89,6 +90,24 @@ function Dashboard() {
     .toFixed(0);
   const totalCustomers = stats?.customers.length;
   const totalOrders = stats?.orders.length;
+  const iconRevenue = (
+    <CurrencyPoundIcon width={50} height={50} color="white" />
+  );
+  const iconOrders = <ShoppingCartIcon width={50} height={50} color="white" />;
+  const iconCustomer = <UserIcon width={50} height={50} color="white" />;
+  const customerProps =
+    totalCustomers !== undefined ? totalCustomers : <LoadingSpinner />;
+  const orderProps =
+    totalOrders !== undefined ? totalOrders : <LoadingSpinner />;
+  const revenueProps =
+    orders !== undefined ? (
+      new Intl.NumberFormat('en-GB', {
+        style: 'currency',
+        currency: 'GBP',
+      }).format(orders)
+    ) : (
+      <LoadingSpinner />
+    );
 
   if (isError) return <p>Error</p>;
   return (
@@ -97,61 +116,21 @@ function Dashboard() {
       <Heading title={propHeading} type="h4" />
       <div className="flex flex-col object-contain m-5">
         <div className="grid grid-row-4 justify-center items-center gap-3 pb-8 mt-10 mb-3 xl:flex md:place-items-center md:w-full overflow-hidden">
-          <div className="flex flex-col grid-rows-2 rounded-md shadow  h-48 w-60 md:h-64 md:w-96 overflow-hidden">
-            <div className="flex h-24 w-full bg-yellow-400 justify-center items-center text-center text-2xl">
-              Weekly Revenue
-            </div>
-            <div className="h-48 grid grid-cols-2 place-items-center place-content-center border border-gray-200 border-t-0">
-              <div className="h-20 w-20 bg-purple-500 rounded-full p-0 flex justify-center items-center">
-                <CurrencyPoundIcon width={50} height={50} color="white" />
-              </div>
-              <div className="h-20 w-20 grid grid-rows-2 place-items-center place-content-center">
-                <div className="font-bold text-lg">Total</div>
-                <div className="text-lg">
-                  {orders ? (
-                    new Intl.NumberFormat('en-GB', {
-                      style: 'currency',
-                      currency: 'GBP',
-                    }).format(orders)
-                  ) : (
-                    <LoadingSpinner />
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col grid-rows-2 rounded-md shadow h-48 w-60 md:h-64 md:w-96 overflow-hidden">
-            <div className="flex h-24 w-full bg-yellow-400 justify-center items-center text-center text-2xl">
-              Weekly Orders
-            </div>
-            <div className="h-48 grid grid-cols-2 place-items-center">
-              <div className="h-20 w-20 bg-orange-600 rounded-full p-0 flex justify-center items-center">
-                <ShoppingCartIcon width={50} height={50} color="white" />
-              </div>
-              <div className="h-20 w-20 grid grid-rows-2 place-items-center place-content-center">
-                <div className="font-bold text-lg">Total</div>
-                <div className="text-lg">
-                  {totalOrders ? totalOrders : <LoadingSpinner />}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className=" flex flex-col object-contain grid-rows-2 rounded-md shadow h-48 w-60 md:h-64 md:w-96 overflow-hidden">
-            <div className="flex h-24 w-full bg-yellow-400 justify-center items-center text-center text-2xl">
-              Weekly Customers
-            </div>
-            <div className="h-48 grid grid-cols-2 place-items-center">
-              <div className="flex h-20 w-20 bg-cyan-400 rounded-full p-0 justify-center items-center">
-                <UserIcon width={50} height={50} color="white" />
-              </div>
-              <div className="h-20 w-20 grid grid-rows-2 place-items-center place-content-center">
-                <div className="font-bold text-lg">Total</div>
-                <div className="text-lg">
-                  {totalCustomers ? totalCustomers : <LoadingSpinner />}
-                </div>
-              </div>
-            </div>
-          </div>
+          <DashboardCard
+            title="Weekly Revenue"
+            icon={iconRevenue}
+            props={revenueProps}
+          />
+          <DashboardCard
+            title="Weekly Orders"
+            icon={iconOrders}
+            props={orderProps}
+          />
+          <DashboardCard
+            title="Weekly Customers"
+            icon={iconCustomer}
+            props={customerProps}
+          />
         </div>
         <div className="flex flex-col w-full justify-center items-center mt-1 md:flex-row md:gap-5 shadow py-5 px-5 overflow-hidden rounded-md">
           <div className="sm:overflow-scroll lg:w-full">
