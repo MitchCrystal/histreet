@@ -2,13 +2,13 @@ import AdminLayout from '../../../layouts/AdminLayout';
 import Button from '../../../components/Button';
 import Heading from '../../../components/Heading';
 import InputWithLabel from '../../../components/InputWithLabel';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import Textarea from '../../../components/Textarea';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useQuery, UseQueryResult, useMutation } from '@tanstack/react-query';
 import getServerSideProps from '../../../utils/authorization';
 import FileUpload from '../../../components/FileUpload';
+import LoadingSpinner from '../../../components/Loading';
 export { getServerSideProps };
 
 type StoreformInputs = {
@@ -44,12 +44,13 @@ function Editor() {
     },
   });
 
-  const { data: storeform }: UseQueryResult<Record<string, any>> = useQuery({
-    queryKey: ['storeForm'],
-    queryFn: () => fetch(`/api/editor/${storeUrl}`).then((res) => res.json()),
-    enabled: !!router.isReady,
-    initialData: {},
-  });
+  const { data: storeform, isFetching }: UseQueryResult<Record<string, any>> =
+    useQuery({
+      queryKey: ['storeForm'],
+      queryFn: () => fetch(`/api/editor/${storeUrl}`).then((res) => res.json()),
+      enabled: !!router.isReady,
+      initialData: {},
+    });
 
   const postStoreformInputs = useMutation({
     mutationFn: (newStoreformInputs: StoreformInputs) => {
@@ -141,6 +142,12 @@ function Editor() {
     setStoreFormInputs(temp);
   }
 
+  if (isFetching)
+    return (
+      <div className="flex justify-center mt-36">
+        <LoadingSpinner />
+      </div>
+    );
   return !isEditing ? (
     <>
       <div className="flex flex-col w-[100%] h-[calc(96vh-48px)]">

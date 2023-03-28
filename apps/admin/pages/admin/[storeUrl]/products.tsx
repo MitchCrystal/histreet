@@ -16,8 +16,9 @@ import {
   DialogTitle,
   DialogDescription,
 } from '../../../components/Modal';
-import getServerSideProps from '../../../utils/authorization'
-export{getServerSideProps}
+import getServerSideProps from '../../../utils/authorization';
+import LoadingSpinner from '../../../components/LoadingSpinner';
+export { getServerSideProps };
 
 type productValues = {
   product_name: string;
@@ -85,12 +86,14 @@ function Products() {
       },
     });
   };
-  const { data: products }: UseQueryResult<Record<string, any>[]> = useQuery({
-    queryKey: ['products'],
-    queryFn: () => fetch(`/api/products/${storeUrl}`).then((res) => res.json()),
-    enabled: !!router.isReady,
-    initialData: [],
-  });
+  const { data: products, isFetching }: UseQueryResult<Record<string, any>[]> =
+    useQuery({
+      queryKey: ['products'],
+      queryFn: () =>
+        fetch(`/api/products/${storeUrl}`).then((res) => res.json()),
+      enabled: !!router.isReady,
+      initialData: [],
+    });
 
   const [formProducts, setFormProducts] = useState<Record<string, any>[]>([]);
 
@@ -122,18 +125,25 @@ function Products() {
         </div>
         <Heading title={'Products'} type="h1" />
       </div>
-      <Table
-        link={true}
-        linkProperty="product_id"
-        prependLink={`/admin/${router.query.storeUrl}/product`}
-        tableColumnNames={[
-          { id: 'product_name', name: 'Product Name' },
-          { id: 'SKU', name: 'SKU' },
-          { id: 'inventory_qty', name: 'Inventory' },
-          { id: 'product_price', name: 'Price' },
-        ]}
-        tableRows={formProducts}
-      />
+      {isFetching && (
+        <div className="flex justify-center mt-36">
+          <LoadingSpinner />
+        </div>
+      )}
+      {!isFetching && (
+        <Table
+          link={true}
+          linkProperty="product_id"
+          prependLink={`/admin/${router.query.storeUrl}/product`}
+          tableColumnNames={[
+            { id: 'product_name', name: 'Product Name' },
+            { id: 'SKU', name: 'SKU' },
+            { id: 'inventory_qty', name: 'Inventory' },
+            { id: 'product_price', name: 'Price' },
+          ]}
+          tableRows={formProducts}
+        />
+      )}
       {/*Modal area*/}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger></DialogTrigger>

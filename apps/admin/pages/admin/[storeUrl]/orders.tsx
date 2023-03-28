@@ -4,20 +4,22 @@ import Heading from '../../../components/Heading';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
-import getServerSideProps from '../../../utils/authorization'
-export{getServerSideProps}
+import getServerSideProps from '../../../utils/authorization';
+import LoadingSpinner from '../../../components/LoadingSpinner';
+export { getServerSideProps };
 
 function Orders() {
   const router = useRouter();
   const storeUrl = router.query.storeUrl;
-  const { data: orders }: UseQueryResult<Record<string, any>[]> = useQuery({
-    queryKey: ['order'],
-    queryFn: () => fetch(`/api/orders/${storeUrl}`).then((res) => res.json()),
-    enabled: !!router.isReady,
-    initialData: [],
-  });
+  const { data: orders, isFetching }: UseQueryResult<Record<string, any>[]> =
+    useQuery({
+      queryKey: ['order'],
+      queryFn: () => fetch(`/api/orders/${storeUrl}`).then((res) => res.json()),
+      enabled: !!router.isReady,
+      initialData: [],
+    });
 
-  const [formOrders, setFormOrders] = useState<Record<string, any>[]>([]);
+  const [formOrders, setFormOrders] = useState<Record<string, string>[]>([]);
   useEffect(() => {
     const formattedOrder = orders.map((order) => {
       return {
@@ -42,19 +44,26 @@ function Orders() {
     <>
       <Heading title="Orders" type="h1"></Heading>
       <div className="mb-8"></div>
-      <Table
-        link={true}
-        linkProperty="order_id"
-        prependLink={`/admin/${router.query.storeUrl}/order`}
-        tableColumnNames={[
-          { id: 'order_number', name: 'Order Number' },
-          { id: 'customer_name', name: 'Customer Name' },
-          { id: 'total_items', name: 'Total Items' },
-          { id: 'order_total', name: 'Order Total' },
-          { id: 'date_placed', name: 'Date Placed' },
-        ]}
-        tableRows={formOrders}
-      />
+      {isFetching && (
+        <div className="flex justify-center mt-36">
+          <LoadingSpinner />
+        </div>
+      )}
+      {!isFetching && (
+        <Table
+          link={true}
+          linkProperty="order_id"
+          prependLink={`/admin/${router.query.storeUrl}/order`}
+          tableColumnNames={[
+            { id: 'order_number', name: 'Order Number' },
+            { id: 'customer_name', name: 'Customer Name' },
+            { id: 'total_items', name: 'Total Items' },
+            { id: 'order_total', name: 'Order Total' },
+            { id: 'date_placed', name: 'Date Placed' },
+          ]}
+          tableRows={formOrders}
+        />
+      )}
     </>
   );
 }
