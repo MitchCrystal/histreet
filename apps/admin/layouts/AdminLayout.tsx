@@ -24,7 +24,6 @@ export default function AdminLayout({
   const router = useRouter();
   const logoSrc = '/histreet-yellow-square.png';
   const { storeUrl } = router.query;
-
   const { data: stores } = useQuery({
     queryKey: ['stores'],
     queryFn: () =>

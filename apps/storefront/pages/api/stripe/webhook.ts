@@ -12,8 +12,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  console.log('METADATA', Object.entries(req.body.data.object.metadata));
-
   const {
     email,
     store_url,
@@ -34,19 +32,12 @@ export default async function handler(
     firstName,
     city,
     phoneNumber,
+    total_order,
   } = req.body.data.object.metadata;
 
   const lineItems = Object.entries(req.body.data.object.metadata)
     .filter((item) => item[0].includes('item_'))
     .map((item: any) => JSON.parse(item[1]));
-
-  console.log(lineItems);
-  console.log(
-    'MAP',
-    lineItems.map((item) => ({ product_id: item.id }))
-  );
-
-  console.log(req.body);
 
   try {
     if (req.body.type !== 'charge.succeeded') {
@@ -102,7 +93,7 @@ export default async function handler(
             },
           },
           friendly_order_number: getOrderCountForStore + 1000,
-          total_order_cost: 10,
+          total_order_cost: total_order,
           payment_id: req.body.data.object.payment_intent,
           order_details: lineItems,
           store: {

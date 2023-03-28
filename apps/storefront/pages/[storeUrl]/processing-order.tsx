@@ -33,9 +33,10 @@ export default function ProcessingOrder() {
   });
 
   useEffect(() => {
+    if (!router.isReady || !router.query.storeUrl) return;
     setCartItems([]);
-    window.localStorage.removeItem('cartItems');
-  }, []);
+    window.localStorage.removeItem('cartItems_' + router.query.storeUrl);
+  }, [setCartItems, router.isReady, router.query.storeUrl]);
 
   if (
     isError ||
