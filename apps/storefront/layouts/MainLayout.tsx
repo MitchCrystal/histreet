@@ -9,7 +9,6 @@ import { useRouter } from 'next/router';
 import Error from '../components/Error';
 import Loading from '../components/Loading';
 
-
 export default function MainLayout({
   children,
   title,
@@ -20,15 +19,12 @@ export default function MainLayout({
     isLoading,
     isError,
   } = useQuery(
-    ['products'],
+    ['layout-store-details'],
     () => fetch('/api/' + router.query.storeUrl).then((res) => res.json()),
     {
       enabled: !!router.query.storeUrl,
     }
-    );
-  if (isLoading) return <Loading />;
-  if (isError) return <Error />;
-
+  );
 
   return (
     <>
@@ -41,7 +37,10 @@ export default function MainLayout({
       <Toaster />
       <AnnouncementBar />
       <div className="flex flex-col gap-8 justify-between min-h-screen">
-        <Navbar storeName={title} logoSrc={storeDetails.logoUrl} />
+        <Navbar
+          storeName={isLoading || isError ? '' : storeDetails.name}
+          logoSrc={isLoading || isError ? null : storeDetails.logoUrl}
+        />
         <div className="flex-1 min-h-full max-w-[1200px] m-auto w-full px-6">
           {children}
         </div>
