@@ -75,7 +75,7 @@ export default function AdminLayout({
       </Head>
       <Toaster />
 
-      <div className="mx-auto flex h-12 justify-between items-center w-full border-slate-200 border-b ">
+      <div className="mx-auto flex h-12 justify-between items-center w-full border-slate-200 border-b bg-lt-powder-blue">
         <Bars3Icon
           className="h-6 ml-4 md:hidden cursor-pointer"
           onClick={() => setIsNavOpen((prev) => !prev)}
@@ -106,7 +106,7 @@ export default function AdminLayout({
           </select>
         </div>
       </div>
-      <div className="flex h-[calc(100vh-48px)] flex-col md:flex-row">
+      <div className="flex h-[calc(100vh-48px)] flex-col md:flex-row  bg-slate-blue ">
         <nav className="hidden md:flex flex-col justify-between border-slate-200 border-r w-40 text-xs">
           <div className="flex flex-col justify-between px-3 pt-3">
             {initialNavigation.map((page, index) => {

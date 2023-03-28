@@ -116,7 +116,7 @@ function Products() {
         <div className="flex justify-end">
           <Button
             size="default"
-            appearance="primary"
+            appearance="hiStYellow"
             onClick={() => setOpen(true)}
           >
             {' '}
