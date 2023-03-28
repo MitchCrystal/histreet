@@ -12,6 +12,13 @@ type StoreData = {
   description: string;
 };
 
+type StoreFrontData = {
+  support_email: string | null;
+  store_description: string | null;
+  store_logo: Prisma.JsonObject;
+  store_hero_image: Prisma.JsonObject;
+};
+
 type StoreDataWithError = StoreData | { error: boolean | string };
 
 const tempImage =
@@ -32,8 +39,7 @@ export default async function handler(
     if (store == null) {
       return res.status(404).json({ error: 'Store not found' });
     }
-
-    const storefront = await findStorefront(store?.store_id as string);
+    const storefront = await findStorefront(store?.store_id) as StoreFrontData;
 
     if (storefront == null) {
       return res.status(404).json({ error: 'Storefront not found' });
@@ -44,15 +50,15 @@ export default async function handler(
       name: store.store_name,
       heroUrl:
         storefront && storefront.store_hero_image
-          ? storefront.store_hero_image.src
+          ? (storefront.store_hero_image.src as string)
           : tempImage,
       heroAlt:
         storefront && storefront.store_hero_image
-          ? storefront.store_hero_image.alt
+          ? (storefront.store_hero_image.alt as string)
           : 'image of multi-coloured shirts',
       logoUrl:
         storefront && storefront.store_logo
-          ? storefront.store_logo.src
+          ? (storefront.store_logo.src as string)
           : '',
       description:
         storefront && storefront.store_description
