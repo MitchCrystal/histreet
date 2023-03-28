@@ -2,7 +2,6 @@ import AdminLayout from '../../../layouts/AdminLayout';
 import Button from '../../../components/Button';
 import Heading from '../../../components/Heading';
 import InputWithLabel from '../../../components/InputWithLabel';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import Textarea from '../../../components/Textarea';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
@@ -42,14 +41,16 @@ function Editor() {
       src: '/missing_img.png',
       alt: 'no image found',
     },
+    globalStyles: '',
   });
 
-  const { data: storeform }: UseQueryResult<Record<string, any>> = useQuery({
-    queryKey: ['storeForm'],
-    queryFn: () => fetch(`/api/editor/${storeUrl}`).then((res) => res.json()),
-    enabled: !!router.isReady,
-    initialData: {},
-  });
+  const { data: storeform, isLoading }: UseQueryResult<Record<string, any>> =
+    useQuery({
+      queryKey: ['storeForm'],
+      queryFn: () => fetch(`/api/editor/${storeUrl}`).then((res) => res.json()),
+      enabled: !!router.isReady,
+      initialData: {},
+    });
 
   const postStoreformInputs = useMutation({
     mutationFn: (newStoreformInputs: StoreformInputs) => {
@@ -85,6 +86,7 @@ function Editor() {
         src: '/missing_img.png',
         alt: 'no image found',
       },
+      globalStyles: JSON.parse(storeform.globalStyles) ?? '',
     });
   }, [storeform, logoUploaded, heroUploaded]);
 
@@ -122,6 +124,7 @@ function Editor() {
       supportEmail: storeformInputs.supportEmail,
       storeHeroImage: storeformInputs.storeHeroImage,
       storeLogo: storeformInputs.storeLogo,
+      globalStyles: JSON.stringify(storeformInputs.globalStyles)
     };
     postStoreformInputs.mutate(storeformInputToPost);
   }
@@ -139,6 +142,14 @@ function Editor() {
     temp.storeHeroImage.src = url;
     temp.storeHeroImage.alt = storeformInputs.storeName + 'hero';
     setStoreFormInputs(temp);
+  }
+
+  function getSelected(type: string) {
+    return storeformInputs.globalStyles === ''
+      ? '#ffffff'
+      : storeformInputs.globalStyles.find(
+          (item: any) => item.type === type
+        ).selected;
   }
 
   return !isEditing ? (
@@ -171,13 +182,15 @@ function Editor() {
           <Heading title="Store Logo:" type="h3" />
           <img
             src={storeformInputs.storeLogo.src}
-            className="w-[150px] h-[150px] object-contain object-top"
+            className="w-[150px] h-[150px] object-contain border border-gray-300"
           ></img>
           <Heading title="Store Homepage Main Image:" type="h3" />
           <img
             src={storeformInputs.storeHeroImage.src}
-            className="object-contain object-top h-[250px] w-[350px]"
+            className="object-contain h-[250px] w-[350px] border border-gray-300"
           ></img>
+          <Heading title="Store Theme:" type="h3" />
+          <ThemeThumbnail getSelected={getSelected} />
         </div>
       </div>
     </>
@@ -253,7 +266,7 @@ function Editor() {
                 className="w-[100px]"
               ></img>
               <div className="flex items-center">
-                <FileUpload id="fileUpload" onChangeEvent={false} />
+                <FileUpload id="fileUpload" onChangeEvent={handleLogoUpload} />
               </div>
             </div>
           </div>
@@ -274,6 +287,74 @@ function Editor() {
               </div>
             </div>
           </div>
+
+          <div className="flex flex-row w-full">
+            <label
+              htmlFor="primaryColour"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 m-1 w-48 pr-4"
+            >
+              Primary Theme Colour
+            </label>
+            <div className="w-full ml-1">
+              <input
+                id="primaryColour"
+                type="color"
+                value={getSelected('primaryColour')}
+                onChange={(e) => {
+                  setStoreFormInputs((prev) => {
+                    const temp = storeformInputs.globalStyles.filter(
+                      (item: any) => item.type !== 'primaryColour'
+                    );
+                    return {
+                      ...prev,
+                      globalStyles: [
+                        ...temp,
+                        {
+                          type: 'primaryColour',
+                          selected: e.target.value,
+                        },
+                      ],
+                    };
+                  });
+                }}
+              />
+            </div>
+          </div>
+          <div className="flex flex-row w-full">
+            <label
+              htmlFor="secondaryColour"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 m-1 w-48 pr-4"
+            >
+              Secondary Theme Colour
+            </label>
+            <div className="w-full ml-1">
+              <input
+                id="secondaryColour"
+                type="color"
+                value={getSelected('secondaryColour')}
+                onChange={(e) => {
+                  setStoreFormInputs((prev) => {
+                    const temp = storeformInputs.globalStyles.filter(
+                      (item: any) => item.type !== 'secondaryColour'
+                    );
+                    return {
+                      ...prev,
+                      globalStyles: [
+                        ...temp,
+                        {
+                          type: 'secondaryColour',
+                          selected: e.target.value,
+                        },
+                      ],
+                    };
+                  });
+                }}
+              />
+            </div>
+          </div>
+          <div className="flex flex-row w-full">
+            <ThemeThumbnail getSelected={getSelected} />
+          </div>
         </div>
       </div>
     </>
@@ -285,5 +366,26 @@ export default function () {
     <AdminLayout title="Editor">
       <Editor />
     </AdminLayout>
+  );
+}
+
+function ThemeThumbnail({ getSelected }: { getSelected: (colour:string)=>string }) {
+  return (
+    <div className="flex flex-col h-32 w-48 border border-gray-300 mb-8">
+      <div
+        className="h-4"
+        style={{ backgroundColor: getSelected('secondaryColour') }}
+      ></div>
+      <div
+        className="flex-1 text-white place-content-center grid text-2xl"
+        style={{ backgroundColor: getSelected('primaryColour') }}
+      >
+        Heading Font
+      </div>
+      <div
+        className="h-4"
+        style={{ backgroundColor: getSelected('secondaryColour') }}
+      ></div>
+    </div>
   );
 }

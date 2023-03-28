@@ -8,6 +8,7 @@ type StorefrontDBresult = {
   supportEmail: string | null;
   storeHeroImage: any;
   storeLogo: any;
+  globalStyles: any;
 };
 
 type StorefrontWithError = StorefrontDBresult | { error: boolean | string };
@@ -40,6 +41,7 @@ export default async function handler(
         supportEmail: storefront.support_email,
         storeHeroImage: storefront.store_hero_image,
         storeLogo: storefront.store_logo,
+        globalStyles: storefront.global_styles
       });
     } catch (error) {
       return res.status(500).json({ error: true });
@@ -52,6 +54,7 @@ export default async function handler(
       supportEmail: req.body.supportEmail,
       storeHeroImage: req.body.storeHeroImage,
       storeLogo: req.body.storeLogo,
+      globalStyles: req.body.globalStyles
     };
 
     updateStorefrontDB(storefrontReq);
@@ -78,6 +81,7 @@ const findStorefront = async (storeId: string) => {
       store_description: true,
       store_logo: true,
       store_hero_image: true,
+      global_styles: true
     },
   });
   return response;
@@ -96,6 +100,7 @@ const updateStorefrontDB = async (storefrontReq: StorefrontDBresult) => {
         store_description: storefrontReq.storeDescription,
         store_logo: storefrontReq.storeLogo,
         store_hero_image: storefrontReq.storeHeroImage,
+        global_styles: storefrontReq.globalStyles
       },
     }),
   ]);
