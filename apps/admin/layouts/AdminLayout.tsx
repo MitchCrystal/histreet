@@ -10,7 +10,7 @@ import Button from '../components/Button';
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
 
-import SearchInputs from '../components/SreachInputs';
+import SearchInputs from '../components/SearchInputs';
 import { placeholder } from '@cloudinary/react';
 import { redirect } from 'next/dist/server/api-utils';
 
