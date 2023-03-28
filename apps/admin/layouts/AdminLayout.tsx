@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { signOut } from 'next-auth/react';
 import Button from '../components/Button';
-import Image from 'next/image'
+import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
 
 export default function AdminLayout({
@@ -15,11 +15,12 @@ export default function AdminLayout({
   title,
 }: PropsWithChildren<{ title: string }>) {
   const router = useRouter();
-  const logoSrc = '/histreet-yellow-square.png'
-  const {storeUrl} = router.query
-  const {data:storeName,isError} = useQuery({
+  const logoSrc = '/histreet-yellow-square.png';
+  const { storeUrl } = router.query;
+  const { data: storeName, isError } = useQuery({
     queryKey: ['storeName'],
-    queryFn: () => fetch(`/api/store-name/${storeUrl}`).then((res) => res.json()),
+    queryFn: () =>
+      fetch(`/api/store-name/${storeUrl}`).then((res) => res.json()),
     enabled: !!router.isReady && !!storeUrl,
   });
 
@@ -52,7 +53,7 @@ export default function AdminLayout({
   ];
   const [isNavOpen, setIsNavOpen] = useState(false);
 
-  if(isError) return <p>Cannot load the store name</p>
+  if (isError) return <p>Cannot load the store name</p>;
 
   return (
     <>
@@ -72,15 +73,8 @@ export default function AdminLayout({
         <div className="flex justify-end md:justify-between items-center w-full">
           <Link href={`/admin/${storeUrl}/dashboard`}>
             <div className="flex gap-2 ml-4 text-2xl place-content-center">
-              <Image
-              src={logoSrc}
-              alt="company logo"
-              width={40}
-              height={40}
-              /> 
-              <div className='flex justify-center items-center'>
-              HiStreet
-              </div>
+              <Image src={logoSrc} alt="company logo" width={40} height={40} />
+              <div className="flex justify-center items-center">HiStreet</div>
             </div>
           </Link>
           <div className="flex mr-4 text-2xl">{storeName?.storeName}</div>
@@ -152,4 +146,3 @@ export default function AdminLayout({
     </>
   );
 }
-
