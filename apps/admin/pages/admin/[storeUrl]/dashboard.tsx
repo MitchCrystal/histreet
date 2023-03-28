@@ -13,66 +13,69 @@ import LoadingSpinner from '../../../components/Loading';
 import DashboardCard from '../../../components/DashboardCard';
 export { getServerSideProps };
 
+
+
+
+const labels = ['Week1', 'Week2', 'Week3', 'Week4'];
+const optionsSalesCustomer = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: 'top' as const,
+    },
+    title: {
+      display: true,
+      text: 'March Total Orders and Customers/Time',
+      font: {
+        size: 20,
+      },
+    },
+  },
+};
+const dataSalesCustomer = {
+  labels,
+  datasets: [
+    {
+      label: 'Total Orders',
+      data: [0, 1, 4, 4],
+      borderColor: '#ea580c',
+      backgroundColor: '#ea580c',
+    },
+    {
+      label: 'Total Customers',
+      data: [0, 3, 2, 1],
+      borderColor: '#22d3ee',
+      backgroundColor: '#22d3ee',
+    },
+  ],
+};
+const optionsRevenue = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: 'top' as const,
+    },
+    title: {
+      display: true,
+      text: 'March Total Revenue/Time',
+      font: {
+        size: 20,
+      },
+    },
+  },
+};
+const dataRevenue = {
+  labels,
+  datasets: [
+    {
+      label: 'Total Revenue',
+      data: [10001, 1292872, 3765526, 4946864],
+      borderColor: '#a855f7',
+      backgroundColor: '#a855f7',
+    },
+  ],
+};
 function Dashboard() {
-  const labels = ['Week1', 'Week2', 'Week3', 'Week4'];
-  const optionsSalesCustomer = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top' as const,
-      },
-      title: {
-        display: true,
-        text: 'March Total Orders and Customers/Time',
-        font: {
-          size: 20,
-        },
-      },
-    },
-  };
-  const dataSalesCustomer = {
-    labels,
-    datasets: [
-      {
-        label: 'Total Orders',
-        data: [0, 1, 4, 4],
-        borderColor: '#ea580c',
-        backgroundColor: '#ea580c',
-      },
-      {
-        label: 'Total Customers',
-        data: [0, 3, 2, 1],
-        borderColor: '#22d3ee',
-        backgroundColor: '#22d3ee',
-      },
-    ],
-  };
-  const optionsRevenue = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top' as const,
-      },
-      title: {
-        display: true,
-        text: 'March Total Revenue/Time',
-        font: {
-          size: 20,
-        },
-      },
-    },
-  };
-  const dataRevenue = {
-    labels,
-    datasets: [
-      {
-        label: 'Total Revenue',
-        data: [10001, 1292872, 3765526, 4946864],
-        borderColor: '#a855f7',
-        backgroundColor: '#a855f7',
-      },
-    ],
-  };
   const router = useRouter();
   const { storeUrl } = router.query;
   const { data: stats, isError } = useQuery({
