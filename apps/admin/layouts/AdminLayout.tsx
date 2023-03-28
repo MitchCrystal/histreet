@@ -83,7 +83,7 @@ export default function AdminLayout({
         />
         <div className="flex justify-end md:justify-between items-center w-full">
           <Link href={`/admin/${storeUrl}/dashboard`}>
-            <div className="flex gap-2 ml-4 text-2xl place-content-center">
+            <div className="hidden md:flex gap-2 ml-4 text-2xl place-content-center">
               <Image src={logoSrc} alt="company logo" width={40} height={40} />
               <div className="flex justify-center items-center">HiStreet</div>
             </div>
@@ -168,7 +168,7 @@ export default function AdminLayout({
             </div>
           </div>
         </nav>
-        <div className="m-4 w-full">{children}</div>
+        <div className="m-4 w-[95%]">{children}</div>
       </div>
     </>
   );

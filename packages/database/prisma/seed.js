@@ -21,36 +21,36 @@ async function main() {
     await prisma.product.createMany({
       data: dataPresets.products,
     });
-      await prisma.storefront.createMany({
-        data: dataPresets.storeFronts,
-      });
-     await prisma.customer.createMany({
-       data: dataPresets.customers,
-     });
-     await prisma.address.createMany({
-       data: dataPresets.addresses,
-     });
+    await prisma.storefront.createMany({
+      data: dataPresets.storeFronts,
+    });
+    await prisma.customer.createMany({
+      data: dataPresets.customers,
+    });
+    await prisma.address.createMany({
+      data: dataPresets.addresses,
+    });
     await prisma.order.create({
       data: dataPresets.orders[0],
-      include: {products: true}
+      include: { products: true },
     });
-     await prisma.order.create({
-       data: dataPresets.orders[1],
-       include: { products: true },
-     });
-     await prisma.order.create({
-       data: dataPresets.orders[2],
-       include: { products: true },
-     });
-     await prisma.order.create({
-       data: dataPresets.orders[3],
-       include: { products: true },
-     });
-     await prisma.order.create({
-       data: dataPresets.orders[4],
-       include: { products: true },
-     });
-    console.log('Database seeded')
+    await prisma.order.create({
+      data: dataPresets.orders[1],
+      include: { products: true },
+    });
+    await prisma.order.create({
+      data: dataPresets.orders[2],
+      include: { products: true },
+    });
+    await prisma.order.create({
+      data: dataPresets.orders[3],
+      include: { products: true },
+    });
+    await prisma.order.create({
+      data: dataPresets.orders[4],
+      include: { products: true },
+    });
+    console.log('Database seeded');
   } catch (e) {
     console.error(e);
     process.exit(1);
