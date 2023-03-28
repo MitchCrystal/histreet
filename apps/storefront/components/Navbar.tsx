@@ -11,9 +11,9 @@ import {
 import CartSlideOut from './CartSlideOut';
 
 type Props = {
-  logoSrc: string
-  storeName: string
-}
+  logoSrc: string;
+  storeName: string;
+};
 
 const menuItems = [
   {
@@ -28,7 +28,7 @@ const menuItems = [
   },
 ];
 
-export default function Navbar({ logoSrc, storeName }:Props) {
+export default function Navbar({ logoSrc, storeName }: Props) {
   const router = useRouter();
 
   return (
@@ -36,7 +36,6 @@ export default function Navbar({ logoSrc, storeName }:Props) {
       <nav className="py-8 px-4 border-b border-gray-300">
         <div className="max-w-[1200px] m-auto flex items-center justify-between">
           <Link href={`/${router.query.storeUrl}`}>
-            {/* @TODO change to dynamic value */}
             <Logo logoSrc={logoSrc} storeName={storeName} />
           </Link>
           <div className="md:hidden flex gap-4">

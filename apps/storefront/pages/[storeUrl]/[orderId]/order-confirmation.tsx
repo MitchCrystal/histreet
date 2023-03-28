@@ -99,7 +99,7 @@ export default function OrderConfirmation({ order }: { order: OrderData }) {
                   !
                 </HeadingText>
                 <h3 className="text-lg">
-                  Your order has been successfuly processed.
+                  Your order has been successfuly placed.
                 </h3>
               </div>
             </div>

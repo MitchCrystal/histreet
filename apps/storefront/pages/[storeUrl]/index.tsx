@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 import Error from '../../components/Error';
 import Loading from '../../components/Loading';
 
-
 type Props = {
   storeDetails: {
     id: string;
@@ -14,43 +13,50 @@ type Props = {
     heroAlt: string;
     logoUrl: string;
     description: string;
-  }
   };
+  isLoading: boolean;
+  isError: boolean;
+};
 
-function StoreHome({storeDetails}:Props) {
-
+function StoreHome({ storeDetails, isLoading, isError }: Props) {
   return (
     <>
-      <HeroImageBanner
-        heroImage={storeDetails.heroUrl}
-        alt={storeDetails.heroAlt}
-        heading={storeDetails.name}
-        subheading={storeDetails.description}
-      />
+      {isError ? (
+        <Error />
+      ) : (
+        <HeroImageBanner
+          heroImage={isLoading ? '' : storeDetails.heroUrl}
+          alt={isLoading ? '' : storeDetails.heroAlt}
+          heading={isLoading ? '' : storeDetails.name}
+          subheading={isLoading ? '' : storeDetails.description}
+          isLoading={isLoading}
+        />
+      )}
     </>
   );
 }
 
 export default function () {
-const router = useRouter();
-const {
-  data: storeDetails,
-  isLoading,
-  isError,
-} = useQuery(
-  ['products'],
-  () => fetch('/api/' + router.query.storeUrl).then((res) => res.json()),
-  {
-    enabled: !!router.query.storeUrl,
-  }
-);
-
-if (isLoading) return <Loading />;
-  if (isError) return <Error />;
+  const router = useRouter();
+  const {
+    data: storeDetails,
+    isLoading,
+    isError,
+  } = useQuery(
+    ['products'],
+    () => fetch('/api/' + router.query.storeUrl).then((res) => res.json()),
+    {
+      enabled: !!router.query.storeUrl,
+    }
+  );
 
   return (
-    <MainLayout title={storeDetails.name}>
-      <StoreHome storeDetails={storeDetails} />
+    <MainLayout title={`${isLoading || isError ? 'Home' : storeDetails.name}`}>
+      <StoreHome
+        storeDetails={storeDetails}
+        isLoading={isLoading}
+        isError={isError}
+      />
     </MainLayout>
   );
 }
