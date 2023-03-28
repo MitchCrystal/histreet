@@ -1,5 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { Customer } from 'database';
+import { Customer, Prisma } from 'database';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../utils/prisma';
 
@@ -16,7 +16,7 @@ type OrderDB = {
   order_id: string;
   friendly_order_number: number;
   customer: Customer;
-  total_order_cost: number;
+  total_order_cost: Prisma.Decimal;
   order_details: OrderDetails;
   created_at: Date;
 };
@@ -32,7 +32,7 @@ export default async function handler(
   res: NextApiResponse<OrderDTO[]>
 ) {
   const storeUrl = req.query.storeUrl;
-  console.log(storeUrl, 'storeUrl');
+
   if (storeUrl == null) {
     return res.status(400);
   } else {
@@ -79,7 +79,7 @@ const getOrderDTO = (orders: OrderDB[]) => {
         ' ' +
         order.customer.customer_last_name,
       total_items: getTotalItems(order.order_details),
-      order_total: order.total_order_cost,
+      order_total: order.total_order_cost as unknown as number,
       date_placed: order.created_at,
     };
     return orderDTO;

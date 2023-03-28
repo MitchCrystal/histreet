@@ -1,15 +1,13 @@
 import Head from 'next/head';
-import { PropsWithChildren } from 'react';
+import { useState, PropsWithChildren, useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { Bars3Icon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 import { signOut } from 'next-auth/react';
 import Button from '../components/Button';
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
-import { redirect } from 'next/dist/server/api-utils';
 
 type Store = {
   store_id: string;
@@ -34,6 +32,9 @@ export default function AdminLayout({
   });
 
   const [currentStoreUrl, setCurrentStoreUrl] = useState(storeUrl);
+  const helperGetUrl = (string: string) => {
+    return string.split('/')[string.split('/').length - 1];
+  };
 
   const initialNavigation = [
     {
@@ -91,10 +92,35 @@ export default function AdminLayout({
             id="stores"
             onChange={(e) => {
               setCurrentStoreUrl(e.target.value);
-              router.push(`/admin/${e.target.value}/dashboard`);
+              switch (helperGetUrl(router.pathname)) {
+                case 'dashboard':
+                  router
+                    .push(`/admin/${e.target.value}/dashboard`)
+                    .then(() => router.reload());
+                  break;
+                case 'orders':
+                case '[orderId]':
+                  router
+                    .push(`/admin/${e.target.value}/orders`)
+                    .then(() => router.reload());
+                  break;
+                case 'products':
+                case '[productId]':
+                  router
+                    .push(`/admin/${e.target.value}/products`)
+                    .then(() => router.reload());
+                  break;
+                case 'editor':
+                  router
+                    .push(`/admin/${e.target.value}/editor`)
+                    .then(() => router.reload());
+                  break;
+                default:
+                  break;
+              }
             }}
             value={currentStoreUrl}
-            className="mr-4 w-1/4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="mr-4 w-1/4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 "
           >
             {stores?.map((store: Store) => {
               return (
@@ -159,7 +185,10 @@ export default function AdminLayout({
                 size="sm"
                 appearance="link"
                 type="button"
-                onClick={() => signOut({ callbackUrl: '/' })}
+                onClick={() => {
+                  signOut({ callbackUrl: '/' });
+                  sessionStorage.clear();
+                }}
                 className="text-base  text-red-600"
               >
                 Log Out
