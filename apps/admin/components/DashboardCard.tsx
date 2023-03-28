@@ -1,4 +1,11 @@
-export default function DashboardCard({ title, icon, props, colour }: any) {
+import { JSXElementConstructor } from "react";
+
+type Props = {
+  title:string,
+  icon:
+}
+
+export default function DashboardCard({ title, icon, props, colour }: ) {
   const colourVariants = {
     purple:
       'h-20 w-20 bg-purple-500 rounded-full p-0 flex justify-center items-center',
