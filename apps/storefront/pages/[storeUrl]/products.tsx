@@ -36,6 +36,7 @@ export async function getServerSideProps(context: any) {
       },
       select: {
         store_id: true,
+        store_name: true
       },
     });
 
@@ -61,12 +62,14 @@ export async function getServerSideProps(context: any) {
           ...item,
           product_price: Number(item.product_price),
         })),
+        store: store?.store_name
       },
     };
   } catch (error) {
     return {
       props: {
         products: [],
+        store: ''
       },
     };
   }
@@ -98,9 +101,9 @@ function Products({ products }: { products?: ProductType[] }) {
   );
 }
 
-export default function ({ products }: { products?: ProductType[] }) {
+export default function ({ products, store }: { products?: ProductType[], store:string }) {
   return (
-    <MainLayout title="Products">
+    <MainLayout title={store}>
       <Products products={products} />
     </MainLayout>
   );

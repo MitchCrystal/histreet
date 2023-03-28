@@ -10,6 +10,11 @@ import {
 } from './dropdown-menu';
 import CartSlideOut from './CartSlideOut';
 
+type Props = {
+  logoSrc: string
+  storeName: string
+}
+
 const menuItems = [
   {
     id: 'products',
@@ -23,7 +28,7 @@ const menuItems = [
   },
 ];
 
-export default function Navbar() {
+export default function Navbar({ logoSrc, storeName }:Props) {
   const router = useRouter();
 
   return (
@@ -32,7 +37,7 @@ export default function Navbar() {
         <div className="max-w-[1200px] m-auto flex items-center justify-between">
           <Link href={`/${router.query.storeUrl}`}>
             {/* @TODO change to dynamic value */}
-            <Logo logoSrc={''} storeName="Demo Store" />
+            <Logo logoSrc={logoSrc} storeName={storeName} />
           </Link>
           <div className="md:hidden flex gap-4">
             <DropdownMenu>

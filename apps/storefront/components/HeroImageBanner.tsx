@@ -19,9 +19,9 @@ export default function HeroImageBanner({
   return (
     <>
       <div className="md:h-[600px] md:overflow-hidden md:relative m-auto">
-        <img src={heroImage} alt={alt} className="object-cover" />
+        <img src={heroImage} alt={alt} className="w-full object-cover" />
         <div className="md:absolute md:top-[50%] w-full md:translate-y-[-50%] text-center flex flex-col">
-          <div className="bg-gray-100 md:bg-white md:rounded-md rounded-b-md p-12 w-full md:w-fit m-auto md:shadow flex items-center justify-center flex-col gap-2">
+          <div className="bg-gray-100 md:bg-white md:rounded-md rounded-b-md p-12 w-full md:w-[60%] md:opacity-[0.85] m-auto md:shadow flex items-center justify-center flex-col gap-2">
             <h1 className="scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl">
               {heading}
             </h1>

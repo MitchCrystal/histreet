@@ -33,7 +33,7 @@ export default async function handler(
       return res.status(200).json({
         id: store.store_id,
         storeName: store.store_name,
-        supportEmail: storefront.support_email,
+        supportEmail: storefront !== null ? storefront.support_email : '',
       });
     } catch (error) {
       return res.status(500).json({ error: true });
