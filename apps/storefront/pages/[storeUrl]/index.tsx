@@ -1,26 +1,56 @@
 import HeroImageBanner from '../../components/HeroImageBanner';
 import MainLayout from '../../layouts/MainLayout';
+import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
+import Error from '../../components/Error';
+import Loading from '../../components/Loading';
 
-const tempImage =
-  'https://images.unsplash.com/photo-1601924994987-69e26d50dc26?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80';
 
-function StoreHome() {
+type Props = {
+  storeDetails: {
+    id: string;
+    name: string;
+    heroUrl: string;
+    heroAlt: string;
+    logoUrl: string;
+    description: string;
+  }
+  };
+
+function StoreHome({storeDetails}:Props) {
+
   return (
     <>
       <HeroImageBanner
-        heroImage={tempImage}
-        alt="Image"
-        heading="Welcome to our store"
-        subheading="This is a subheading"
+        heroImage={storeDetails.heroUrl}
+        alt={storeDetails.heroAlt}
+        heading={storeDetails.name}
+        subheading={storeDetails.description}
       />
     </>
   );
 }
 
 export default function () {
+const router = useRouter();
+const {
+  data: storeDetails,
+  isLoading,
+  isError,
+} = useQuery(
+  ['products'],
+  () => fetch('/api/' + router.query.storeUrl).then((res) => res.json()),
+  {
+    enabled: !!router.query.storeUrl,
+  }
+);
+
+if (isLoading) return <Loading />;
+  if (isError) return <Error />;
+
   return (
-    <MainLayout title="Home">
-      <StoreHome />
+    <MainLayout title={storeDetails.name}>
+      <StoreHome storeDetails={storeDetails} />
     </MainLayout>
   );
 }
