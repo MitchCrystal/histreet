@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { toast } from 'react-hot-toast';
 import HeadingText from '../../components/HeadingText';
 import ProductGridItem from '../../components/ProductGridItem';
 import MainLayout from '../../layouts/MainLayout';
@@ -18,7 +18,24 @@ type ProductType = {
   inventory_qty: number;
 };
 
-export async function getServerSideProps(context: any) {
+export async function getStaticPaths() {
+  const stores = await prisma.store.findMany({
+    select: {
+      store_url: true,
+    },
+  });
+
+  return {
+    paths: stores.map((store) => ({
+      params: {
+        storeUrl: store.store_url,
+      },
+    })),
+    fallback: true,
+  };
+}
+
+export async function getStaticProps(context: any) {
   try {
     const { storeUrl } = context.params;
 
@@ -74,6 +91,7 @@ export async function getServerSideProps(context: any) {
         store: store?.store_name,
         store_desc: storefront?.store_description
       },
+      revalidate: 60,
     };
   } catch (error) {
     return {
@@ -81,11 +99,16 @@ export async function getServerSideProps(context: any) {
         products: [],
         store: ''
       },
+      revalidate: 10,
     };
   }
 }
 
+
 function Products({ products, store_desc }: { products?: ProductType[], store_desc:string }) {
+  useEffect(() => {
+    return () => toast.dismiss();
+  }, []);
   return (
     <>
       <HeadingText size="h3">Products</HeadingText>

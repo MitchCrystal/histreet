@@ -19,6 +19,7 @@ function SignIn() {
 
   const redirectUser = useCallback(() => {
     if (session.status === 'authenticated') {
+      sessionStorage.setItem('userId', session.data.user.id);
       fetch('/api/auth/user/' + session.data?.user.id)
         .then((res: any) => res.json())
         .then((res) => {
@@ -37,17 +38,19 @@ function SignIn() {
         redirect: false,
       }).then((res: any) => {
         if (!res.ok) {
-          toast.error('Wrong email or password try again', { position: 'bottom-center' });
-          setIsLoading(false)
+          toast.error('Wrong email or password try again', {
+            position: 'bottom-center',
+          });
+          setIsLoading(false);
           setFormInputs({
             user_email: '',
             password_hash: '',
-          })
+          });
         }
       }),
       {
         loading: 'Logging in...',
-        success: 'Check completed' ,
+        success: 'Check completed',
         error: () => {
           setIsLoading(false);
           return 'Error logging in.';
