@@ -22,3 +22,20 @@ describe('From admin to sign in', () => {
     cy.url().should('be.equal', 'http://localhost:3001/auth/sign-up');
   });
 });
+
+describe('Successfully access authorised only pages', () => {
+  beforeEach(() => {
+    cy.visit('http://localhost:3001/auth/sign-in');
+    cy.get('#user_email').type('bruce@diehard.me');
+    cy.get('#password_hash').type('diehard');
+    cy.contains('Sign In').click();
+  });
+
+  it('successfully loads dashboard', () => {
+    cy.url().should(
+      'be.equal',
+      'http://localhost:3001/admin/yippie-kay-yay/dashboard'
+    );
+  });
+
+});
