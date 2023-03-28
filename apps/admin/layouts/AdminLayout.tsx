@@ -159,7 +159,10 @@ export default function AdminLayout({
                 size="sm"
                 appearance="link"
                 type="button"
-                onClick={() => signOut({ callbackUrl: '/' })}
+                onClick={() => {
+                  signOut({ callbackUrl: '/' });
+                  sessionStorage.clear();
+                }}
                 className="text-base  text-red-600"
               >
                 Log Out
