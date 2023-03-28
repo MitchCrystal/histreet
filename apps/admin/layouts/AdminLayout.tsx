@@ -7,52 +7,64 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { signOut } from 'next-auth/react';
 import Button from '../components/Button';
-import Image from 'next/image'
+import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
+import { redirect } from 'next/dist/server/api-utils';
+
+type Store = {
+  store_id: string;
+  store_name: string;
+  store_url: string;
+};
 
 export default function AdminLayout({
   children,
   title,
 }: PropsWithChildren<{ title: string }>) {
   const router = useRouter();
-  const logoSrc = '/histreet-yellow-square.png'
-  const {storeUrl} = router.query
-  const {data:storeName,isError} = useQuery({
-    queryKey: ['storeName'],
-    queryFn: () => fetch(`/api/store-name/${storeUrl}`).then((res) => res.json()),
-    enabled: !!router.isReady && !!storeUrl,
+  const logoSrc = '/histreet-yellow-square.png';
+  const { storeUrl } = router.query;
+
+  const { data: stores } = useQuery({
+    queryKey: ['stores'],
+    queryFn: () =>
+      fetch(`/api/stores/${sessionStorage.getItem('userId')}`).then((res) =>
+        res.json()
+      ),
+    enabled: !!router.isReady,
   });
+
+  const [currentStoreUrl, setCurrentStoreUrl] = useState(storeUrl);
 
   const initialNavigation = [
     {
       name: 'Dashboard',
-      href: `/admin/${storeUrl}/dashboard`,
+      href: `/admin/${currentStoreUrl}/dashboard`,
       current: true,
     },
     {
       name: 'Orders',
-      href: `/admin/${storeUrl}/orders`,
+      href: `/admin/${currentStoreUrl}/orders`,
       current: false,
     },
     {
       name: 'Products',
-      href: `/admin/${storeUrl}/products`,
+      href: `/admin/${currentStoreUrl}/products`,
       current: false,
     },
     {
       name: 'Store Editor',
-      href: `/admin/${storeUrl}/editor`,
+      href: `/admin/${currentStoreUrl}/editor`,
       current: false,
     },
     {
       name: 'Visit Store',
-      href: `${process.env.NEXT_PUBLIC_STOREFRONT_URL}/${storeUrl}`,
+      href: `${process.env.NEXT_PUBLIC_STOREFRONT_URL}/${currentStoreUrl}`,
       current: false,
     },
   ];
-  const [isNavOpen, setIsNavOpen] = useState(false);
 
-  if(isError) return <p>Cannot load the store name</p>
+  const [isNavOpen, setIsNavOpen] = useState(false);
 
   return (
     <>
@@ -76,7 +88,23 @@ export default function AdminLayout({
               <div className="flex justify-center items-center">HiStreet</div>
             </div>
           </Link>
-          <div className="flex mr-4 text-2xl">{storeName?.storeName}</div>
+          <select
+            id="stores"
+            onChange={(e) => {
+              setCurrentStoreUrl(e.target.value);
+              router.push(`/admin/${e.target.value}/dashboard`);
+            }}
+            value={currentStoreUrl}
+            className="mr-4 w-1/4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          >
+            {stores?.map((store: Store) => {
+              return (
+                <option value={store.store_url} key={store.store_id}>
+                  {store.store_name}
+                </option>
+              );
+            })}
+          </select>
         </div>
       </div>
       <div className="flex h-[calc(100vh-48px)] flex-col md:flex-row">
@@ -145,4 +173,3 @@ export default function AdminLayout({
     </>
   );
 }
-
