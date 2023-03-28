@@ -8,9 +8,9 @@ export default function Logo({ logoSrc, storeName }: Props) {
   return (
     <div className="px-2">
       {logoSrc ? (
-        <Image src={logoSrc} alt={storeName} width={100} />
+        <img src={logoSrc} alt={storeName+' logo'} className="w-[100px]" />
       ) : (
-        <h2 className="text-2xl font-medium">{storeName}</h2>
+        <h2 className="text-3xl font-medium">{storeName}</h2>
       )}
     </div>
   );

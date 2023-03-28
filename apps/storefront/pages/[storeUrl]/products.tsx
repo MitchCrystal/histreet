@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { toast } from 'react-hot-toast';
 import HeadingText from '../../components/HeadingText';
 import ProductGridItem from '../../components/ProductGridItem';
 import MainLayout from '../../layouts/MainLayout';
@@ -18,7 +18,24 @@ type ProductType = {
   inventory_qty: number;
 };
 
-export async function getServerSideProps(context: any) {
+export async function getStaticPaths() {
+  const stores = await prisma.store.findMany({
+    select: {
+      store_url: true,
+    },
+  });
+
+  return {
+    paths: stores.map((store) => ({
+      params: {
+        storeUrl: store.store_url,
+      },
+    })),
+    fallback: true,
+  };
+}
+
+export async function getStaticProps(context: any) {
   try {
     const { storeUrl } = context.params;
 
@@ -36,6 +53,16 @@ export async function getServerSideProps(context: any) {
       },
       select: {
         store_id: true,
+        store_name: true
+      },
+    });
+
+    const storefront = await prisma.storefront.findUnique({
+      where: {
+        store_id: String(store?.store_id),
+      },
+      select: {
+        store_description: true,
       },
     });
 
@@ -61,29 +88,32 @@ export async function getServerSideProps(context: any) {
           ...item,
           product_price: Number(item.product_price),
         })),
+        store: store?.store_name,
+        store_desc: storefront?.store_description
       },
+      revalidate: 60,
     };
   } catch (error) {
     return {
       props: {
         products: [],
+        store: ''
       },
+      revalidate: 10,
     };
   }
 }
 
-function Products({ products }: { products?: ProductType[] }) {
+
+function Products({ products, store_desc }: { products?: ProductType[], store_desc:string }) {
+  useEffect(() => {
+    return () => toast.dismiss();
+  }, []);
   return (
     <>
       <HeadingText size="h3">Products</HeadingText>
       <p className="mt-2 mb-6">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-        velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-        occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-        mollit anim id est laborum.{' '}
+        {store_desc}
       </p>
       {!products || products.length === 0 ? (
         <p className="mt-6">No products listed</p>
@@ -98,10 +128,10 @@ function Products({ products }: { products?: ProductType[] }) {
   );
 }
 
-export default function ({ products }: { products?: ProductType[] }) {
+export default function ({ products, store, store_desc }: { products?: ProductType[], store:string, store_desc:string }) {
   return (
-    <MainLayout title="Products">
-      <Products products={products} />
+    <MainLayout title={store}>
+      <Products products={products} store_desc={store_desc} />
     </MainLayout>
   );
 }

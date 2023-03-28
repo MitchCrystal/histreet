@@ -31,7 +31,7 @@ export default function App({ Component, pageProps }: AppProps) {
       'cartItems_' + router.query.storeUrl
     );
     setCartItems(localCart ? JSON.parse(localCart as string) : []);
-  }, [router.isReady]);
+  }, [router.isReady, router.query.storeUrl]);
 
   useEffect(() => {
     if (cartItems.length === 0) return;
@@ -39,7 +39,7 @@ export default function App({ Component, pageProps }: AppProps) {
       'cartItems_' + router.query.storeUrl,
       JSON.stringify(cartItems)
     );
-  }, [cartItems]);
+  }, [cartItems, router.query.storeUrl]);
 
   const handleUpdateCart = useMemo(
     () => (product: ProductType, updateByQuantity: number) => {

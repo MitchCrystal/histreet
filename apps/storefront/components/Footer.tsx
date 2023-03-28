@@ -39,7 +39,7 @@ export default function Footer() {
         <div className="max-w-[1200px] m-auto">
           <p className="text-sm">
             {storeformEmail.supportEmail !== '' && (
-              <span className="text-bold">Customer Support:</span>
+              <span className="text-bold">Customer Support: </span>
             )}
             {storeformEmail.supportEmail}
           </p>
