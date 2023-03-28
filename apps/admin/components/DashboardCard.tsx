@@ -1,18 +1,19 @@
-import { JSXElementConstructor } from "react";
+import { JSXElementConstructor } from 'react';
 
 type Props = {
-  title:string,
-  icon:
-}
+  title: string;
+  icon: JSX.Element;
+  props: any;
+  colour: 'purple' | 'cyan' | 'orange';
+};
 
-export default function DashboardCard({ title, icon, props, colour }: ) {
+export default function DashboardCard({ title, icon, props, colour }: Props) {
   const colourVariants = {
     purple:
       'h-20 w-20 bg-purple-500 rounded-full p-0 flex justify-center items-center',
-    yellow:
-      'h-20 w-20 bg-purple-500 rounded-full p-0 flex justify-center items-center',
+    cyan: 'h-20 w-20 bg-cyan-400 rounded-full p-0 flex justify-center items-center',
     orange:
-      'h-20 w-20 bg-purple-500 rounded-full p-0 flex justify-center items-center',
+      'h-20 w-20 bg-orange-600 rounded-full p-0 flex justify-center items-center',
   };
   return (
     <div className="flex flex-col grid-rows-2 rounded-md shadow  h-48 w-60 md:h-64 md:w-96 overflow-hidden">

@@ -120,16 +120,20 @@ function Dashboard() {
             title="Weekly Revenue"
             icon={iconRevenue}
             props={revenueProps}
+            colour='purple'
           />
           <DashboardCard
             title="Weekly Orders"
             icon={iconOrders}
             props={orderProps}
+            colour='orange'
           />
           <DashboardCard
             title="Weekly Customers"
             icon={iconCustomer}
             props={customerProps}
+            colour='cyan'
+
           />
         </div>
         <div className="flex flex-col w-full justify-center items-center mt-1 md:flex-row md:gap-5 shadow py-5 px-5 overflow-hidden rounded-md">
