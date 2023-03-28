@@ -1,65 +1,74 @@
-const imageData = require ('./images')
+const imageData = require('./images');
 
 const users = [
-  { user_id: 'user-with-1-store',
-  user_first_name: 'Bruce',
-  user_last_name: 'Willis',
-  user_email: 'bruce@diehard.me',
-  password_hash: '$2b$10$pY0slrF/SSudvwTxJbn5auCzPheNrw59GN8CZEqo.qL1hvMnAdqaS',
-
-},
-  { user_id: 'user-with-2-stores',
+  {
+    user_id: 'user-with-1-store',
+    user_first_name: 'Bruce',
+    user_last_name: 'Willis',
+    user_email: 'bruce@diehard.me',
+    password_hash:
+      '$2b$10$pY0slrF/SSudvwTxJbn5auCzPheNrw59GN8CZEqo.qL1hvMnAdqaS',
+  },
+  {
+    user_id: 'user-with-2-stores',
     user_first_name: 'Diana',
     user_last_name: 'Prince',
     user_email: 'bobbio@prisma.co.uk',
     password_hash:
       '$2b$10$zNPounz3ZNqzISLGJkthL.XKZYDqHS2BAK3q1WBR3hIlpYxA/SFRC',
   },
-  { user_id:'user-with-3-stores',
+  {
+    user_id: 'user-with-3-stores',
     user_first_name: 'Tony',
     user_last_name: 'Stark',
     user_email: 'whatsupdoc@prisma.com',
     password_hash:
       '$2b$10$i1K2wEv5PNBgBT/LVO7cSut.cJO/AFXAcmL0wgeFAqAT1aCTldC52',
-  }
-]
+  },
+];
 
 const stores = [
-  { store_id: 'store-1-product-with-storefront-but-lacking-detail',
+  {
+    store_id: 'store-1-product-with-storefront-but-lacking-detail',
     store_owner_id: 'user-with-1-store',
     store_name: 'Guns & Ammo',
     store_url: 'yippie-kay-yay',
   },
-  { store_id: 'store-10-products-with-storefront-detail',
+  {
+    store_id: 'store-10-products-with-storefront-detail',
     store_owner_id: 'user-with-2-stores',
     store_name: 'Teapots Galore',
     store_url: 'teapots-galore',
   },
-  { store_id: 'store-no-products-with-storefront-detail',
+  {
+    store_id: 'store-no-products-with-storefront-detail',
     store_owner_id: 'user-with-2-stores',
-    store_name: "Fruit & Veg Goodies",
+    store_name: 'Fruit & Veg Goodies',
     store_url: 'gotta-stay-healthy',
   },
-  { store_id: 'store-2-products-with-storefront-detail',
+  {
+    store_id: 'store-2-products-with-storefront-detail',
     store_owner_id: 'user-with-3-stores',
     store_name: "Tony's Toys & Socks",
     store_url: 'toys-n-socks-bit-weird',
   },
-  { store_id: 'store-6-products-no-storefront-detail-entered',
+  {
+    store_id: 'store-6-products-no-storefront-detail-entered',
     store_owner_id: 'user-with-3-stores',
     store_name: 'Electronics Emporium',
     store_url: 'elec-emp',
   },
-  { store_id: 'nice-mvp-store',
+  {
+    store_id: 'nice-mvp-store',
     store_owner_id: 'user-with-3-stores',
-    store_name: 'Tootbrush Central',
+    store_name: 'Toothbrush Central',
     store_url: 'toothbrushes-etc',
   },
 ];
 
-
 const storeFronts = [
-  { storefront_id: 'storefront-with-logo-with-hero-long-desc',
+  {
+    storefront_id: 'storefront-with-logo-with-hero-long-desc',
     store_id: 'store-10-products-with-storefront-detail',
     support_email: 'support@mystore.com',
     store_description:
@@ -67,7 +76,8 @@ const storeFronts = [
     store_logo: imageData.teapotsLogo,
     store_hero_image: imageData.teapotHero,
   },
-  { storefront_id: 'storefront-with-logo-with-hero-normal desc',
+  {
+    storefront_id: 'storefront-with-logo-with-hero-normal desc',
     store_id: 'nice-mvp-store',
     support_email: 'no-emails-please@go-away.co.uk',
     store_description:
@@ -75,19 +85,24 @@ const storeFronts = [
     store_logo: imageData.toothbrushLogo,
     store_hero_image: imageData.toothbrushHero,
   },
-  { storefront_id: 'storefront-with-no-logo-no-hero-no-desc-no-email',
+  {
+    storefront_id: 'storefront-with-no-logo-no-hero-no-desc-no-email',
     store_id: 'store-1-product-with-storefront-but-lacking-detail',
   },
-  { storefront_id: 'storefront-with-logo-no-hero-normal desc',
+  {
+    storefront_id: 'storefront-with-logo-no-hero-normal desc',
     store_id: 'store-2-products-with-storefront-detail',
     support_email: 'i-am@iron.man',
-    store_description: "Well we have two products: toys or socks and that is it - enjoy",
+    store_description:
+      'Well we have two products: toys or socks and that is it - enjoy',
     store_logo: imageData.toysNsocksLogo,
   },
-  { storefront_id: 'storefront-no-logo-with-hero-normal-desc',
+  {
+    storefront_id: 'storefront-no-logo-with-hero-normal-desc',
     store_id: 'store-no-products-with-storefront-detail',
     support_email: 'straight-to-trash@outlook.com',
-    store_description: 'An apple a day keeps the doctor away, but too many and the dentist will come calling',
+    store_description:
+      'An apple a day keeps the doctor away, but too many and the dentist will come calling',
     store_hero_image: imageData.fruitNvegHero,
   },
 ];
@@ -260,7 +275,7 @@ const products = [
     product_name_slug: 'toothbrush',
     product_images: imageData.toothbrushImages,
   },
-    {
+  {
     product_id: 'prd7-w-nrml-dtls-2-imgs',
     store_id: 'nice-mvp-store',
     SKU: '574',
@@ -275,28 +290,32 @@ const products = [
 ];
 
 const customers = [
-  { store_id: 'store-10-products-with-storefront-detail',
+  {
+    store_id: 'store-10-products-with-storefront-detail',
     customer_id: 'cust-1-with-normal-name-bill-and-ship-same',
     customer_first_name: 'Tekraj',
     customer_last_name: 'Gurung',
     customer_email: 'tek@broken-microphone.co.uk',
     phone_number: '01234 123456',
   },
-  { store_id: 'nice-mvp-store',
+  {
+    store_id: 'nice-mvp-store',
     customer_id: 'cust-with-long-name-bill-and-ship-different',
     customer_first_name: 'Samayamantri',
     customer_last_name: 'Hebblethwaite',
     customer_email: 'MrShoes@gmail.com',
     phone_number: '447722123465',
   },
-  { store_id: 'store-1-product-with-storefront-but-lacking-detail',
+  {
+    store_id: 'store-1-product-with-storefront-but-lacking-detail',
     customer_id: 'cust-2-with-normal-name-bill-and-ship-same',
     customer_first_name: 'Sebastien',
     customer_last_name: 'Ringrose',
     customer_email: 'seb-loves@help-requests.com',
     phone_number: '07771777777',
   },
-  { store_id: 'store-2-products-with-storefront-detail',
+  {
+    store_id: 'store-2-products-with-storefront-detail',
     customer_id:
       'cust-with-double-barrelled-name-bill-and-ship-different-no-phonenumber',
     customer_first_name: 'Rose-Marie',
@@ -578,9 +597,7 @@ const orders = [
     bill_address_id: 'addr2-normal-(bill)',
     ship_address_id: 'addr2-normal-(ship)',
     products: {
-      connect: [
-        { product_id: 'prd-w-sml-dtls-and-0s-no-img' },
-      ],
+      connect: [{ product_id: 'prd-w-sml-dtls-and-0s-no-img' }],
     },
     order_details: [
       {
