@@ -21,6 +21,7 @@ export type ProductType = {
 };
 
 export const queryClient = new QueryClient();
+
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const [cartItems, setCartItems] = useState<any>([]); //ProductType
