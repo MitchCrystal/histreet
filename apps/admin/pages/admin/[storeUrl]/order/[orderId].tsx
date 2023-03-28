@@ -10,6 +10,7 @@ import { GetServerSideProps } from 'next';
 import { useQuery } from '@tanstack/react-query';
 import { getSession } from 'next-auth/react';
 import PrismaStrUrl from '../../../../utils/storeUrl';
+import LoadingSpinner from '../../../../components/Loading';
 
 type Item = {
   sku: string;
@@ -17,7 +18,7 @@ type Item = {
   price: number;
   quantity: number;
   productId: string;
-}
+};
 
 type Order = {
   order: {
@@ -30,11 +31,11 @@ type Order = {
     order_details: Item[];
     created_at: string;
     total_order_cost: number;
-    payment_id: string | null
-  }
-}
+    payment_id: string | null;
+  };
+};
 
-function OrderDetail({ order }:Order) {
+function OrderDetail({ order }: Order) {
   const router = useRouter();
   // // get bill_address
   const { data: bill_address } = useQuery({
@@ -61,9 +62,12 @@ function OrderDetail({ order }:Order) {
   });
 
   const order_details = order.order_details;
-  const items_ordered = order.order_details.reduce((acc: number, item: Item) => {
-    return (acc = acc + item.quantity);
-  }, 0);
+  const items_ordered = order.order_details.reduce(
+    (acc: number, item: Item) => {
+      return (acc = acc + item.quantity);
+    },
+    0
+  );
 
   // get products
   const products_id = order_details?.map((item: Item) => item.productId);
@@ -135,9 +139,12 @@ function OrderDetail({ order }:Order) {
     };
   });
 
-  if (!bill_address || !ship_address) return <p>fetching address...</p>;
-  if (!customer) return <p>fetching email...</p>;
-  if (isLoading) return <p>fetching product details...</p>;
+  if (!bill_address || !ship_address || !customer || isLoading)
+    return (
+      <div className="flex justify-center mt-36">
+        <LoadingSpinner />
+      </div>
+    );
 
   // render page
   return (
@@ -212,8 +219,7 @@ function OrderDetail({ order }:Order) {
   );
 }
 
-export default function ({ order }:Order ) {
-
+export default function ({ order }: Order) {
   return (
     <AdminLayout title="Order Details">
       <OrderDetail order={order} />
@@ -226,9 +232,13 @@ export const getServerSideProps: GetServerSideProps<{ order: Order }> = async (
 ) => {
   const session = await getSession(context);
   const userId = session?.user.id;
-  const currentStoreUrl = context.query.storeUrl
+  const currentStoreUrl = context.query.storeUrl;
   const prismaStoreUrl = await PrismaStrUrl(userId);
-  if (!session || !currentStoreUrl || !prismaStoreUrl.includes(String(currentStoreUrl))) {
+  if (
+    !session ||
+    !currentStoreUrl ||
+    !prismaStoreUrl.includes(String(currentStoreUrl))
+  ) {
     return {
       redirect: {
         destination: '/',
@@ -250,7 +260,7 @@ export const getServerSideProps: GetServerSideProps<{ order: Order }> = async (
   return {
     props: {
       order,
-      session
+      session,
     },
   };
 };

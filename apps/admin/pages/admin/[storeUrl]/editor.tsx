@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import { useQuery, UseQueryResult, useMutation } from '@tanstack/react-query';
 import getServerSideProps from '../../../utils/authorization';
 import FileUpload from '../../../components/FileUpload';
+import LoadingSpinner from '../../../components/Loading';
 export { getServerSideProps };
 
 type StoreformInputs = {
@@ -44,7 +45,8 @@ function Editor() {
     globalStyles: '',
   });
 
-  const { data: storeform, isLoading }: UseQueryResult<Record<string, any>> =
+  const { data: storeform, isLoading, isFetching }: UseQueryResult<Record<string, any>> =
+
     useQuery({
       queryKey: ['storeForm'],
       queryFn: () => fetch(`/api/editor/${storeUrl}`).then((res) => res.json()),
@@ -144,6 +146,7 @@ function Editor() {
     setStoreFormInputs(temp);
   }
 
+
   function getSelected(type: string) {
     return storeformInputs.globalStyles === ''
       ? '#ffffff'
@@ -151,6 +154,13 @@ function Editor() {
           (item: any) => item.type === type
         ).selected;
   }
+
+  if (isFetching)
+    return (
+      <div className="flex justify-center mt-36">
+        <LoadingSpinner />
+      </div>
+    );
 
   return !isEditing ? (
     <>

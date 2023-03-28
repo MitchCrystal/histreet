@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import FileUpload from '../../../../components/FileUpload';
+import LoadingSpinner from '../../../../components/Loading';
 import getServerSideProps from '../../../../utils/authorization';
 export { getServerSideProps };
 
@@ -113,6 +114,12 @@ function ProductDetail() {
     }));
   }
 
+  if (isLoading)
+    return (
+      <div className="flex justify-center mt-36">
+        <LoadingSpinner />
+      </div>
+    );
   return (
     <>
       <div className="flex w-[calc(90vw-70px)] h-[calc(96vh-48px)] flex-col ">
