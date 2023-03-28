@@ -10,6 +10,7 @@ module.exports = {
         pathname: '**/**',
       },
     ],
+  },
   async redirects() {
     return [
       {

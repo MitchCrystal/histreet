@@ -21,6 +21,7 @@ type ProductType = {
     src: string;
     alt: string;
   }[];
+  SKU: string;
   quantityInCart?: number;
 };
 
