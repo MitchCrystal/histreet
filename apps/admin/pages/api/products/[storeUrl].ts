@@ -1,13 +1,14 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../utils/prisma';
+import { Prisma } from '@prisma/client';
 
 type Product = {
   product_id: string;
   product_name: string;
   SKU: string;
   inventory_qty: number;
-  product_price: number;
+  product_price: Prisma.Decimal;
 };
 
 export default async function handler(
