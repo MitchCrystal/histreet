@@ -19,7 +19,7 @@ function Orders() {
       initialData: [],
     });
 
-  const [formOrders, setFormOrders] = useState<Record<string, any>[]>([]);
+  const [formOrders, setFormOrders] = useState<Record<string, string>[]>([]);
   useEffect(() => {
     const formattedOrder = orders.map((order) => {
       return {
