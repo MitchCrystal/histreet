@@ -140,9 +140,7 @@ function ProductPage({ product }: { product: Product }) {
     ) {
       setCurrentImage(product.product_images[0]);
     }
-    // TODO: sebs accidental fix
-    // toast.dismiss();
-  }, [product, currentImage]);
+  }, [product, currentImage, router.isReady, router.query.productId]);
 
   if (product && product?.error) return <p>Product not found</p>;
 

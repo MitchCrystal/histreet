@@ -76,7 +76,7 @@ export default function OrderConfirmation({ order }: { order: OrderData }) {
         };
       });
     });
-  }, []);
+  }, [order, router.query.orderId]);
 
   if (!order || !router.query.orderId) return <Error />;
 
