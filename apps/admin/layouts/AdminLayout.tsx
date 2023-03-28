@@ -7,19 +7,22 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { signOut } from 'next-auth/react';
 import Button from '../components/Button';
-import Image from 'next/image'
+import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
+import SearchInputs from '../components/SreachInputs';
+import { placeholder } from '@cloudinary/react';
 
 export default function AdminLayout({
   children,
   title,
 }: PropsWithChildren<{ title: string }>) {
   const router = useRouter();
-  const logoSrc = '/histreet-yellow-square.png'
-  const {storeUrl} = router.query
-  const {data:storeName,isError} = useQuery({
+  const logoSrc = '/histreet-yellow-square.png';
+  const { storeUrl } = router.query;
+  const { data: storeName, isError } = useQuery({
     queryKey: ['storeName'],
-    queryFn: () => fetch(`/api/store-name/${storeUrl}`).then((res) => res.json()),
+    queryFn: () =>
+      fetch(`/api/store-name/${storeUrl}`).then((res) => res.json()),
     enabled: !!router.isReady && !!storeUrl,
   });
 
@@ -52,7 +55,7 @@ export default function AdminLayout({
   ];
   const [isNavOpen, setIsNavOpen] = useState(false);
 
-  if(isError) return <p>Cannot load the store name</p>
+  if (isError) return <p>Cannot load the store name</p>;
 
   return (
     <>
@@ -76,6 +79,9 @@ export default function AdminLayout({
               <div className="flex justify-center items-center">HiStreet</div>
             </div>
           </Link>
+          <div className="flex  items-center">
+            <SearchInputs />
+          </div>
           <div className="flex mr-4 text-2xl">{storeName?.storeName}</div>
         </div>
       </div>
@@ -145,4 +151,3 @@ export default function AdminLayout({
     </>
   );
 }
-
