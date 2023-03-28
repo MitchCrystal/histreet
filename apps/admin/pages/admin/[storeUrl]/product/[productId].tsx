@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import FileUpload from '../../../../components/FileUpload';
+import LoadingSpinner from '../../../../components/Loading';
 import getServerSideProps from '../../../../utils/authorization';
 export { getServerSideProps };
 
@@ -76,7 +77,6 @@ function ProductDetail() {
   );
 
   function handleImageUpload(url: string) {
-    console.log('url', url);
     setImageUploaded(true);
     setProductsInputs((prevProductInputs) => ({
       ...prevProductInputs,
@@ -87,7 +87,7 @@ function ProductDetail() {
     }));
   }
 
-  function handleSubmit(event: any) {
+  function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
 
     try {
@@ -104,7 +104,7 @@ function ProductDetail() {
     } catch (error) {
       console.log(error);
     }
-      router.back();
+    router.back();
   }
 
   function handleIsActive() {
@@ -114,14 +114,23 @@ function ProductDetail() {
     }));
   }
 
+  if (isLoading)
+    return (
+      <div className="flex justify-center mt-36">
+        <LoadingSpinner />
+      </div>
+    );
   return (
     <>
       <div className="flex w-[calc(90vw-70px)] h-[calc(96vh-48px)] flex-col ">
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <div className="flex flex-row justify-between h-6">
             <Heading title={productInputs.item} type="h2"></Heading>
-            <div className='text-red-500' > 
-              <Heading title={productInputs.isActive ? "" : "ITEM DEACTIVATED"} type="h1"></Heading>
+            <div className="text-red-500">
+              <Heading
+                title={productInputs.isActive ? '' : 'ITEM DEACTIVATED'}
+                type="h1"
+              ></Heading>
             </div>
             <div className="flex justify-end">
               <Button
@@ -130,7 +139,7 @@ function ProductDetail() {
                 value="Active/InActive"
                 onClick={handleIsActive}
               >
-                {productInputs.isActive ? "Deactivate Item" : "Activate Item"}
+                {productInputs.isActive ? 'Deactivate Item' : 'Activate Item'}
               </Button>
             </div>
           </div>

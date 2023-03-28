@@ -195,8 +195,8 @@ function ProductPage() {
 
 export default function () {
   return (
-    <MainLayout title="Product Page">
-      <ProductPage />
+    <MainLayout title={`${product.product_name}`}>
+      <ProductPage product={product} />
     </MainLayout>
   );
 }
