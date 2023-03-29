@@ -40,7 +40,7 @@ export default async function handler(
     .map((item: any) => JSON.parse(item[1]));
 
   try {
-    if (req.body.type !== 'charge.succeeded') {
+    if (req.body.type !== 'charge.succeeded' || req.body.type !== 'payment_intent.succeeded') {
       res.status(500).json({ successfulPayment: false });
     } else {
       const store = await prisma.store.findUnique({
