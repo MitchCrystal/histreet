@@ -1,7 +1,6 @@
 import AdminLayout from '../../../../layouts/AdminLayout';
 import Button from '../../../../components/Button';
 import Heading from '../../../../components/Heading';
-import Card from '../../../../components/Card';
 import InputWithLabel from '../../../../components/InputWithLabel';
 import Textarea from '../../../../components/Textarea';
 import { useEffect, useState } from 'react';
@@ -144,77 +143,74 @@ function ProductDetail() {
             </div>
           </div>
 
-          
-            <div className="flex flex-row w-full">
-              <InputWithLabel
-                label="item"
-                id="item"
-                type="text"
-                showLabel={true}
-                state={productInputs}
-                setState={setProductsInputs}
-                direction="column"
-                style={{ width: '100%' }}
-              />
-            </div>
-          
+          <div className="flex flex-row w-full">
+            <InputWithLabel
+              label="item"
+              id="item"
+              type="text"
+              showLabel={true}
+              state={productInputs}
+              setState={setProductsInputs}
+              direction="column"
+              style={{ width: '100%' }}
+            />
+          </div>
 
-            <div className='h-40' >
-              <Textarea
-                label="description"
-                id="description"
-                state={productInputs}
-                setState={setProductsInputs}
-                direction="column"
-              />
-            </div>
-          
-            <div className="flex flex-col justify-between h-36">
-              <div className="flex flex-row h-20 gap-3">
-                {productInputs.images.map((img) => (
-                  <div key={img.id} className="flex w-20 rounded">
-                    <img key={img.id} src={img.src} alt={img.alt} />
-                  </div>
-                ))}
-              </div>
-              <label className="flex flex-row justify-end " htmlFor="upload">
-                <FileUpload id="fileUpload" onChangeEvent={handleImageUpload} />
-              </label>
-            </div>
-         
-            <div className="flex flex-row gap-3">
-              <InputWithLabel
-                label="price(£)"
-                id="price"
-                type="number"
-                step="0.01"
-                showLabel={true}
-                state={productInputs}
-                setState={setProductsInputs}
-                direction="column"
-              ></InputWithLabel>
+          <div className="h-40">
+            <Textarea
+              label="description"
+              id="description"
+              state={productInputs}
+              setState={setProductsInputs}
+              direction="column"
+            />
+          </div>
 
-              <InputWithLabel
-                label="sku"
-                id="sku"
-                type="text"
-                showLabel={true}
-                state={productInputs}
-                setState={setProductsInputs}
-                direction="column"
-              ></InputWithLabel>
-
-              <InputWithLabel
-                label="inventory"
-                id="inventory"
-                type="number"
-                showLabel={true}
-                state={productInputs}
-                setState={setProductsInputs}
-                direction="column"
-              ></InputWithLabel>
+          <div className="flex flex-col justify-between h-36">
+            <div className="flex flex-row h-20 gap-3">
+              {productInputs.images.map((img) => (
+                <div key={img.id} className="flex w-20 rounded">
+                  <img key={img.id} src={img.src} alt={img.alt} />
+                </div>
+              ))}
             </div>
-          
+            <label className="flex flex-row justify-end " htmlFor="upload">
+              <FileUpload id="fileUpload" onChangeEvent={handleImageUpload} />
+            </label>
+          </div>
+
+          <div className="flex flex-row gap-3">
+            <InputWithLabel
+              label="price(£)"
+              id="price"
+              type="number"
+              step="0.01"
+              showLabel={true}
+              state={productInputs}
+              setState={setProductsInputs}
+              direction="column"
+            ></InputWithLabel>
+
+            <InputWithLabel
+              label="sku"
+              id="sku"
+              type="text"
+              showLabel={true}
+              state={productInputs}
+              setState={setProductsInputs}
+              direction="column"
+            ></InputWithLabel>
+
+            <InputWithLabel
+              label="inventory"
+              id="inventory"
+              type="number"
+              showLabel={true}
+              state={productInputs}
+              setState={setProductsInputs}
+              direction="column"
+            ></InputWithLabel>
+          </div>
 
           <div className=" flex justify-end ">
             <Button
