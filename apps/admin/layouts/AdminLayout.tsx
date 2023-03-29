@@ -9,8 +9,6 @@ import { signOut } from 'next-auth/react';
 import Button from '../components/Button';
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
-import { redirect } from 'next/dist/server/api-utils';
-
 import SearchInputs from '../components/SearchInputs';
 
 type Store = {
