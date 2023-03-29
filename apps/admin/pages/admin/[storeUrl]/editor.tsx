@@ -215,8 +215,8 @@ function Editor() {
             <Heading title="Store Homepage Welcome Text:" type="h4" />
             <div className="">{storeformInputs.storeDescription}</div>
           </div>
-          
-          
+
+
         </div>
       </div>
     </>
@@ -384,7 +384,7 @@ function Editor() {
               <ThemeThumbnail getSelected={getSelected} />
             </div>
           </div>
-          
+
         </div>
       </div>
     </>
