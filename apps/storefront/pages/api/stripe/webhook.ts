@@ -99,7 +99,7 @@ export default async function handler(
         },
         friendly_order_number: getOrderCountForStore + 1000,
         total_order_cost: total_order,
-        payment_id: req.body.data.object.payment_intent,
+        payment_id: req.body.data.object.id,
         order_details: lineItems,
         store: {
           connect: {
