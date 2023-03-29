@@ -198,6 +198,10 @@ function Editor() {
                 className="rounded object-contain object-top h-[150px] w-[250px]"
               ></img>
             </div>
+            <div className='flex flex-col gap-10'>
+              <Heading title="Store Theme:" type="h4" />
+              <ThemeThumbnail getSelected={getSelected} />
+            </div>
           </div>
           <div>
             <Heading title="Store Name:" type="h4" />
@@ -211,8 +215,8 @@ function Editor() {
             <Heading title="Store Homepage Welcome Text:" type="h4" />
             <div className="">{storeformInputs.storeDescription}</div>
           </div>
-          <Heading title="Store Theme:" type="h3" />
-          <ThemeThumbnail getSelected={getSelected} />
+          
+          
         </div>
       </div>
     </>
@@ -309,74 +313,78 @@ function Editor() {
               </div>
             </div>
           </div>
-
-          <div className="flex flex-row w-full">
-            <label
-              htmlFor="primaryColour"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 m-1 w-48 pr-4"
-            >
-              Primary Theme Colour
-            </label>
-            <div className="w-full ml-1">
-              <input
-                id="primaryColour"
-                type="color"
-                value={getSelected('primaryColour') ?? '#ffffff'}
-                onChange={(e) => {
-                  setStoreFormInputs((prev) => {
-                    const temp = storeformInputs.globalStyles.filter(
-                      (item: any) => item.type !== 'primaryColour'
-                    );
-                    return {
-                      ...prev,
-                      globalStyles: [
-                        ...temp,
-                        {
-                          type: 'primaryColour',
-                          selected: e.target.value,
-                        },
-                      ],
-                    };
-                  });
-                }}
-              />
+          <div className='flex flex-row' >
+            <div className='flex flex-col gap-3' >
+              <div className="flex flex-row w-full">
+                <label
+                  htmlFor="primaryColour"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 m-1 w-48 pr-4"
+                >
+                  Primary Theme Colour
+                </label>
+                <div className="w-full ml-1">
+                  <input
+                    id="primaryColour"
+                    type="color"
+                    value={getSelected('primaryColour') ?? '#ffffff'}
+                    onChange={(e) => {
+                      setStoreFormInputs((prev) => {
+                        const temp = storeformInputs.globalStyles.filter(
+                          (item: any) => item.type !== 'primaryColour'
+                        );
+                        return {
+                          ...prev,
+                          globalStyles: [
+                            ...temp,
+                            {
+                              type: 'primaryColour',
+                              selected: e.target.value,
+                            },
+                          ],
+                        };
+                      });
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="flex flex-row w-full">
+                <label
+                  htmlFor="secondaryColour"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 m-1 w-48 pr-4"
+                >
+                  Secondary Theme Colour
+                </label>
+                <div className="w-full ml-1">
+                  <input
+                    id="secondaryColour"
+                    type="color"
+                    value={getSelected('secondaryColour') ?? 'rgba(31, 41, 55)'}
+                    onChange={(e) => {
+                      setStoreFormInputs((prev) => {
+                        const temp = storeformInputs.globalStyles.filter(
+                          (item: any) => item.type !== 'secondaryColour'
+                        );
+                        return {
+                          ...prev,
+                          globalStyles: [
+                            ...temp,
+                            {
+                              type: 'secondaryColour',
+                              selected: e.target.value,
+                            },
+                          ],
+                        };
+                      });
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-row w-full">
+              <ThemeThumbnail getSelected={getSelected} />
             </div>
           </div>
-          <div className="flex flex-row w-full">
-            <label
-              htmlFor="secondaryColour"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 m-1 w-48 pr-4"
-            >
-              Secondary Theme Colour
-            </label>
-            <div className="w-full ml-1">
-              <input
-                id="secondaryColour"
-                type="color"
-                value={getSelected('secondaryColour') ?? 'rgba(31, 41, 55)'}
-                onChange={(e) => {
-                  setStoreFormInputs((prev) => {
-                    const temp = storeformInputs.globalStyles.filter(
-                      (item: any) => item.type !== 'secondaryColour'
-                    );
-                    return {
-                      ...prev,
-                      globalStyles: [
-                        ...temp,
-                        {
-                          type: 'secondaryColour',
-                          selected: e.target.value,
-                        },
-                      ],
-                    };
-                  });
-                }}
-              />
-            </div>
-          </div>
-          <div className="flex flex-row w-full">
-            <ThemeThumbnail getSelected={getSelected} />
-          </div>
+          
         </div>
       </div>
     </>
