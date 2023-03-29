@@ -1,17 +1,6 @@
 import * as React from 'react';
 import * as LabelPrimitive from '@radix-ui/react-label';
-
-export function InputWithLabel({
-  label,
-  id,
-  type,
-  showLabel,
-  state,
-  setState,
-  direction,
-  additionalClasses,
-  ...delegated
-}: {
+type Props = {
   label: string;
   id: string;
   type: string;
@@ -20,10 +9,24 @@ export function InputWithLabel({
   setState: React.Dispatch<React.SetStateAction<any>>;
   direction: 'row' | 'column';
   additionalClasses?: string;
+  additionalOnChangeFunction?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   [x: string]: any;
-}) {
+}
+
+export default function InputWithLabel({
+  label,
+  id,
+  type,
+  showLabel,
+  state,
+  setState,
+  direction,
+  additionalClasses,
+  additionalOnChangeFunction,
+  ...delegated
+}: Props) {
   return (
-    <div className="grid w-full max-w-sm items-center gap-1.5">
+    <div className="grid w-full items-center gap-1.5">
       <div
         className={`flex w-full ${
           direction === 'row'
@@ -43,7 +46,10 @@ export function InputWithLabel({
           className={`m-1 flex h-10 w-full rounded-md border border-slate-300 bg-transparent py-2 px-3 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 ${additionalClasses}`}
           value={state[id]}
           type={type}
-          onChange={(e) => setState({ ...state, [id]: e.target.value })}
+          onChange={(e) => {
+            additionalOnChangeFunction && additionalOnChangeFunction(e);
+            setState({ ...state, [id]: e.target.value });
+          }}
           {...delegated}
         />
       </div>

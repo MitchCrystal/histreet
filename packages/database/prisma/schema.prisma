@@ -61,7 +61,6 @@ model Store {
   store_id        String   @id @default(cuid())
   user   User?   @relation(fields: [store_owner_id], references: [user_id])
   store_owner_id   String
-  store_owner      String
   store_name   String
   store_url   String   @unique
   orders   Order[]
@@ -74,10 +73,10 @@ model Store {
 
 model Order {
   order_id        String   @id @default(cuid()) @unique
-  order   Store   @relation(fields: [store_id], references: [store_id])
+  store   Store   @relation(fields: [store_id], references: [store_id])
   store_id   String
   customer_id      String
-  friendly_order_number   Int @default(autoincrement())
+  friendly_order_number   Int 
   bill_address Address @relation(fields: [bill_address_id], references: [address_id], name: "bill_address_id")
   ship_address Address @relation(fields: [ship_address_id], references: [address_id], name: "ship_address_id")
   bill_address_id   String @unique
@@ -85,8 +84,9 @@ model Order {
   products   Product[]
   order_details   Json[]
   created_at   DateTime @default(now())
-  total_order_cost      Int
+  total_order_cost      Decimal
   customer      Customer @relation(fields: [customer_id], references: [customer_id])
+  payment_id    String?
 }
 
 model Product {
@@ -101,7 +101,7 @@ model Product {
   tags        String?
   product_images   Json?
   orders   Order[]
-  product_price      Int
+  product_price     Decimal
   categories      String?
   department      String?
   is_active      Boolean @default(true)
@@ -114,7 +114,7 @@ model Customer {
     customer_first_name    String
     customer_last_name     String
     customer_email         String
-    phone_number           Int?
+    phone_number           String?
     customer_account       Customer_account?
     addresses              Address[]
     store   Store   @relation(fields: [store_id], references: [store_id])

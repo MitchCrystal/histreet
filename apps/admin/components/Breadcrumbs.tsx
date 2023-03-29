@@ -1,11 +1,13 @@
 import { ChevronRightIcon, HomeIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
 
-export default function Breadcrumbs({
-  pages,
-}: {
-  pages: { name: string; href: string; current?: boolean }[];
-}) {
+type Props = {
+  name: string;
+  href: string;
+  current?: boolean;
+}[];
+
+export default function Breadcrumbs({ pages }: { pages: Props }) {
   return (
     <nav className="mb-4 flex overflow-x-auto" aria-label="Breadcrumb">
       <ol role="list" className="flex items-center space-x-4">

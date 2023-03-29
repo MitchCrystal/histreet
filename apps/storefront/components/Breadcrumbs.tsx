@@ -2,11 +2,13 @@ import { ChevronRightIcon, HomeIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-export default function Breadcrumbs({
-  pages,
-}: {
-  pages: { name: string; href: string; current?: boolean }[];
-}) {
+type Props = {
+  name: string;
+  href: string;
+  current?: boolean;
+}[];
+
+export default function Breadcrumbs({ pages }: { pages: Props }) {
   const router = useRouter();
 
   return (

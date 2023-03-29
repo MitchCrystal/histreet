@@ -1,13 +1,15 @@
+import { Prisma } from 'database';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../utils/prisma';
 
 type Data =
   | {
       product_name: string;
-      product_price: number;
+      product_price: Prisma.Decimal;
       product_id: string;
       product_name_slug: string;
-      product_images: Record<string, string>[];
+      product_images: any;
+      inventory_qty: number;
     }[]
   | { error: boolean };
 
@@ -38,10 +40,12 @@ export default async function handler(
       },
       select: {
         product_name: true,
+        SKU: true,
         product_price: true,
         product_images: true,
         product_id: true,
         product_name_slug: true,
+        inventory_qty: true,
       },
     });
 

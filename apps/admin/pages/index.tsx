@@ -37,7 +37,7 @@ export default function Home() {
           </Link>
         </div>
         <div className=" flex mx-5 sm:mx-10 absolute z-20 top-[15%]  sm:font-normal text-white text-3xl sm:text-6xl md:text-7xl lg:text-8xl">
-          Welcome to
+          Say hi... to
           <img
             src={'/histreet-yellow-square.png'}
             alt="Hi Street"
@@ -49,7 +49,7 @@ export default function Home() {
           Probably the UK&apos;s finest customisable storefront for your
           business
         </h2>
-        <h2 className="mx-5 sm:mx-10 absolute z-[70] text-sm top-[70%] xl:top-[60%] sm:text-2xl md:text-3xl lg:text-4xl text-white bg-opacity-50 bg-black p-4 sm:p-16 w-28 sm:w-3/6">
+        <h2 className="mx-5 sm:mx-10 absolute z-[70] text-sm top-[70%] xl:top-[65%] sm:text-2xl md:text-3xl lg:text-4xl text-white bg-opacity-50 bg-black p-4 sm:p-10 w-28 sm:w-3/6">
           Name your store and also set the contact email address!
         </h2>
         <img
@@ -71,17 +71,17 @@ export default function Home() {
         <img
           src={'/custom_product.png'}
           alt={'Custom Store'}
-          className="w-[55vw] sm:w-[40vw] absolute bottom-28 right-[-20px] sm:bottom-96 sm:right-[-70px] z-40 border-black border"
+          className="w-[55vw] sm:w-[30vw] absolute bottom-28 right-[-20px] sm:bottom-80 sm:right-[-70px] z-40 border-black border"
         />
         <img
           src={'/custom_store.png'}
           alt={'Custom Store'}
-          className="w-[55vw] sm:w-[40vw] absolute bottom-8 right-8 sm:bottom-20 sm:right-20 z-50 border-black border"
+          className="w-[55vw] sm:w-[30vw] absolute bottom-8 right-8 sm:bottom-20 sm:right-20 z-50 border-black border"
         />
         <img
           src={'/custom_products.png'}
           alt={'Custom Store'}
-          className="w-[30vw] sm:w-[20vw] absolute bottom-2 right-2 2xl:bottom-[10px] 2xl:right-[10px] z-[60] border-black border"
+          className="w-[30vw] sm:w-[10vw] absolute bottom-2 right-2 2xl:bottom-[10px] 2xl:right-[10px] z-[60] border-black border"
         />
         {/* <div className="z-20 h-0 w-0 bottom-0 right-0 absolute border-solid border-t-[0px] border-l-[370px] sm:border-l-[640px] border-b-[200px] sm:border-b-[400px] border-r-[0px] border-t-transparent border-l-transparent border-b-white border-r-transparent"></div> */}
       </div>

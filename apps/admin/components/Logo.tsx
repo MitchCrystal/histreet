@@ -1,12 +1,10 @@
 import Image from 'next/image';
-
-export default function Logo({
-  logoSrc,
-  storeName,
-}: {
+type Props = {
   logoSrc: string;
   storeName: string;
-}) {
+};
+
+export default function Logo({ logoSrc, storeName }: Props) {
   return (
     <div className="px-2 pt-2">
       {logoSrc ? (
