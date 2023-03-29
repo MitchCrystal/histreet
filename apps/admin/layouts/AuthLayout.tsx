@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import { PropsWithChildren } from 'react';
 import { Toaster } from 'react-hot-toast';
+import Logo from '../components/Logo';
 
 export default function AuthLayout({
   children,
@@ -15,8 +16,17 @@ export default function AuthLayout({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Toaster />
-      <div className="text-center box-border lg:border border-black lg:py-20 px-20 mx-auto h-4/5 flex flex-col justify-between items-center max-w-lg lg:mt-40">
-        {children}
+      <div className="flex mt-12 items-center flex-col h-screen">
+        <div className="flex items-center justify-center gap-4">
+          <img
+            src={'/histreet-yellow-square.png'}
+            alt="Hi Street"
+            className="w-16 mb-8"
+          />
+        </div>
+        <div className="text-center box-border lg:border shadow rounded-md lg:py-12 px-20 mx-auto flex flex-col justify-between items-center">
+          {children}
+        </div>
       </div>
     </>
   );
