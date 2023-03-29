@@ -9,6 +9,8 @@ import Button from '../components/Button';
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
 
+import SearchInputs from '../components/SearchInputs';
+
 type Store = {
   store_id: string;
   store_name: string;
@@ -22,6 +24,7 @@ export default function AdminLayout({
   const router = useRouter();
   const logoSrc = '/histreet-yellow-square.png';
   const { storeUrl } = router.query;
+
   const { data: stores } = useQuery({
     queryKey: ['stores'],
     queryFn: () =>
@@ -88,6 +91,11 @@ export default function AdminLayout({
               <div className="flex justify-center items-center">HiStreet</div>
             </div>
           </Link>
+
+          <div className="flex  items-center">
+            <SearchInputs />
+          </div>
+
           <select
             id="stores"
             onChange={(e) => {
