@@ -54,13 +54,6 @@ export default async function handler(
         },
       });
 
-      // await prisma.searchQuery.create({
-      //   data: {
-      //     query,
-      //   },
-      // });
-
-      //  return res.status(200).json({ products });
       return res.status(200).json(products);
     } catch (error: any) {
       console.log(error);
