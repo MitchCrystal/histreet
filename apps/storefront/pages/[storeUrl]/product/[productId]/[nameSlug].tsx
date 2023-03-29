@@ -174,7 +174,7 @@ function ProductPage({ product }: { product: Product }) {
               fill
             />
           </div>
-          {product.product_images.length > 1 && (
+          {product.product_images && product.product_images?.length > 1 && (
             <ImageRow
               images={product.product_images}
               currentImage={currentImage}
