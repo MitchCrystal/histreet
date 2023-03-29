@@ -56,7 +56,11 @@ export default function MainLayout({
         <div className="flex-1 min-h-full max-w-[1200px] m-auto w-full px-6">
           {children}
         </div>
-        <Footer backgroundColour={getSelected('secondaryColour')} />
+        <Footer
+          backgroundColour={
+            getSelected('secondaryColour') ?? 'rgba(31, 41, 55)'
+          }
+        />
       </div>
     </>
   );

@@ -11,8 +11,8 @@ const users = [
   },
   {
     user_id: 'user-with-2-stores',
-    user_first_name: 'Diana',
-    user_last_name: 'Prince',
+    user_first_name: 'Natasha',
+    user_last_name: 'Romanoff',
     user_email: 'bobbio@prisma.co.uk',
     password_hash:
       '$2b$10$zNPounz3ZNqzISLGJkthL.XKZYDqHS2BAK3q1WBR3hIlpYxA/SFRC',
@@ -53,7 +53,7 @@ const stores = [
     store_url: 'toys-n-socks-bit-weird',
   },
   {
-    store_id: 'store-6-products-no-storefront-detail-entered',
+    store_id: 'store-6-products-with-storefront-detail',
     store_owner_id: 'user-with-3-stores',
     store_name: 'Electronics Emporium',
     store_url: 'elec-emp',
@@ -75,6 +75,11 @@ const storeFronts = [
       'Here is a short description to describe my amazing store. I hope you like my products and buy many of them because they are amazing quality at low, low prices',
     store_logo: imageData.teapotsLogo,
     store_hero_image: imageData.teapotHero,
+    global_styles: [
+      { type: 'primaryColour', selected: '#e81a2a' },
+      { type: 'secondaryColour', selected: '#131a3d' },
+      { type: 'saleActive', selected: 'false' },
+    ],
   },
   {
     storefront_id: 'storefront-with-logo-with-hero-normal desc',
@@ -96,6 +101,15 @@ const storeFronts = [
     store_description:
       'Well we have two products: toys or socks and that is it - enjoy',
     store_logo: imageData.toysNsocksLogo,
+  },
+  {
+    storefront_id: 'storefront-no-logo-with-hero-normal-desc',
+    store_id: 'store-6-products-with-storefront-detail',
+    support_email: 'nothingElectronic@everBreaks.com',
+    store_description:
+      'Quality electronics at bargain prices, consoles, TVs, radios, laptops, premium goods guaranteed!',
+    store_hero_image: imageData.elecEmpHero,
+    store_logo: imageData.elecEmpLogo,
   },
   {
     storefront_id: 'storefront-no-logo-with-hero-normal-desc',

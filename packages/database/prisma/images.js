@@ -245,6 +245,18 @@ const imageData = {
     alt: 'Lots of multi coloured apples',
   },
 
+  elecEmpLogo: {
+    id: 'storelogoimg4',
+    src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1680078197/elecemplogo_yfywvh.jpg',
+    alt: 'Electronics logo'
+},
+
+  elecEmpHero: {
+    id: 'storeheroimg4',
+    src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1680077749/elec-emp_a77ciq.jpg',
+    alt: 'various electronic goods'
+  },
+
   toysNsocksLogo: {
     id: 'storelogoimg3',
     src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679758763/toyslogo_rrd3tu.jpg',
