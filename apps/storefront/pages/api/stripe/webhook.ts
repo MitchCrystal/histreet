@@ -40,108 +40,112 @@ export default async function handler(
     .map((item: any) => JSON.parse(item[1]));
 
   try {
-    if (req.body.type !== 'charge.succeeded') {
-      res.status(500).json({ successfulPayment: false });
-    } else {
-      const store = await prisma.store.findUnique({
-        where: {
-          store_url: store_url,
-        },
-        select: {
-          store_id: true,
-        },
-      });
+    if (
+      !['charge.succeeded', 'payment_intent.succeeded'].includes(req.body.type)
+    ) {
+      console.log(req.body);
+      console.log(JSON.stringify(req.body, null, 2));
+      return res.status(500).json({ successfulPayment: false });
+    }
 
-      let customer;
-      customer = await prisma.customer.findFirst({
-        where: {
-          customer_email: email,
-          store_id: store?.store_id,
-        },
-        select: {
-          customer_id: true,
-        },
-      });
+    const store = await prisma.store.findUnique({
+      where: {
+        store_url: store_url,
+      },
+      select: {
+        store_id: true,
+      },
+    });
 
-      if (!customer) {
-        customer = await prisma.customer.create({
-          data: {
-            customer_first_name: firstName,
-            customer_last_name: lastName,
-            phone_number: String(phoneNumber),
-            customer_email: email,
-            store: {
-              connect: {
-                store_id: store?.store_id,
-              },
-            },
-          },
-        });
-      }
+    let customer;
+    customer = await prisma.customer.findFirst({
+      where: {
+        customer_email: email,
+        store_id: store?.store_id,
+      },
+      select: {
+        customer_id: true,
+      },
+    });
 
-      const getOrderCountForStore = await prisma.order.count({
-        where: {
-          store_id: store?.store_id,
-        },
-      });
-
-      await prisma.order.create({
+    if (!customer) {
+      customer = await prisma.customer.create({
         data: {
-          customer: {
-            connect: {
-              customer_id: customer.customer_id,
-            },
-          },
-          friendly_order_number: getOrderCountForStore + 1000,
-          total_order_cost: total_order,
-          payment_id: req.body.data.object.payment_intent,
-          order_details: lineItems,
+          customer_first_name: firstName,
+          customer_last_name: lastName,
+          phone_number: String(phoneNumber),
+          customer_email: email,
           store: {
             connect: {
               store_id: store?.store_id,
             },
           },
-          bill_address: {
-            create: {
-              address_first_name: billing_firstName ?? firstName,
-              address_last_name: billing_lastName ?? lastName,
-              address_line_1: billing_firstLine ?? firstLine,
-              address_line_2: billing_secondLine ?? secondLine,
-              city: billing_city ?? city,
-              county: billing_county ?? county,
-              country: billing_country ?? country,
-              postcode: billing_postcode ?? postcode,
-              customer: {
-                connect: {
-                  customer_id: customer.customer_id,
-                },
-              },
-            },
-          },
-          ship_address: {
-            create: {
-              address_first_name: firstName,
-              address_last_name: lastName,
-              address_line_1: firstLine,
-              address_line_2: secondLine,
-              city: city,
-              county: county,
-              country: country,
-              postcode: postcode,
-              customer: {
-                connect: {
-                  customer_id: customer.customer_id,
-                },
-              },
-            },
-          },
-          products: {
-            connect: lineItems.map((item) => ({ product_id: item.id })),
-          },
         },
       });
-      res.status(200).json({ message: 'Order created' });
     }
+
+    const getOrderCountForStore = await prisma.order.count({
+      where: {
+        store_id: store?.store_id,
+      },
+    });
+
+    await prisma.order.create({
+      data: {
+        customer: {
+          connect: {
+            customer_id: customer.customer_id,
+          },
+        },
+        friendly_order_number: getOrderCountForStore + 1000,
+        total_order_cost: total_order,
+        payment_id: req.body.data.object.payment_intent,
+        order_details: lineItems,
+        store: {
+          connect: {
+            store_id: store?.store_id,
+          },
+        },
+        bill_address: {
+          create: {
+            address_first_name: billing_firstName ?? firstName,
+            address_last_name: billing_lastName ?? lastName,
+            address_line_1: billing_firstLine ?? firstLine,
+            address_line_2: billing_secondLine ?? secondLine,
+            city: billing_city ?? city,
+            county: billing_county ?? county,
+            country: billing_country ?? country,
+            postcode: billing_postcode ?? postcode,
+            customer: {
+              connect: {
+                customer_id: customer.customer_id,
+              },
+            },
+          },
+        },
+        ship_address: {
+          create: {
+            address_first_name: firstName,
+            address_last_name: lastName,
+            address_line_1: firstLine,
+            address_line_2: secondLine,
+            city: city,
+            county: county,
+            country: country,
+            postcode: postcode,
+            customer: {
+              connect: {
+                customer_id: customer.customer_id,
+              },
+            },
+          },
+        },
+        products: {
+          connect: lineItems.map((item) => ({ product_id: item.id })),
+        },
+      },
+    });
+    res.status(200).json({ message: 'Order created' });
   } catch (err) {
     res.status(500).json({ message: 'Failed to create order' });
   }
