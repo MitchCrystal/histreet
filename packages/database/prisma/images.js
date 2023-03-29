@@ -234,32 +234,32 @@ const imageData = {
   keyboard1Image: [
     {
       id: 'kbimg1',
-      src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679750167/apple2_yxo5yy.jpg',
-      alt: 'white keyboard',
+      src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1680090508/keyboard2_mdzvb4.webp',
+      alt: 'black keyboard',
     },
   ],
 
   keyboard2Image: [
     {
       id: 'kbimg2',
-      src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679750169/xbox_h9g9aw.jpg',
-      alt: 'black console',
+      src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1680090508/keyboard_txknzt.jpg',
+      alt: 'white keyboard',
     },
   ],
 
   keyboard3Image: [
     {
       id: 'kbimg3',
-      src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679750167/apple2_yxo5yy.jpg',
-      alt: 'blue apple',
+      src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1680090508/keyboard3_dgvmau.webp',
+      alt: 'grey keyboard',
     },
   ],
 
   keyboard4Image: [
     {
       id: 'kbimg4',
-      src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679750169/xbox_h9g9aw.jpg',
-      alt: 'green keyboard',
+      src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1680090508/keyboard4_wtnnkz.jpg',
+      alt: 'curvy keyboard',
     },
   ],
 

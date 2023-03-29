@@ -222,7 +222,7 @@ function Editor() {
     </>
   ) : (
     <>
-      <div className="flex flex-col w-[calc(90vw-50px)] h-[calc(96vh-48px)] gap-y-6">
+      <div className="flex flex-col w-[100%] h-[calc(96vh-48px)] gap-y-6">
         <div className="flex flex-row w-full justify-between">
           <div className="flex flex-col ">
             <Heading title="Store Editor" type="h3" />
