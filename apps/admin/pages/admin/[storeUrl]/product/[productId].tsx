@@ -145,7 +145,7 @@ function ProductDetail() {
 
           <div className="flex flex-row w-full">
             <InputWithLabel
-              label="item"
+              label="Item"
               id="item"
               type="text"
               showLabel={true}
@@ -158,7 +158,7 @@ function ProductDetail() {
 
           <div className="h-40">
             <Textarea
-              label="description"
+              label="Description"
               id="description"
               state={productInputs}
               setState={setProductsInputs}
@@ -181,7 +181,7 @@ function ProductDetail() {
 
           <div className="flex flex-row gap-3">
             <InputWithLabel
-              label="price(£)"
+              label="Price (£)"
               id="price"
               type="number"
               step="0.01"
@@ -192,7 +192,7 @@ function ProductDetail() {
             ></InputWithLabel>
 
             <InputWithLabel
-              label="sku"
+              label="SKU"
               id="sku"
               type="text"
               showLabel={true}
@@ -202,7 +202,7 @@ function ProductDetail() {
             ></InputWithLabel>
 
             <InputWithLabel
-              label="inventory"
+              label="Inventory"
               id="inventory"
               type="number"
               showLabel={true}

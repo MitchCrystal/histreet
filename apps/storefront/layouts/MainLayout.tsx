@@ -25,7 +25,7 @@ export default function MainLayout({
   );
 
   function getSelected(type: string) {
-    return isLoading ? '#ffffff': !storeDetails.globalStyles ? undefined:
+    return isLoading ? '#ffffff': (!storeDetails.globalStyles || storeDetails.globalStyles === 'null') ? undefined:
     JSON.parse(storeDetails.globalStyles).find(
       (item: any) => item.type === type
     ).selected;
