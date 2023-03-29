@@ -1,12 +1,8 @@
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-type Props = {
-  placeholder: string;
-  type: string;
-};
-
-const SearchInputs = ({ placeholder, type }: Props) => {
+const SearchInputs = () => {
   const search = useSearchParams();
   const [searchQuery, setSearchQuery] = useState<string | null>(
     search ? search.get('q') : ''
@@ -21,9 +17,8 @@ const SearchInputs = ({ placeholder, type }: Props) => {
     }
 
     const encodedSearchQuery = encodeURI(searchQuery);
-    router.push(`/search?q=${encodedSearchQuery}`);
-
-    //router.push(`admin/[storeUrl]/search?q=${encodedSearchQuery}`);
+    const storeUrl = router.query.storeUrl;
+    router.push(`/admin/${storeUrl}/search?q=${encodedSearchQuery}`);
   };
 
   return (

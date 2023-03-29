@@ -8,13 +8,10 @@ import { signOut } from 'next-auth/react';
 import Button from '../components/Button';
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
-<<<<<<< HEAD
 
 import SearchInputs from '../components/SearchInputs';
 import { placeholder } from '@cloudinary/react';
 import { redirect } from 'next/dist/server/api-utils';
-=======
->>>>>>> development
 
 type Store = {
   store_id: string;

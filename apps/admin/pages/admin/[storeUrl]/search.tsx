@@ -1,68 +1,41 @@
-import { useRouter, useSearchParams } from 'next/navigation';
-//import { useRouter } from 'next/router';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import Table from '../../../components/Table';
+import AdminLayout from '../../../layouts/AdminLayout';
 
 type Product = {
-  product_id: string;
   product_name: string;
-  description: string;
-  tags: String;
+  store_id?: Record<string, any>;
+  inventory_qty: string;
+  product_price: number;
+  SKU: string;
 };
 
-// const fetchProducts = async (url: string) => {
-//   const response = await fetch(url);
-//   if (!response.ok) {
-//     throw new Error('Failed to fetch posts');
-//   }
-//   return response.json();
-// };
-
-const search = () => {
+const Search = () => {
   const search = useSearchParams();
   const searchQuery = search ? search.get('q') : null;
   const router = useRouter();
   const encodedSearchQuery = encodeURI(searchQuery || '');
+  const storeUrl = router.query.storeUrl;
 
-  const [storeProducts, setStoreProducts] = useState<Record<string, any>>({
-    id: '',
-    product_name: '',
-    description: '',
-    tags: '',
-  });
+  const [storeProducts, setStoreProducts] = useState<Record<string, any>[]>([]);
 
-  const { data: products }: UseQueryResult<Record<string, any>> = useQuery({
+  console.log('store url in search: ' + JSON.stringify(storeUrl));
+  const { data: products }: UseQueryResult<Record<string, any>[]> = useQuery({
     queryKey: ['products'],
     queryFn: () =>
-      fetch(`/api/search?q=${encodedSearchQuery}`).then((res) => res.json()),
+      fetch(`/api/search/${storeUrl}?q=${encodedSearchQuery}`).then((res) =>
+        res.json()
+      ),
     enabled: !!router.isReady,
-    initialData: {},
+    initialData: [],
   });
 
   useEffect(() => {
-    if (!products.product_name) {
-      return;
-    }
-    setStoreProducts({
-      id: products.id,
-      product_name: products.product_name,
-      description: products.description,
-      tags: products.tags,
-    });
+    setStoreProducts(products);
   }, [products]);
-
-  // const { data, isLoading } = useSWR(
-  //   `/api/search?q=${encodedSearchQuery}`,
-  //   fetchProducts,
-  //   { revalidateOnFocus: false }
-  // );
-
-  // if (!encodedSearchQuery) {
-  //   router.push('/');
-  // }
-  // if (!products?.products) {
-  //   return null;
-  // }
 
   return (
     <>
@@ -70,9 +43,26 @@ const search = () => {
         Showing results for:{' '}
         <span className="font-semibold">{searchQuery}</span>
       </span>
-      {products.products}
+      <Table
+        link={true}
+        linkProperty="product_id"
+        prependLink={`/admin/${router.query.storeUrl}/product`}
+        tableColumnNames={[
+          { id: 'product_name', name: 'Product Name' },
+          { id: 'SKU', name: 'SKU' },
+          { id: 'inventory_qty', name: 'Inventory' },
+          { id: 'product_price', name: 'Price' },
+        ]}
+        tableRows={storeProducts}
+      />
     </>
   );
 };
 
-export default search;
+export default function () {
+  return (
+    <AdminLayout title="search">
+      <Search />
+    </AdminLayout>
+  );
+}
