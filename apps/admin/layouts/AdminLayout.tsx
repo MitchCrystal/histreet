@@ -80,13 +80,19 @@ export default function AdminLayout({
           className="h-6 ml-4 md:hidden cursor-pointer"
           onClick={() => setIsNavOpen((prev) => !prev)}
         />
-        <div className="flex justify-end md:justify-between items-center w-full">
+        <div className="flex justify-end md:justify-between items-center w-full gap-2">
           <Link href={`/admin/${storeUrl}/dashboard`}>
             <div className="hidden md:flex gap-2 ml-4 text-2xl place-content-center">
               <Image src={logoSrc} alt="company logo" width={40} height={40} />
               <div className="flex justify-center items-center">HiStreet</div>
             </div>
           </Link>
+
+          <div className="flex items-center ml-auto">
+            <SearchInputs />
+          </div>
+
+
           <select
             id="stores"
             onChange={(e) => {

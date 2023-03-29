@@ -15,7 +15,7 @@ module.exports = {
     return [
       {
         source: '/',
-        destination: 'http://localhost:3001',
+        destination: 'https://histreet-admin.vercel.app',
         permanent: true,
         basePath: false,
       },

@@ -63,7 +63,7 @@ export default function CheckoutForm() {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: `http://localhost:3000/${router.query.storeUrl}/processing-order`,
+        return_url: `${process.env.NEXT_PUBLIC_APP_URL}/${router.query.storeUrl}/processing-order`,
       },
     });
 
