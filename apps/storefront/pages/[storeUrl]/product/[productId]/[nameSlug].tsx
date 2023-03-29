@@ -55,7 +55,7 @@ export async function getStaticPaths() {
 
   return {
     paths: formattedArray.map((item) => item),
-    fallback: true,
+    fallback: 'blocking',
   };
 }
 
