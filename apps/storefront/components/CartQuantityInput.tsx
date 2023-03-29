@@ -1,5 +1,6 @@
 import { useContext } from 'react';
-import { CartContext, ProductType } from '../pages/_app';
+import { ProductType } from '../pages/_app';
+import { CartContext } from './CartContextProvider';
 type Props = {
   lineItem: ProductType;
   additionalClassNames?: string;

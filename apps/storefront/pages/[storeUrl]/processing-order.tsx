@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
-import { CartContext } from '../_app';
+import { CartContext } from '../../components/CartContextProvider';
 import HeadingText from '../../components/HeadingText';
 import LoadingSpinner from '../../components/LoadingSpinner';
 

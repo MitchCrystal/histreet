@@ -6,10 +6,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { useContext } from 'react';
-import { CartContext } from '../_app';
 import Loading from '../../components/Loading';
 import Error from '../../components/Error';
 import EmptyCart from '../../components/EmptyCart';
+import { CartContext } from '../../components/CartContextProvider';
 
 type ProductType = {
   product_name: string;
