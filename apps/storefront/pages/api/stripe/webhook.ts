@@ -40,7 +40,9 @@ export default async function handler(
     .map((item: any) => JSON.parse(item[1]));
 
   try {
-    if (!['charge.succeeded','payment_intent.succeeded'].includes(req.body.type)) {
+    if (
+      !['charge.succeeded', 'payment_intent.succeeded'].includes(req.body.type)
+    ) {
       return res.status(500).json({ successfulPayment: false });
     }
 
@@ -144,5 +146,7 @@ export default async function handler(
     res.status(200).json({ message: 'Order created' });
   } catch (err) {
     res.status(500).json({ message: 'Failed to create order' });
+    console.log(req.body);
+    console.log(err);
   }
 }
