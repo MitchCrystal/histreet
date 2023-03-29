@@ -75,6 +75,11 @@ const storeFronts = [
       'Here is a short description to describe my amazing store. I hope you like my products and buy many of them because they are amazing quality at low, low prices',
     store_logo: imageData.teapotsLogo,
     store_hero_image: imageData.teapotHero,
+    global_styles: [
+      { type: 'primaryColour', selected: '#e81a2a' },
+      { type: 'secondaryColour', selected: '#131a3d' },
+      { type: 'saleActive', selected: 'false' },
+    ],
   },
   {
     storefront_id: 'storefront-with-logo-with-hero-normal desc',
@@ -104,7 +109,7 @@ const storeFronts = [
     store_description:
       'Quality electronics at bargain prices, consoles, TVs, radios, laptops, premium goods guaranteed!',
     store_hero_image: imageData.elecEmpHero,
-    store_logo: imageData.elecEmpLogo
+    store_logo: imageData.elecEmpLogo,
   },
   {
     storefront_id: 'storefront-no-logo-with-hero-normal-desc',
