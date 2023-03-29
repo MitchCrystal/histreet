@@ -75,14 +75,14 @@ const storeFronts = [
       'Here is a short description to describe my amazing store. I hope you like my products and buy many of them because they are amazing quality at low, low prices',
     store_logo: imageData.teapotsLogo,
     store_hero_image: imageData.teapotHero,
-    global_styles: [
+    global_styles: JSON.stringify([
       { type: 'primaryColour', selected: '#e81a2a' },
       { type: 'secondaryColour', selected: '#131a3d' },
       { type: 'saleActive', selected: 'false' },
-    ],
+    ]),
   },
   {
-    storefront_id: 'storefront-with-logo-with-hero-normal desc',
+    storefront_id: 'storefront1-with-logo-with-hero-normal desc',
     store_id: 'nice-mvp-store',
     support_email: 'no-emails-please@go-away.co.uk',
     store_description:
@@ -103,7 +103,7 @@ const storeFronts = [
     store_logo: imageData.toysNsocksLogo,
   },
   {
-    storefront_id: 'storefront-no-logo-with-hero-normal-desc',
+    storefront_id: 'storefront2-with-logo-with-hero-normal-desc',
     store_id: 'store-6-products-with-storefront-detail',
     support_email: 'nothingElectronic@everBreaks.com',
     store_description:
