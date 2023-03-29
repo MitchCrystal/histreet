@@ -168,11 +168,9 @@ function Editor() {
 
   return !isEditing ? (
     <>
-      <div className="flex flex-col w-[100%] h-[calc(96vh-48px)] gap-y-10">
+      <div className="flex flex-col w-[100%] h-[calc(96vh-48px)] gap-y-4">
         <div className="flex flex-row w-[100%] justify-between">
-          <div className="flex flex-col gap-5">
-            <Heading title="Store Editor" type="h1" />
-          </div>
+          <Heading title="Store Editor" type="h1" />
           <div className="flex ">
             <Button
               size="default"
@@ -186,7 +184,7 @@ function Editor() {
         </div>
         <Heading title={`Details for ${storeformInputs.storeName}`} type="h2" />
         <div className="flex flex-col w-full gap-5 ">
-          <div className="flex flex-row gap-40">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-40">
             <div className="flex flex-col gap-10">
               <Heading title="Store Logo:" type="h4" />
               <img
@@ -226,7 +224,7 @@ function Editor() {
       <div className="flex flex-col w-[100%] h-[calc(96vh-48px)] gap-y-6">
         <div className="flex flex-row w-full justify-between">
           <div className="flex flex-col ">
-            <Heading title="Store Editor" type="h3" />
+            <Heading title="Store Editor" type="h1" />
           </div>
           <div className="flex gap-x-2">
             <Button

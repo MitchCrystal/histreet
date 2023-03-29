@@ -7,7 +7,7 @@ export default function Heading({ title, type }: Props) {
   return (
     <>
       {type === 'h1' && (
-        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+        <h1 className="scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl">
           {title}
         </h1>
       )}
