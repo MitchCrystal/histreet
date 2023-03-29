@@ -25,7 +25,7 @@ export default function MainLayout({
   );
 
   function getSelected(type: string) {
-    return isLoading ? 'white':
+    return isLoading ? '#ffffff': !storeDetails.globalStyles ? undefined:
     JSON.parse(storeDetails.globalStyles).find(
       (item: any) => item.type === type
     ).selected;
@@ -40,10 +40,14 @@ export default function MainLayout({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Toaster />
-      <AnnouncementBar backgroundColour={getSelected('secondaryColour')} />
+      <AnnouncementBar
+        backgroundColour={getSelected('secondaryColour') ?? 'rgba(31, 41, 55)'}
+      />
       <div
         className="flex flex-col gap-8 justify-between min-h-screen"
-        style={{ backgroundColor: getSelected('primaryColour') }}
+        style={{
+          backgroundColor: getSelected('primaryColour') ?? 'white',
+        }}
       >
         <Navbar
           storeName={isLoading || isError ? '' : storeDetails.name}

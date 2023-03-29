@@ -36,7 +36,7 @@ export default function Footer({ backgroundColour }: { backgroundColour: string 
   return (
     <>
       <footer
-        className="border-t border-gray-300 py-8 px-6 bg-gray-800 text-white"
+        className="border-t border-gray-300 py-8 px-6 text-white"
         style={{ backgroundColor: backgroundColour }}
       >
         <div className="max-w-[1200px] m-auto">
