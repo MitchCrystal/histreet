@@ -8,6 +8,7 @@ import Error from '../../../../components/Error';
 import HeadingText from '../../../../components/HeadingText';
 import ImageRow from '../../../../components/ImageRow';
 import InputWithLabel from '../../../../components/InputWithLabel';
+import LoadingSpinner from '../../../../components/LoadingSpinner';
 import MainLayout from '../../../../layouts/MainLayout';
 import prisma from '../../../../utils/prisma';
 import { CartContext } from '../../../_app';
@@ -92,7 +93,6 @@ export async function getStaticProps(context: any) {
         },
       };
     } else {
-      console.log(product);
       return {
         props: {
           product: [],
@@ -125,6 +125,16 @@ function ProductPage({ product }: { product: Product }) {
     getCartTotal: any;
     getProductQuantityInCart: any;
   } = useContext(CartContext);
+
+  const [isInLoadingTime, setIsInLoadingTime] = useState(true);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIsInLoadingTime(false);
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  }, []);
 
   useEffect(() => {
     return () => toast.dismiss();
@@ -166,13 +176,17 @@ function ProductPage({ product }: { product: Product }) {
       />
       <div className="mt-6 md:grid sm:grid-cols-8 sm:gap-8 flex flex-col gap-4">
         <div className="col-span-3 flex flex-col gap-2">
-          <div className="h-[500px] relative">
-            <Image
-              src={currentImage?.src ?? '/missing_img.png'}
-              alt={currentImage?.alt ?? 'no image'}
-              className="object-cover"
-              fill
-            />
+          <div className="h-[500px] relative flex items-center justify-center">
+            {isInLoadingTime ? (
+              <LoadingSpinner />
+            ) : (
+              <Image
+                src={currentImage?.src ? currentImage?.src : '/missing_img.png'}
+                alt={currentImage?.alt ?? 'no image'}
+                className="object-cover"
+                fill
+              />
+            )}
           </div>
           {product.product_images && product.product_images?.length > 1 && (
             <ImageRow
