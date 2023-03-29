@@ -113,6 +113,7 @@ function Editor() {
           src: '/missing_img.png',
           alt: 'no image found',
         },
+        globalStyles: JSON.parse(storeform.globalStyles) ?? '',
       });
     }
     setIsEditing(false);
@@ -149,7 +150,7 @@ function Editor() {
 
   function getSelected(type: string) {
     return storeformInputs.globalStyles === ''
-      ? '#ffffff'
+      ? undefined
       : storeformInputs.globalStyles.find(
           (item: any) => item.type === type
         ).selected;
@@ -309,7 +310,7 @@ function Editor() {
               <input
                 id="primaryColour"
                 type="color"
-                value={getSelected('primaryColour')}
+                value={getSelected('primaryColour') ?? '#ffffff'}
                 onChange={(e) => {
                   setStoreFormInputs((prev) => {
                     const temp = storeformInputs.globalStyles.filter(
@@ -341,7 +342,7 @@ function Editor() {
               <input
                 id="secondaryColour"
                 type="color"
-                value={getSelected('secondaryColour')}
+                value={getSelected('secondaryColour') ?? 'rgba(31, 41, 55)'}
                 onChange={(e) => {
                   setStoreFormInputs((prev) => {
                     const temp = storeformInputs.globalStyles.filter(
@@ -384,17 +385,23 @@ function ThemeThumbnail({ getSelected }: { getSelected: (colour:string)=>string 
     <div className="flex flex-col h-32 w-48 border border-gray-300 mb-8">
       <div
         className="h-4"
-        style={{ backgroundColor: getSelected('secondaryColour') }}
+        style={{
+          backgroundColor: getSelected('secondaryColour') ?? 'rgba(31, 41, 55)',
+        }}
       ></div>
       <div
         className="flex-1 text-white place-content-center grid text-2xl"
-        style={{ backgroundColor: getSelected('primaryColour') }}
+        style={{
+          backgroundColor: getSelected('primaryColour') ?? '#ffffff',
+        }}
       >
         Heading Font
       </div>
       <div
         className="h-4"
-        style={{ backgroundColor: getSelected('secondaryColour') }}
+        style={{
+          backgroundColor: getSelected('secondaryColour') ?? 'rgba(31, 41, 55)',
+        }}
       ></div>
     </div>
   );
