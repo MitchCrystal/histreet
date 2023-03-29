@@ -6,8 +6,6 @@ import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import Error from '../components/Error';
-import Loading from '../components/Loading';
 
 export default function MainLayout({
   children,
@@ -26,6 +24,13 @@ export default function MainLayout({
     }
   );
 
+  function getSelected(type: string) {
+    return isLoading ? '#ffffff': !storeDetails.globalStyles ? undefined:
+    JSON.parse(storeDetails.globalStyles).find(
+      (item: any) => item.type === type
+    ).selected;
+  }
+
   return (
     <>
       <Head>
@@ -35,8 +40,15 @@ export default function MainLayout({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Toaster />
-      <AnnouncementBar />
-      <div className="flex flex-col gap-8 justify-between min-h-screen">
+      <AnnouncementBar
+        backgroundColour={getSelected('secondaryColour') ?? 'rgba(31, 41, 55)'}
+      />
+      <div
+        className="flex flex-col gap-8 justify-between min-h-screen"
+        style={{
+          backgroundColor: getSelected('primaryColour') ?? 'white',
+        }}
+      >
         <Navbar
           storeName={isLoading || isError ? '' : storeDetails.name}
           logoSrc={isLoading || isError ? null : storeDetails.logoUrl}
@@ -44,7 +56,7 @@ export default function MainLayout({
         <div className="flex-1 min-h-full max-w-[1200px] m-auto w-full px-6">
           {children}
         </div>
-        <Footer />
+        <Footer backgroundColour={getSelected('secondaryColour')} />
       </div>
     </>
   );

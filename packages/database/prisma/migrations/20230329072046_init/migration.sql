@@ -68,7 +68,7 @@ CREATE TABLE "Order" (
     "ship_address_id" TEXT NOT NULL,
     "order_details" JSONB[],
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "total_order_cost" INTEGER NOT NULL,
+    "total_order_cost" DECIMAL(65,30) NOT NULL,
     "payment_id" TEXT,
 
     CONSTRAINT "Order_pkey" PRIMARY KEY ("order_id")
