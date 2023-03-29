@@ -25,8 +25,8 @@ export default async function handler(
 
   products.forEach((product: any) => {
     const obj = {
-      id: product.product_id,
-      qty: product.quantityInCart,
+      productId: product.product_id,
+      quantity: product.quantityInCart,
       price: product.product_price,
       name: product.product_name,
       sku: product.SKU,
