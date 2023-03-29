@@ -26,7 +26,7 @@ function Editor() {
 
   const [logoUploaded, setLogoUploaded] = useState(false);
   const [heroUploaded, setHeroUploaded] = useState(false);
-  const [isEditing, setIsEditing] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
   const [storeformInputs, setStoreFormInputs] = useState<Record<string, any>>({
     id: '',
     storeName: '',
