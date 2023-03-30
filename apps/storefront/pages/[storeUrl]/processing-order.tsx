@@ -41,7 +41,7 @@ export default function ProcessingOrder() {
   if (
     isError ||
     (router.isReady && !router.query.payment_intent) ||
-    refetchQuantity > 10
+    refetchQuantity > 20
   )
     return (
       <p>
