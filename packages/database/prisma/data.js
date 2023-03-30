@@ -72,7 +72,7 @@ const storeFronts = [
     store_id: 'store-10-products-with-storefront-detail',
     support_email: 'support@mystore.com',
     store_description:
-      'Here is a short description to describe my amazing store. I hope you like my products and buy many of them because they are amazing quality at low, low prices',
+      'Here is my amazing Teapot store. I hope you like my products and buy many of them because they are amazing quality at low, low prices',
     store_logo: imageData.teapotLogo,
     store_hero_image: imageData.teapotHero,
     global_styles: JSON.stringify([

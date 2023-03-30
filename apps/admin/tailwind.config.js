@@ -6,18 +6,18 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx}',
     './layouts/**/*.{js,ts,jsx,tsx}',
   ],
-  theme: {
-    extend: {},
-  },
   plugins: [require('@tailwindcss/forms')],
   theme: {
     extend: {
       colors: {
         'hi-yellow': '#FDC600',
         'hi-yellow-hover': '#FDC600A3',
-        'slate-blue': '#00000'/* '#67ACCC' */,
+        'slate-blue': '#00000' /* '#67ACCC' */,
         'lt-powder-blue': '#BAE6FC',
-      }
-    }
-  }
+      },
+      screens: {
+        '3xl': '1700px',
+      },
+    },
+  },
 };

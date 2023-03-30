@@ -36,28 +36,34 @@ export default function Home() {
             </Button>
           </Link>
         </div>
-        <div className=" flex mx-5 sm:mx-10 absolute z-20 top-[15%]  sm:font-normal text-white text-3xl sm:text-6xl md:text-7xl lg:text-8xl">
-          Say hi... to
-          <img
-            src={'/histreet-yellow-square.png'}
-            alt="Hi Street"
-            className="w-9 sm:w-[120px] sm:pr-2 ml-3 mr-1 sm:ml-9 sm:mr-0"
-          />
-          HiStreet
+        <div className=" flex flex-col sm:flex-row sm:items-end mx-5  sm:mx-10 absolute z-20 top-[10%]  sm:font-normal text-white text-[2.1rem] sm:text-5xl lg:text-7xl 2xl:text-[5rem]">
+          <span className="sm:pb-3">Say hi to...</span>
+          <div className="flex">
+            <img
+              src={'/histreet-yellow-square.png'}
+              alt="Hi Street"
+              className="w-12 sm:w-[100px] 2xl:w-[120px]  sm:pr-4 2xl:pr-2 mr-1 sm:ml-9 sm:mr-0"
+            />
+            <span className=" flex items-center text-5xl sm:text-6xl lg:text-8xl 2xl:text-9xl pb-2 sm:pb-0">
+              HiStreet
+            </span>
+          </div>
         </div>
-        <h2 className="mx-5 sm:mx-10 absolute z-20 top-[25%] xl:top-[30%] sm:text-2xl md:text-3xl lg:text-4xl text-white">
+        <h2 className="mx-5 sm:mx-10 absolute z-20 top-[27%] sm:top-[31%] 2xl:top-[27%] sm:text-2xl lg:text-3xl 2xl:text-4xl text-white ">
           Probably the UK&apos;s finest customisable storefront for your
           business
         </h2>
-        <h2 className="mx-5 sm:mx-10 absolute z-[70] text-sm top-[70%] xl:top-[65%] sm:text-2xl md:text-3xl lg:text-4xl text-white bg-opacity-50 bg-black p-4 sm:p-10 w-28 sm:w-3/6">
-          Name your store and also set the contact email address!
+        <h2 className="mx-5 sm:mx-10 absolute z-[70] top-[52%] sm:top-[70%] 2xl:top-[65%] sm:text-xl lg:text-2xl 2xl:text-4xl text-white bg-opacity-50 bg-black p-4 w-[83%] sm:p-10 sm:w-3/6">
+          Fully customise your store with themes, taglines, images and more!
         </h2>
         <img
-          src={'/k8-wl8zWRwoQtE-unsplash.jpg'}
+          src={
+            'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1680171220/k8-wl8zWRwoQtE-unsplash_uroczd.jpg'
+          }
           alt={'Hi Street'}
-          className="sm:w-[100vw] object-cover h-full"
+          className="sm:w-[100vw] object-cover h-[100dvh]"
         />
-        <div className="absolute top-[40%] z-20 mx-5 sm:mx-10">
+        <div className="absolute top-[39%] sm:top-[45%] z-20 mx-5 sm:mx-10">
           <Link href={`/auth/sign-up`}>
             <Button size="xxl" appearance="homepage" type="button">
               Sign Up Now
@@ -69,19 +75,25 @@ export default function Home() {
           Photo by Luca Vavassori on Unsplash
         </p>
         <img
-          src={'/custom_product.png'}
-          alt={'Custom Store'}
-          className="w-[55vw] sm:w-[30vw] absolute bottom-28 right-[-20px] sm:bottom-80 sm:right-[-70px] z-40 border-black border"
+          src={
+            'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1680173398/custom_store3_gfooff.png'
+          }
+          alt={'red custom Store'}
+          className="w-[55vw] sm:w-[30vw] 3xl:w-[30vw] absolute bottom-[18vh]  right-[2vw]   z-40 border-black border hover:z-[99] hover:scale-150 hover:-translate-x-44 hover:-translate-y-44 ease-in-out duration-500"
         />
         <img
-          src={'/custom_store.png'}
-          alt={'Custom Store'}
-          className="w-[55vw] sm:w-[30vw] absolute bottom-8 right-8 sm:bottom-20 sm:right-20 z-50 border-black border"
+          src={
+            'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1680173399/custom_store1_c3ujxk.png'
+          }
+          alt={'green custom Store'}
+          className="w-[55vw] sm:w-[30vw] 3xl:w-[30vw] absolute bottom-[12vh]  right-[12vw] z-[60] border-black border hover:z-[99] hover:scale-150 hover:-translate-x-44 hover:-translate-y-44 ease-in-out duration-500"
         />
         <img
-          src={'/custom_products.png'}
-          alt={'Custom Store'}
-          className="w-[30vw] sm:w-[10vw] absolute bottom-2 right-2 2xl:bottom-[10px] 2xl:right-[10px] z-[60] border-black border"
+          src={
+            'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1680173398/custom_store2_x04cub.png'
+          }
+          alt={'blue custom Store'}
+          className="w-[55vw] sm:w-[30vw] 3xl:w-[30vw] absolute right-[4vw]  bottom-[4vh]  z-[50] border-black border hover:z-[99] hover:scale-150 hover:-translate-x-44 hover:-translate-y-24 ease-in-out duration-500"
         />
         {/* <div className="z-20 h-0 w-0 bottom-0 right-0 absolute border-solid border-t-[0px] border-l-[370px] sm:border-l-[640px] border-b-[200px] sm:border-b-[400px] border-r-[0px] border-t-transparent border-l-transparent border-b-white border-r-transparent"></div> */}
       </div>
