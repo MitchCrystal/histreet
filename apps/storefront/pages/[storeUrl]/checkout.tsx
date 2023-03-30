@@ -8,11 +8,12 @@ import HeadingText from '../../components/HeadingText';
 import CheckoutFormFields from '../../components/CheckoutFormFields';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { CartContext, ProductType } from '../_app';
+import { ProductType } from '../_app';
 import Head from 'next/head';
 import Checkoutcard from '../../components/Checkoutcard';
 import Loading from '../../components/Loading';
 import CheckoutLayout from '../../layouts/CheckoutLayout';
+import { CartContext } from '../../components/CartContextProvider';
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!

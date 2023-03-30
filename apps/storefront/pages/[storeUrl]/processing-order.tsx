@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
-import { CartContext } from '../_app';
+import { CartContext } from '../../components/CartContextProvider';
 import HeadingText from '../../components/HeadingText';
 import LoadingSpinner from '../../components/LoadingSpinner';
 
@@ -27,7 +27,7 @@ export default function ProcessingOrder() {
     },
     enabled: !!router.isReady && !!router.query.payment_intent,
     refetchInterval: () => {
-      if (refetchQuantity > 10) return false;
+      if (refetchQuantity > 20) return false;
       return 1000;
     },
   });
@@ -41,7 +41,7 @@ export default function ProcessingOrder() {
   if (
     isError ||
     (router.isReady && !router.query.payment_intent) ||
-    refetchQuantity > 10
+    refetchQuantity > 20
   )
     return (
       <p>
