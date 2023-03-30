@@ -27,7 +27,7 @@ export default function ProcessingOrder() {
     },
     enabled: !!router.isReady && !!router.query.payment_intent,
     refetchInterval: () => {
-      if (refetchQuantity > 10) return false;
+      if (refetchQuantity > 20) return false;
       return 1000;
     },
   });
