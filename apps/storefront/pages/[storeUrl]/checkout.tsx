@@ -64,7 +64,20 @@ export default function Checkout() {
         store_url: router.query.storeUrl,
         products: cartItems,
         shippingAddress: shippingInputs,
-        billingAddress: billingInputs,
+        billingAddress: checkbox.is_billing_address_different
+          ? billingInputs
+          : {
+              billing_email: shippingInputs.email,
+              billing_phone_number: shippingInputs.phoneNumber,
+              billing_firstName: shippingInputs.firstName,
+              billing_lastName: shippingInputs.lastName,
+              billing_firstLine: shippingInputs.firstLine,
+              billing_secondLine: shippingInputs.secondLine,
+              billing_city: shippingInputs.city,
+              billing_county: shippingInputs.county,
+              billing_postcode: shippingInputs.postcode,
+              billing_country: shippingInputs.country,
+            },
       }),
     })
       .then((res) => res.json())

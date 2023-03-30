@@ -40,16 +40,13 @@ export default async function handler(
     .map((item: any) => JSON.parse(item[1]));
 
   try {
-    if (
-      !['charge.succeeded', 'payment_intent.succeeded'].includes(req.body.type)
-    ) {
+    if (req.body.type !== 'charge.succeeded') {
       console.log(req.body);
       console.log(JSON.stringify(req.body, null, 2));
       return res.status(500).json({ successfulPayment: false });
     }
     console.log(req.body);
     console.log(JSON.stringify(req.body, null, 2));
-
     const store = await prisma.store.findUnique({
       where: {
         store_url: store_url,
@@ -101,7 +98,7 @@ export default async function handler(
         },
         friendly_order_number: getOrderCountForStore + 1000,
         total_order_cost: total_order,
-        payment_id: req.body.data.object.id,
+        payment_id: req.body.data.object.payment_intent,
         order_details: lineItems,
         store: {
           connect: {
@@ -110,18 +107,14 @@ export default async function handler(
         },
         bill_address: {
           create: {
-            address_first_name:
-              billing_firstName === '' ? firstName : billing_firstName,
-            address_last_name:
-              billing_lastName === '' ? lastName : billing_lastName,
-            address_line_1:
-              billing_firstLine === '' ? firstLine : billing_firstLine,
-            address_line_2:
-              billing_secondLine === '' ? secondLine : billing_secondLine,
-            city: billing_city === '' ? city : billing_city,
-            county: billing_county === '' ? county : billing_county,
-            country: billing_country === '' ? country : billing_country,
-            postcode: billing_postcode === '' ? postcode : billing_postcode,
+            address_first_name: billing_firstName,
+            address_last_name: billing_lastName,
+            address_line_1: billing_firstLine,
+            address_line_2: billing_secondLine,
+            city: billing_city,
+            county: billing_county,
+            country: billing_country,
+            postcode: billing_postcode,
             customer: {
               connect: {
                 customer_id: customer.customer_id,
@@ -147,12 +140,13 @@ export default async function handler(
           },
         },
         products: {
-          connect: lineItems.map((item) => ({ product_id: item.id })),
+          connect: lineItems.map((item) => ({ product_id: item.productId })),
         },
       },
     });
     res.status(200).json({ message: 'Order created' });
   } catch (err) {
+    console.log('Failed to create order', err);
     res.status(500).json({ message: 'Failed to create order' });
   }
 }
