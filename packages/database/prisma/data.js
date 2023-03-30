@@ -31,7 +31,7 @@ const stores = [
   {
     store_id: 'store-1-product-with-storefront-but-lacking-detail',
     store_owner_id: 'user-with-1-store',
-    store_name: 'Tooth Brush Central',
+    store_name: 'Toothbrush Central',
     store_url: 'yippie-kay-yay',
   },
   {
@@ -49,7 +49,7 @@ const stores = [
   {
     store_id: 'store-2-products-with-storefront-detail',
     store_owner_id: 'user-with-2-stores',
-    store_name: "Tony's Toys & Socks",
+    store_name: "Tony's Toys",
     store_url: 'toys-n-socks-bit-weird',
   },
   {
@@ -109,7 +109,7 @@ const storeFronts = [
     store_id: 'store-2-products-with-storefront-detail',
     support_email: 'i-am@iron.man',
     store_description:
-      'Well we have two products: toys or socks and that is it - enjoy',
+      'Lots of quality toys for sale, no lead paint or small parts - guaranteed!',
     store_logo: imageData.toysNsocksLogo,
     global_styles: JSON.stringify([
       { type: 'saleActive', selected: 'false' },
