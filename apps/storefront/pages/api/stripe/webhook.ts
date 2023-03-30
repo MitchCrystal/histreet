@@ -40,16 +40,13 @@ export default async function handler(
     .map((item: any) => JSON.parse(item[1]));
 
   try {
-    if (
-      !['charge.succeeded', 'payment_intent.succeeded'].includes(req.body.type)
-    ) {
+    if (req.body.type !== 'charge.succeeded') {
       console.log(req.body);
       console.log(JSON.stringify(req.body, null, 2));
       return res.status(500).json({ successfulPayment: false });
     }
     console.log(req.body);
     console.log(JSON.stringify(req.body, null, 2));
-
     const store = await prisma.store.findUnique({
       where: {
         store_url: store_url,
