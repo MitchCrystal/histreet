@@ -274,7 +274,7 @@ const imageData = {
   turboRepoImage: [
     {
       id: 'turboRepoimg',
-      src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1680111008/Turborepo_c2urwt.png',
+      src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1680114170/Turborepo_1_c71skw.png',
       alt: 'turbo repo',
     },
   ],
@@ -370,13 +370,13 @@ const imageData = {
 
   toothbrushHero: {
     id: 'storeheroimg2',
-    src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679750167/toothbrush4_sjdec3.webp',
+    src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1680115364/wmlsnqhcmpuc0vfjvnmr.jpg',
     alt: 'Many colourful toothbrushes',
   },
 
   toothbrushLogo: {
     id: 'storelogoimg2',
-    src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679758562/toothbrush-logo_jikk0t.png',
+    src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1680114448/Screenshot_2023-03-29_192710_mhn0ry.png',
     alt: 'Toothbrush logo',
   },
 
@@ -394,7 +394,7 @@ const imageData = {
 
   elecEmpHero: {
     id: 'storeheroimg4',
-    src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1680077749/elec-emp_a77ciq.jpg',
+    src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1680098234/vxim3v3divzgrqfdieow.webp',
     alt: 'various electronic goods',
   },
 

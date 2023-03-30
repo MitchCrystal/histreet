@@ -24,9 +24,9 @@ type AddressData = {
 };
 
 type Details = {
-  id: string;
+  productId: string;
   price: number;
-  qty: number;
+  quantity: number;
   name: string;
 }[];
 
@@ -64,14 +64,14 @@ export default function OrderConfirmation({ order }: { order: OrderData }) {
     setLineItems(() => {
       return order.order_details.map((item) => {
         const product: Product | undefined = order.products.find(
-          (product) => product.product_id === item.id
+          (product) => product.product_id === item.productId
         );
         return {
-          product_id: item.id,
+          product_id: item.productId,
           product_name: item.name,
           product_images: product?.product_images,
           product_price: item.price,
-          quantityInCart: item.qty,
+          quantityInCart: item.quantity,
           product_name_slug: product?.product_name,
         };
       });

@@ -406,7 +406,7 @@ function ThemeThumbnail({ getSelected }: { getSelected: (colour:string)=>string 
         }}
       ></div>
       <div
-        className="flex-1 text-white place-content-center grid text-2xl"
+        className="flex-1 text-black place-content-center grid text-2xl"
         style={{
           backgroundColor: getSelected('primaryColour') ?? '#ffffff',
         }}
