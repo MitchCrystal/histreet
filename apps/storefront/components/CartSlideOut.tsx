@@ -1,8 +1,9 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
-import { CartContext, ProductType } from '../pages/_app';
+import { ProductType } from '../pages/_app';
 import Button from './Button';
+import { CartContext } from './CartContextProvider';
 import CartQuantityInput from './CartQuantityInput';
 import EmptyCart from './EmptyCart';
 import {

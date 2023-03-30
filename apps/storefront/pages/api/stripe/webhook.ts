@@ -47,6 +47,8 @@ export default async function handler(
       console.log(JSON.stringify(req.body, null, 2));
       return res.status(500).json({ successfulPayment: false });
     }
+    console.log(req.body);
+    console.log(JSON.stringify(req.body, null, 2));
 
     const store = await prisma.store.findUnique({
       where: {
@@ -108,11 +110,15 @@ export default async function handler(
         },
         bill_address: {
           create: {
-            address_first_name: billing_firstName === '' ? firstName : billing_firstName,
-            address_last_name: billing_lastName === '' ? lastName : billing_lastName,
-            address_line_1: billing_firstLine === '' ? firstLine : billing_firstLine,
-            address_line_2: billing_secondLine === '' ? secondLine : billing_secondLine,
-            city: billing_city === '' ? city : billing_city ,
+            address_first_name:
+              billing_firstName === '' ? firstName : billing_firstName,
+            address_last_name:
+              billing_lastName === '' ? lastName : billing_lastName,
+            address_line_1:
+              billing_firstLine === '' ? firstLine : billing_firstLine,
+            address_line_2:
+              billing_secondLine === '' ? secondLine : billing_secondLine,
+            city: billing_city === '' ? city : billing_city,
             county: billing_county === '' ? county : billing_county,
             country: billing_country === '' ? country : billing_country,
             postcode: billing_postcode === '' ? postcode : billing_postcode,

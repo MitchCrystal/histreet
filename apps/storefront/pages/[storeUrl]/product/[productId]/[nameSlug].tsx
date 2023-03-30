@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import Breadcrumbs from '../../../../components/Breadcrumbs';
 import Button from '../../../../components/Button';
+import { CartContext } from '../../../../components/CartContextProvider';
 import Error from '../../../../components/Error';
 import HeadingText from '../../../../components/HeadingText';
 import ImageRow from '../../../../components/ImageRow';
@@ -11,7 +12,6 @@ import InputWithLabel from '../../../../components/InputWithLabel';
 import LoadingSpinner from '../../../../components/LoadingSpinner';
 import MainLayout from '../../../../layouts/MainLayout';
 import prisma from '../../../../utils/prisma';
-import { CartContext } from '../../../_app';
 
 type Product = {
   product_name: string;
