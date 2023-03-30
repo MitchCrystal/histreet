@@ -370,7 +370,7 @@ const imageData = {
 
   toothbrushHero: {
     id: 'storeheroimg2',
-    src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1680115364/wmlsnqhcmpuc0vfjvnmr.jpg',
+    src: 'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1679750167/toothbrush4_sjdec3.webp',
     alt: 'Many colourful toothbrushes',
   },
 
