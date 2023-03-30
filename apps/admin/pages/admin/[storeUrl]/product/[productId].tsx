@@ -169,8 +169,8 @@ function ProductDetail() {
           <div className="flex flex-col justify-between h-36">
             <div className="flex flex-row h-20 gap-3">
               {productInputs.images.map((img) => (
-                <div key={img.id} className="flex w-20 rounded">
-                  <img key={img.id} src={img.src} alt={img.alt} />
+                <div key={img.id} className="w-20 rounded">
+                  <img key={img.id} src={img.src} alt={img.alt} className="object-contain" />
                 </div>
               ))}
             </div>
