@@ -1,73 +1,60 @@
-# Turborepo starter
+ 
+#  <img src="https://i.ibb.co/X8vbLTW/histreet-yellow-square.png" alt="histreet-yellow-square" width="35px"> Hi Street 
+Hi Street is an e-commerce platform that allows individuals to create and run their own online stores.
 
-This is an official npm starter turborepo.
+<p align="center">
+  <img src="https://i.ibb.co/kQdQ4qS/Screenshot-2023-04-01-at-11-45-53.png" alt="Screenshot-2023-04-01-at-11-45-53">
+  <img src="https://i.ibb.co/gzrt98C/ezgif-4-248ecf25ca.gif" alt="ezgif-4-248ecf25ca">
+  <img src="https://i.ibb.co/ctqH70v/ezgif-4-2699346b9a.gif" alt="ezgif-4-2699346b9a">
+</p>
+<br/>
 
-## What's inside?
+## Features
+**[Admin]**
+- User authentication
+- Customize store logo, hero image, color theme
+- Show order list, order details
+- Search product
+- Add/Edit product detail
 
-This turborepo uses [npm](https://www.npmjs.com/) as a package manager. It includes the following packages/apps:
+**[Storefront]**
+- Show product list, product details
+- Add to cart
+- Checkout - payment 
 
-### Apps and Packages
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `ui`: a stub React component library shared by both `web` and `docs` applications
-- `eslint-config-custom`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `tsconfig`: `tsconfig.json`s used throughout the monorepo
+## Installation
+`npm i` in root folders 
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+## Running locally
+- App : `npm run dev`
+- Prisma Studio: `npx prisma studio` (in /packages/database)
+- Seed data : `npm run seed`(in /packages/database)
 
-### Utilities
+## Set up .env files - (env-examples provided in relevant folders)
+- /packages/database
+- /apps/admin
+- /apps/storefront
 
-This turborepo has some additional tools already setup for you:
+## When you commit
+- before git add, `npm run lint` to check linting
+- from root use `git cz`	or `git npx cz` instead of git commit
+      
+## Icons & Components
+- https://heroicons.com : use this site to find icons if needed.
+- https://ui.shadcn.com/docs/primitives/accordion : component design convention
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+## Tech stack
+- Typescript, React, NextJS, Tanstack Query
+- Shadcn/ui, React hot toast, Zod, AuthJS, Cloudinary, Stripe
+- Database: PostgreSQL, Prisma
+- Testing/CI: Cypress, Turborepo
 
-### Build
+## Contributing Developers
+[Allan Bott](https://github.com/mercury80Hg)<br/>
+[Chris Mitchell](https://github.com/MitchCrystal)<br/>
+[Gecco Navalta](https://github.com/GeccoRhiguelNavalta)<br/>
+[Jack Blatchford](https://github.com/jackb14)<br/>
+[Sohyun Lim](https://github.com/imss0)<br/>
+[Yi-Ying Ko](https://github.com/yiyingko)
 
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-npm run build
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-npm run dev
-```
-
-### Remote Caching
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
