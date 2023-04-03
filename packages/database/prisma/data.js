@@ -29,37 +29,37 @@ const users = [
 
 const stores = [
   {
-    store_id: 'store-1-product-with-storefront-but-lacking-detail',
+    store_id: 'store-3-toothbrush',
     store_owner_id: 'user-with-1-store',
     store_name: 'Toothbrush Central',
     store_url: 'yippie-kay-yay',
   },
   {
-    store_id: 'store-10-products-with-storefront-detail',
+    store_id: 'store-1-teapots',
     store_owner_id: 'user-with-3-stores',
     store_name: 'Teapots Galore',
     store_url: 'teapots-galore',
   },
   {
-    store_id: 'store-no-products-with-storefront-detail',
+    store_id: 'store-4-fruit',
     store_owner_id: 'user-with-2-stores',
     store_name: 'Fruit & Veg Goodies',
     store_url: 'gotta-stay-healthy',
   },
   {
-    store_id: 'store-2-products-with-storefront-detail',
+    store_id: 'store-5-toys',
     store_owner_id: 'user-with-2-stores',
     store_name: "Tony's Toys",
     store_url: 'toys-n-socks-bit-weird',
   },
   {
-    store_id: 'store-6-products-with-storefront-detail',
+    store_id: 'store-6-keyboards',
     store_owner_id: 'user-with-3-stores',
     store_name: 'Keyboards on Tap',
     store_url: 'elec-emp',
   },
   {
-    store_id: 'nice-mvp-store',
+    store_id: 'store-2-techstack',
     store_owner_id: 'user-with-3-stores',
     store_name: 'Tech Stack',
     store_url: 'toothbrushes-etc',
@@ -69,10 +69,10 @@ const stores = [
 const storeFronts = [
   {
     storefront_id: 'storefront-with-logo-with-hero-long-desc',
-    store_id: 'store-10-products-with-storefront-detail',
+    store_id: 'store-1-teapots',
     support_email: 'support@mystore.com',
     store_description:
-      'Here is my amazing Teapot store. I hope you like my products and buy many of them because they are amazing quality at low, low prices',
+      'At teapots-galore we have always loved making tea and we want to share that with the world by providing a wonderful selection of teapots. We hope you love our products as much as we do!',
     store_logo: imageData.teapotLogo,
     store_hero_image: imageData.teapotHero,
     global_styles: JSON.stringify([
@@ -83,7 +83,7 @@ const storeFronts = [
   },
   {
     storefront_id: 'storefront1-with-logo-with-hero-normal desc',
-    store_id: 'nice-mvp-store',
+    store_id: 'store-2-techstack',
     support_email: 'no-emails-please@go-away.co.uk',
     store_description:
       'Roll up, roll up, get your Tech Stack here....bargain prices for quality goods!',
@@ -97,7 +97,7 @@ const storeFronts = [
   },
   {
     storefront_id: 'storefront-with-no-logo-no-hero-no-desc-no-email',
-    store_id: 'store-1-product-with-storefront-but-lacking-detail',
+    store_id: 'store-3-toothbrush',
     global_styles: JSON.stringify([
       { type: 'saleActive', selected: 'false' },
       { type: 'primaryColour', selected: '#ffffff' },
@@ -106,10 +106,10 @@ const storeFronts = [
   },
   {
     storefront_id: 'storefront-with-logo-no-hero-normal desc',
-    store_id: 'store-2-products-with-storefront-detail',
+    store_id: 'store-5-toys',
     support_email: 'i-am@iron.man',
     store_description:
-      'Lots of quality toys for sale, no lead paint or small parts - guaranteed!',
+      'Lots of quality toys for sale! New stock items weekly!',
     store_logo: imageData.toysNsocksLogo,
     global_styles: JSON.stringify([
       { type: 'saleActive', selected: 'false' },
@@ -119,10 +119,10 @@ const storeFronts = [
   },
   {
     storefront_id: 'storefront2-with-logo-with-hero-normal-desc',
-    store_id: 'store-6-products-with-storefront-detail',
+    store_id: 'store-6-keyboards',
     support_email: 'nothingElectronic@everBreaks.com',
     store_description:
-      'Quality keyboards for all your ninja programmer coding needs, type out that leet code faster than ever! We also sell other electronic goods at bargain prices!',
+      'Quality keyboards for all your ninja programmer coding needs! We also sell other electronic goods at bargain prices!',
     store_hero_image: imageData.elecEmpHero,
     store_logo: imageData.elecEmpLogo,
     global_styles: JSON.stringify([
@@ -136,10 +136,10 @@ const storeFronts = [
   },
   {
     storefront_id: 'storefront-no-logo-with-hero-normal-desc',
-    store_id: 'store-no-products-with-storefront-detail',
+    store_id: 'store-4-fruit',
     support_email: 'straight-to-trash@outlook.com',
     store_description:
-      'An apple a day keeps the doctor away, but too many and the dentist will come calling',
+      'Join the plant revolution and order your fruit and veg from us! We have a wide range of organic and non-organic produce available for you to order. We also have a range of other products available for you to order.',
     store_hero_image: imageData.fruitNvegHero,
     global_styles: JSON.stringify([
       { type: 'saleActive', selected: 'false' },
@@ -152,7 +152,7 @@ const storeFronts = [
 const products = [
   {
     product_id: 'prd-w-lng-dtls-and-big-nums',
-    store_id: 'store-10-products-with-storefront-detail',
+    store_id: 'store-1-teapots',
     SKU: 'SKU-1793',
     product_name:
       'Tall Teapot',
@@ -166,7 +166,7 @@ const products = [
   },
   {
     product_id: 'prd-w-sml-dtls-and-0s-no-img',
-    store_id: 'store-10-products-with-storefront-detail',
+    store_id: 'store-1-teapots',
     SKU: '5435',
     product_name: 'old product',
     inventory_qty: 0,
@@ -177,7 +177,7 @@ const products = [
   },
   {
     product_id: 'prd-w-neg-inv-and-price',
-    store_id: 'store-10-products-with-storefront-detail',
+    store_id: 'store-1-teapots',
     SKU: '456-997',
     product_name: 'Very Black Teapot',
     inventory_qty: 0,
@@ -189,7 +189,7 @@ const products = [
   },
   {
     product_id: 'prd1-w-nrml-dtls-1-img',
-    store_id: 'store-10-products-with-storefront-detail',
+    store_id: 'store-1-teapots',
     SKU: '868434',
     product_name: 'Tiny Teapot',
     inventory_qty: 10,
@@ -200,7 +200,7 @@ const products = [
   },
   {
     product_id: 'prd2-w-nrml-dtls-1-img',
-    store_id: 'store-10-products-with-storefront-detail',
+    store_id: 'store-1-teapots',
     SKU: '4837',
     product_name: 'Quirky Teapot',
     inventory_qty: 5,
@@ -212,7 +212,7 @@ const products = [
   },
   {
     product_id: 'prd1-w-nrml-dtls-2-imgs',
-    store_id: 'store-10-products-with-storefront-detail',
+    store_id: 'store-1-teapots',
     SKU: '4H56K-7',
     product_name: 'See-through Teapot',
     inventory_qty: 300,
@@ -224,7 +224,7 @@ const products = [
   },
   {
     product_id: 'prd2-w-nrml-dtls-2-imgs',
-    store_id: 'store-10-products-with-storefront-detail',
+    store_id: 'store-1-teapots',
     SKU: '5454-BGH',
     product_name: 'Blue Teapot',
     inventory_qty: 1753,
@@ -236,7 +236,7 @@ const products = [
   },
   {
     product_id: 'prd-w-nrml-dtls-3-imgs',
-    store_id: 'store-10-products-with-storefront-detail',
+    store_id: 'store-1-teapots',
     SKU: '43324',
     product_name: 'Green Teapot',
     inventory_qty: 487,
@@ -248,7 +248,7 @@ const products = [
   },
   {
     product_id: 'prd-w-nrml-dtls-4-imgs',
-    store_id: 'store-10-products-with-storefront-detail',
+    store_id: 'store-1-teapots',
     SKU: '098789',
     product_name: 'Black Teapot',
     inventory_qty: 62,
@@ -260,7 +260,7 @@ const products = [
   },
   {
     product_id: 'prd-w-nrml-dtls-5-imgs',
-    store_id: 'store-10-products-with-storefront-detail',
+    store_id: 'store-1-teapots',
     SKU: '5398789',
     product_name: 'Mega-pot',
     inventory_qty: 1,
@@ -272,7 +272,7 @@ const products = [
   },
   {
     product_id: 'prd3-w-nrml-dtls-2-imgs',
-    store_id: 'store-1-product-with-storefront-but-lacking-detail',
+    store_id: 'store-3-toothbrush',
     SKU: '786241',
     product_name: 'Beach Ball',
     inventory_qty: 34,
@@ -284,7 +284,7 @@ const products = [
   },
   {
     product_id: 'prd4-w-nrml-dtls-2-imgs',
-    store_id: 'store-2-products-with-storefront-detail',
+    store_id: 'store-5-toys',
     SKU: '7241',
     product_name: 'Instant Sock Collection',
     inventory_qty: 399,
@@ -296,7 +296,7 @@ const products = [
   },
   {
     product_id: 'prd5-w-nrml-dtls-2-imgs',
-    store_id: 'store-2-products-with-storefront-detail',
+    store_id: 'store-5-toys',
     SKU: '6f241',
     product_name: 'Bulk buy of toys',
     inventory_qty: 76,
@@ -308,7 +308,7 @@ const products = [
   },
   {
     product_id: 'prd6-w-nrml-dtls-2-imgs',
-    store_id: 'nice-mvp-store',
+    store_id: 'store-2-techstack',
     SKU: '89767',
     product_name: 'Toothbrush',
     inventory_qty: 76,
@@ -321,7 +321,7 @@ const products = [
   },
   {
     product_id: 'prd7-w-nrml-dtls-2-imgs',
-    store_id: 'nice-mvp-store',
+    store_id: 'store-2-techstack',
     SKU: '574',
     product_name: 'Cool Dog',
     inventory_qty: 1,
@@ -335,7 +335,7 @@ const products = [
 
   {
     product_id: 'prd3-w-nrml-dtls-1-img',
-    store_id: 'store-6-products-with-storefront-detail',
+    store_id: 'store-6-keyboards',
     SKU: '95674',
     product_name: 'Black Keyboard',
     inventory_qty: 18,
@@ -346,7 +346,7 @@ const products = [
   },
   {
     product_id: 'prd4-w-nrml-dtls-1-img',
-    store_id: 'store-6-products-with-storefront-detail',
+    store_id: 'store-6-keyboards',
     SKU: '4738',
     product_name: 'White Keyboard',
     inventory_qty: 14,
@@ -358,7 +358,7 @@ const products = [
   },
   {
     product_id: 'prd5-w-nrml-dtls-1-img',
-    store_id: 'store-6-products-with-storefront-detail',
+    store_id: 'store-6-keyboards',
     SKU: '875674',
     product_name: 'Grey Keyboard',
     inventory_qty: 22,
@@ -370,7 +370,7 @@ const products = [
   },
   {
     product_id: 'prd6-w-nrml-dtls-1-img',
-    store_id: 'store-6-products-with-storefront-detail',
+    store_id: 'store-6-keyboards',
     SKU: 'AM-624-X',
     product_name: 'Curvy Keyboard',
     inventory_qty: 6,
@@ -382,7 +382,7 @@ const products = [
   },
   {
     product_id: 'prd8-w-nrml-dtls-1-img',
-    store_id: 'store-no-products-with-storefront-detail',
+    store_id: 'store-4-fruit',
     SKU: '44646',
     product_name: 'Apple',
     inventory_qty: 10,
@@ -393,7 +393,7 @@ const products = [
   },
   {
     product_id: 'prd7-w-nrml-dtls-1-img',
-    store_id: 'store-6-products-with-storefront-detail',
+    store_id: 'store-6-keyboards',
     SKU: '75463',
     product_name: 'Xbox',
     inventory_qty: 40,
@@ -404,7 +404,7 @@ const products = [
   },
   {
     product_id: 'tailwind',
-    store_id: 'nice-mvp-store',
+    store_id: 'store-2-techstack',
     SKU: '1234',
     product_name: 'Tailwind CSS',
     inventory_qty: 1,
@@ -415,7 +415,7 @@ const products = [
   },
   {
     product_id: 'turborepo',
-    store_id: 'nice-mvp-store',
+    store_id: 'store-2-techstack',
     SKU: '123',
     product_name: 'Turborepo',
     inventory_qty: 1,
@@ -426,7 +426,7 @@ const products = [
   },
   {
     product_id: 'tanstack',
-    store_id: 'nice-mvp-store',
+    store_id: 'store-2-techstack',
     SKU: '312',
     product_name: 'TanStack Query',
     inventory_qty: 1,
@@ -437,7 +437,7 @@ const products = [
   },
   {
     product_id: 'nextJS',
-    store_id: 'nice-mvp-store',
+    store_id: 'store-2-techstack',
     SKU: '123',
     product_name: 'NextJS',
     inventory_qty: 1,
@@ -448,7 +448,7 @@ const products = [
   },
   {
     product_id: 'authjs',
-    store_id: 'nice-mvp-store',
+    store_id: 'store-2-techstack',
     SKU: '865',
     product_name: 'Auth.js',
     inventory_qty: 1,
@@ -459,7 +459,7 @@ const products = [
   },
   {
     product_id: 'stripe',
-    store_id: 'nice-mvp-store',
+    store_id: 'store-2-techstack',
     SKU: '123',
     product_name: 'Stripe',
     inventory_qty: 1,
@@ -470,7 +470,7 @@ const products = [
   },
   {
     product_id: 'typescript',
-    store_id: 'nice-mvp-store',
+    store_id: 'store-2-techstack',
     SKU: '7634',
     product_name: 'TypeScript',
     inventory_qty: 1,
@@ -481,7 +481,7 @@ const products = [
   },
   {
     product_id: 'cloudinary',
-    store_id: 'nice-mvp-store',
+    store_id: 'store-2-techstack',
     SKU: '123',
     product_name: 'Cloudinary',
     inventory_qty: 1,
@@ -492,7 +492,7 @@ const products = [
   },
   {
     product_id: 'postgreSQL',
-    store_id: 'nice-mvp-store',
+    store_id: 'store-2-techstack',
     SKU: '53424',
     product_name: 'PostgreSQL',
     inventory_qty: 1,
@@ -503,7 +503,7 @@ const products = [
   },
   {
     product_id: 'prisma',
-    store_id: 'nice-mvp-store',
+    store_id: 'store-2-techstack',
     SKU: '1687',
     product_name: 'Prisma',
     inventory_qty: 1,
@@ -514,7 +514,7 @@ const products = [
   },
   {
     product_id: 'reactHotToast',
-    store_id: 'nice-mvp-store',
+    store_id: 'store-2-techstack',
     SKU: '7635758',
     product_name: 'React Hot Toast',
     inventory_qty: 1,
@@ -525,7 +525,7 @@ const products = [
   },
   {
     product_id: 'cypress',
-    store_id: 'nice-mvp-store',
+    store_id: 'store-2-techstack',
     SKU: '156873',
     product_name: 'Cypress',
     inventory_qty: 1,
@@ -538,7 +538,7 @@ const products = [
 
 const customers = [
   {
-    store_id: 'store-10-products-with-storefront-detail',
+    store_id: 'store-1-teapots',
     customer_id: 'cust-1-with-normal-name-bill-and-ship-same',
     customer_first_name: 'Tekraj',
     customer_last_name: 'Gurung',
@@ -546,7 +546,7 @@ const customers = [
     phone_number: '01234 123456',
   },
   {
-    store_id: 'nice-mvp-store',
+    store_id: 'store-2-techstack',
     customer_id: 'cust-with-long-name-bill-and-ship-different',
     customer_first_name: 'Samayamantri',
     customer_last_name: 'Hebblethwaite',
@@ -554,7 +554,7 @@ const customers = [
     phone_number: '447722123465',
   },
   {
-    store_id: 'store-1-product-with-storefront-but-lacking-detail',
+    store_id: 'store-3-toothbrush',
     customer_id: 'cust-2-with-normal-name-bill-and-ship-same',
     customer_first_name: 'Sebastien',
     customer_last_name: 'Ringrose',
@@ -562,7 +562,7 @@ const customers = [
     phone_number: '07771777777',
   },
   {
-    store_id: 'store-2-products-with-storefront-detail',
+    store_id: 'store-5-toys',
     customer_id:
       'cust-with-double-barrelled-name-bill-and-ship-different-no-phonenumber',
     customer_first_name: 'Rose-Marie',
@@ -693,7 +693,7 @@ const addresses = [
 const orders = [
   {
     order_id: 'order-with-1-item-some-cost',
-    store_id: 'store-1-product-with-storefront-but-lacking-detail',
+    store_id: 'store-3-toothbrush',
     customer_id: 'cust-2-with-normal-name-bill-and-ship-same',
     friendly_order_number: 23,
     bill_address_id: 'addr1-normal-(ship)',
@@ -714,7 +714,7 @@ const orders = [
   },
   {
     order_id: 'order-with-many-items-high-cost',
-    store_id: 'store-10-products-with-storefront-detail',
+    store_id: 'store-1-teapots',
     customer_id: 'cust-1-with-normal-name-bill-and-ship-same',
     friendly_order_number: 4617644,
     bill_address_id: 'addr-bill-and-ship-(bill)',
@@ -769,7 +769,7 @@ const orders = [
   },
   {
     order_id: 'order-with-different-addresses',
-    store_id: 'store-10-products-with-storefront-detail',
+    store_id: 'store-1-teapots',
     customer_id: 'cust-with-long-name-bill-and-ship-different',
     friendly_order_number: 32432,
     bill_address_id: 'addr-with-empty-optional-fields-(bill)',
@@ -790,7 +790,7 @@ const orders = [
   },
   {
     order_id: 'order-with-4-items-normal-cost',
-    store_id: 'store-10-products-with-storefront-detail',
+    store_id: 'store-1-teapots',
     customer_id:
       'cust-with-double-barrelled-name-bill-and-ship-different-no-phonenumber',
     friendly_order_number: 543,
@@ -838,7 +838,7 @@ const orders = [
   },
   {
     order_id: 'order-with-1-item-zero-cost',
-    store_id: 'store-10-products-with-storefront-detail',
+    store_id: 'store-1-teapots',
     customer_id: 'cust-1-with-normal-name-bill-and-ship-same',
     friendly_order_number: 7,
     bill_address_id: 'addr2-normal-(bill)',
