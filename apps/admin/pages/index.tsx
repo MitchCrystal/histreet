@@ -19,6 +19,8 @@ const menuItems = [
 ];
 
 export default function Home() {
+const imageUrl = 'https://res.cloudinary.com/dcsuhlcmm/image/upload/';
+
   return (
     <>
       <Head>
@@ -53,13 +55,11 @@ export default function Home() {
           Probably the UK&apos;s finest customisable storefront for your
           business
         </h2>
-        <h2 className="mx-5 sm:mx-10 absolute z-[70] top-[52%] sm:top-[70%] 2xl:top-[65%] sm:text-xl lg:text-2xl 2xl:text-4xl text-white bg-opacity-50 bg-black p-4 w-[83%] sm:p-10 sm:w-3/6">
+        {/* <h2 className="mx-5 sm:mx-10 absolute z-[70] top-[52%] sm:top-[70%] 2xl:top-[65%] sm:text-xl lg:text-2xl 2xl:text-4xl text-white bg-opacity-50 bg-black p-4 w-[83%] sm:p-10 sm:w-3/6">
           Fully customise your store with themes, taglines, images and more!
-        </h2>
+        </h2> */}
         <img
-          src={
-            'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1680171220/k8-wl8zWRwoQtE-unsplash_uroczd.jpg'
-          }
+          src={imageUrl + 'v1680171220/k8-wl8zWRwoQtE-unsplash_uroczd.jpg'}
           alt={'Hi Street'}
           className="sm:w-[100vw] object-cover h-[100dvh]"
         />
@@ -74,30 +74,24 @@ export default function Home() {
         <p className="absolute bottom-0 text-white text-xs sm:text-base">
           Photo by Luca Vavassori on Unsplash
         </p>
-        <img
-          src={
-            'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1680173398/custom_store3_gfooff.png'
-          }
-          alt={'red custom Store'}
-          className="w-[55vw] sm:w-[30vw] 3xl:w-[30vw] absolute bottom-[18vh]  right-[2vw]   z-40 border-black border hover:z-[99] hover:scale-150 hover:-translate-x-44 hover:-translate-y-44 ease-in-out duration-500"
-        />
-        <img
-          src={
-            'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1680173399/custom_store1_c3ujxk.png'
-          }
-          alt={'green custom Store'}
-          className="w-[55vw] sm:w-[30vw] 3xl:w-[30vw] absolute bottom-[12vh]  right-[12vw] z-[60] border-black border hover:z-[99] hover:scale-150 hover:-translate-x-44 hover:-translate-y-44 ease-in-out duration-500"
-        />
-        <img
-          src={
-            'https://res.cloudinary.com/dcsuhlcmm/image/upload/v1680173398/custom_store2_x04cub.png'
-          }
-          alt={'blue custom Store'}
-          className="w-[55vw] sm:w-[30vw] 3xl:w-[30vw] absolute right-[4vw]  bottom-[4vh]  z-[50] border-black border hover:z-[99] hover:scale-150 hover:-translate-x-44 hover:-translate-y-24 ease-in-out duration-500"
-        />
-        {/* <div className="z-20 h-0 w-0 bottom-0 right-0 absolute border-solid border-t-[0px] border-l-[370px] sm:border-l-[640px] border-b-[200px] sm:border-b-[400px] border-r-[0px] border-t-transparent border-l-transparent border-b-white border-r-transparent"></div> */}
+        {/* <div className='hidden absolute bottom-0 left-0'>
+          <img
+            src={imageUrl + 'v1680173398/custom_store3_gfooff.png'}
+            alt={'red custom Store'}
+            className="w-[55vw] sm:w-[30vw] 3xl:w-[30vw]  border-black border "
+          />
+          <img
+            src={imageUrl + 'v1680173399/custom_store1_c3ujxk.png'}
+            alt={'green custom Store'}
+            className="w-[55vw] sm:w-[30vw] 3xl:w-[30vw]   border-black border "
+          />
+          <img
+            src={imageUrl + 'v1680173398/custom_store2_x04cub.png'}
+            alt={'blue custom Store'}
+            className="w-[55vw] sm:w-[30vw] 3xl:w-[30vw]   border-black border "
+          />
+        </div> */}
       </div>
-      {/* <div className="h-[208px] bg-gray-800"></div> */}
     </>
   );
 }
