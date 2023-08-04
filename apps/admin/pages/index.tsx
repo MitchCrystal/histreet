@@ -33,7 +33,7 @@ const imageUrl = 'https://res.cloudinary.com/dcsuhlcmm/image/upload/';
       <div className="h-[calc(100vh-0px)] relative overflow-hidden">
         <div className="absolute top-2 right-2 z-20">
           <Link href={`/auth/sign-in`}>
-            <Button size="xl" appearance="homepage" type="button">
+            <Button size="lg" appearance="homepage" type="button">
               My Account
             </Button>
           </Link>
@@ -52,12 +52,11 @@ const imageUrl = 'https://res.cloudinary.com/dcsuhlcmm/image/upload/';
           </div>
         </div>
         <h2 className="mx-5 sm:mx-10 absolute z-20 top-[27%] sm:top-[31%] 2xl:top-[27%] sm:text-2xl lg:text-3xl 2xl:text-4xl text-white ">
-          Probably the UK&apos;s finest customisable storefront for your
-          business
+          Create your own, customisable, storefront for your business
         </h2>
-        {/* <h2 className="mx-5 sm:mx-10 absolute z-[70] top-[52%] sm:top-[70%] 2xl:top-[65%] sm:text-xl lg:text-2xl 2xl:text-4xl text-white bg-opacity-50 bg-black p-4 w-[83%] sm:p-10 sm:w-3/6">
-          Fully customise your store with themes, taglines, images and more!
-        </h2> */}
+        <h2 className="mx-5 sm:mx-10 absolute z-[70] top-[52%] sm:top-[70%] 2xl:top-[65%] sm:text-xl lg:text-2xl 2xl:text-4xl text-white bg-opacity-50 bg-black p-4 w-[83%] sm:p-8 sm:w-3/6">
+          Customise your store with themes, taglines, images and more
+        </h2>
         <img
           src={imageUrl + 'v1680171220/k8-wl8zWRwoQtE-unsplash_uroczd.jpg'}
           alt={'Hi Street'}
@@ -71,10 +70,10 @@ const imageUrl = 'https://res.cloudinary.com/dcsuhlcmm/image/upload/';
           </Link>
         </div>
         <div className="absolute top-0 bg-black bg-opacity-40 h-full w-full z-10"></div>
-        <p className="absolute bottom-0 text-white text-xs sm:text-base">
+        <p className="absolute bottom-0 text-white text-[0.6rem]">
           Photo by Luca Vavassori on Unsplash
         </p>
-        {/* <div className='hidden absolute bottom-0 left-0'>
+        {/* <div className='absolute bottom-0 left-0'>
           <img
             src={imageUrl + 'v1680173398/custom_store3_gfooff.png'}
             alt={'red custom Store'}
